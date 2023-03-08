@@ -13,7 +13,7 @@ class _MyRegisterState extends State<MyRegister> {
     return Container(
       decoration: BoxDecoration(
         image: DecorationImage(
-            image: AssetImage('assets/register.png'), fit: BoxFit.cover),
+            image: AssetImage('assets/blue.png'), fit: BoxFit.cover),
       ),
       child: Scaffold(
         backgroundColor: Colors.transparent,
@@ -23,13 +23,6 @@ class _MyRegisterState extends State<MyRegister> {
         ),
         body: Stack(
           children: [
-            // Container(
-            //   padding: EdgeInsets.only(left: 35, top: 30),
-            //   child: Text(
-            //     'Create\nAccount',
-            //     style: TextStyle(color: Colors.white, fontSize: 33),
-            //   ),
-            // ),
             SingleChildScrollView(
               child: Container(
                 padding: EdgeInsets.only(
@@ -144,44 +137,71 @@ class _MyRegisterState extends State<MyRegister> {
                             height: 40,
                           ),
                           Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            mainAxisAlignment: MainAxisAlignment.end,
                             children: [
                               Text(
-                                'Sign Up',
+                                'Sign up',
                                 style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 27,
-                                    fontWeight: FontWeight.w700),
+                                    fontSize: 25,
+                                    fontWeight: FontWeight.w700,
+                                    color: Colors.white),
+                              ),
+                              SizedBox(
+                                width: 10,
                               ),
                               CircleAvatar(
-                                radius: 30,
-                                backgroundColor: Color(0xff4c505b),
+                                radius: 20,
+                                backgroundColor: Colors.blueAccent,
                                 child: IconButton(
-                                    color: Colors.white,
-                                    onPressed: () {},
-                                    icon: Icon(
-                                      Icons.arrow_forward,
-                                    )),
-                              )
+                                  color: Colors.white,
+                                  onPressed: () {
+                                    Navigator.pushNamed(context, 'login');
+                                  },
+                                  icon: Icon(
+                                    Icons.arrow_forward,
+                                  ),
+                                ),
+                              ),
                             ],
                           ),
                           SizedBox(
-                            height: 40,
+                            height: 60,
                           ),
                           Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.end,
                             children: [
                               TextButton(
                                 onPressed: () {
                                   Navigator.pushNamed(context, 'login');
                                 },
-                                child: Text(
-                                  'Sign In',
-                                  textAlign: TextAlign.left,
-                                  style: TextStyle(
-                                      decoration: TextDecoration.underline,
+                                child: RichText(
+                                  text: TextSpan(
+                                    style: TextStyle(
                                       color: Colors.white,
-                                      fontSize: 18),
+                                      fontSize: 18,
+                                    ),
+                                    children: [
+                                      TextSpan(
+                                        text: "Already have an account",
+                                        style: TextStyle(
+                                          fontStyle: FontStyle.italic,
+                                        ),
+                                      ),
+                                      TextSpan(
+                                        text: "?  ",
+                                        style: TextStyle(
+                                          fontStyle: FontStyle.italic,
+                                        ),
+                                      ),
+                                      TextSpan(
+                                        text: "Sign in",
+                                        style: TextStyle(
+                                          decoration: TextDecoration.underline,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                                 ),
                                 style: ButtonStyle(),
                               ),

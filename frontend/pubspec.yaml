@@ -18,8 +18,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.12.0 <3.0.0"
-
+  sdk: '>=2.18.6 <3.0.0'
 dependencies:
   flutter:
     sdk: flutter
@@ -27,8 +26,12 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
-  http: ^0.12.2
-  socket_io_client: ^2.0.1
+  
+  web_socket_channel: ^2.3.0
+
+  get: ^4.6.1
+  intl: ^0.17.0
+  flutter_rating_bar: ^4.0.1
 
 dev_dependencies:
   flutter_test:
@@ -61,12 +64,23 @@ flutter:
   # "family" key with the font family name, and a "fonts" key with a
   # list giving the asset and other descriptors for the font. For
   # example:
+  fonts:
+    - family: Roboto
+      fonts:
+        - asset: fonts/Roboto/Roboto-Regular.ttf
+        - asset: fonts/Roboto/Roboto-Bold.ttf
+        - asset: fonts/Roboto/Roboto-Italic.ttf
+
   # fonts:
-  #   - family: Schyler
-  #     fonts:
-  #       - asset: fonts/Schyler-Regular.ttf
-  #       - asset: fonts/Schyler-Italic.ttf
+    - family: ShantellSans
+      fonts:
+        - asset: fonts/ShantellSans/static/ShantellSans-Italic.ttf
+    
+    - family: OpenSans
+      fonts:
+        - asset: fonts/OpenSans/static/OpenSans/OpenSans-Regular.ttf
   #         style: italic
+  
   #   - family: Trajan Pro
   #     fonts:
   #       - asset: fonts/TrajanPro.ttf
