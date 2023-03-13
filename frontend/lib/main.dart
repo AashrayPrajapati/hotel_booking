@@ -1,19 +1,22 @@
 import 'package:flutter/material.dart';
+
 // import 'package:flutter/services.dart';
 
-import 'package:hotel_booking/auth/register/register.dart';
-import 'package:hotel_booking/auth/login/login.dart';
+import 'auth/register/register.dart';
+import 'auth/login/login.dart';
 
-import 'package:hotel_booking/bottomNavs.dart';
-import 'package:hotel_booking/home/home.dart';
+import 'bottomNavs.dart';
+import 'home/home.dart';
 import 'favorites/favorites.dart';
 import 'booking/booking.dart';
-import 'package:hotel_booking/user/user.dart';
+import 'user/user.dart';
 
-import 'package:hotel_booking/dashboard/dashboard.dart';
-import 'package:hotel_booking/hotelCrud/hotelFirst.dart';
-import 'package:hotel_booking/hotelCrud/hotelSecond.dart';
-import 'hotelCrud/third.dart';
+import 'dashboard/dashboard.dart';
+// import 'package:hotel_booking/hotelCrud/hotelFirst.dart';
+// import 'package:hotel_booking/hotelCrud/hotelSecond.dart';
+// import 'hotelCrud/third.dart';
+import 'hotelCrud/hotelCrud.dart';
+import 'hotelCrud/hotelDetails.dart';
 
 void main() => runApp(Main());
 
@@ -44,9 +47,11 @@ class _MainState extends State<Main> {
         'booking': (context) => Booking(),
         'favorite': (context) => Favorite(),
         //
-        'firstRoomCrud': (context) => First(),
-        'secondRoomCrud': (context) => Second(),
-        'thirdRoomCrud': (context) => third(),
+        // 'firstRoomCrud': (context) => First(),
+        // 'secondRoomCrud': (context) => Second(),
+        // 'thirdRoomCrud': (context) => third(),
+        'hotelCrud': (context) => HotelCrud(),
+        'hotelDetails': (context) => HotelDetails(),
       },
     );
   }

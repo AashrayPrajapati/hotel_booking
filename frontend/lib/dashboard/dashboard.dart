@@ -279,8 +279,9 @@ class _DashboardState extends State<Dashboard> {
                               children: [
                                 TextButton(
                                   onPressed: (() {
-                                    Navigator.pushNamed(
-                                        context, 'firstRoomCrud');
+                                    // Navigator.pushNamed(
+                                    //     context, 'firstRoomCrud');
+                                    Navigator.pushNamed(context, 'hotelCrud');
                                   }),
                                   child: Text(
                                     "Room CRUD",

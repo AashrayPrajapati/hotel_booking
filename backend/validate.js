@@ -2,8 +2,9 @@ const Joi = require("@hapi/joi");
 
 const regValidation = (x) => {
   const JoiSchema = Joi.object({
-    firstName: Joi.string().required(),
-    lastName: Joi.string().required(),
+    // firstName: Joi.string().required(),
+    // lastName: Joi.string().required(),
+    name: Joi.string().required(),
     email: Joi.string().email().required(),
     password: Joi.string().required(),
   });

@@ -24,7 +24,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   // late final _ratingController;
-  late double _rating;
+  // late double _rating;
 
   // double _userRating = 3.0;
   // int _ratingBarMode = 1;
@@ -286,7 +286,7 @@ class _HomePageState extends State<HomePage> {
                                                   ),
                                                   onRatingUpdate: (rating) {
                                                     setState(() {
-                                                      _rating = rating;
+                                                      // _rating = rating;
                                                     });
                                                   },
                                                   updateOnDrag: true,

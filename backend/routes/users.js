@@ -3,41 +3,35 @@ const router = express.Router();
 const Users = require("../models/User"); //Import User Schema
 const { regValidation } = require("../validate"); // Import validation function
 
-// var fileId = mongoose.Types.ObjectId();
-
-// GET all users
-router.get("/", async (req, res) => {
-  const user = await Users.find(); // Retrieve all users from the database
-  res.json(user); // Send the retrieved users at a JSON object in the response
-});
-
 // POST a new user
-router.post("/", async (req, res) => {
+router.post("/register", async (req, res) => {
   // Validate the request body
   const { error } = regValidation(req.body);
   // if there is error, send the first error detail as a response
-  if (error) return res.send(error.details[0]);
+  if (error) return res.send(error.details[0].message);
 
   // Create a new instance of User Schema
   const user = new Users({
-    //user is the new instance of User Schema
-    name: {
-      firstName: req.body.firstName,
-      lastName: req.body.lastName,
-    },
+    
+        name: req.body.name,
     email: req.body.email,
     password: req.body.password,
   });
 
   try {
-    // const userSave = await user.save();
-    // res.json(userSave);
+    
     res.json(await user.save()); // Save the user to the database and send the
     // saved user as a JSON object in the response
   } catch (err) {
     res.json(err); //If there is an error, send the error object as a
     // JSON object in the response
   }
+});
+
+// GET all users
+router.get("/", async (req, res) => {
+  const user = await Users.find(); // Retrieve all users from the database
+  res.json(user); // Send the retrieved users at a JSON object in the response
 });
 
 router.get("/:id", async (req, res) => {
