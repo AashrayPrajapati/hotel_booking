@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
+import 'package:dio/dio.dart';
 import 'dart:convert';
-import 'config.dart';
+// import 'config.dart';
 
 class MyRegister extends StatefulWidget {
   const MyRegister({Key? key}) : super(key: key);
@@ -11,6 +11,8 @@ class MyRegister extends StatefulWidget {
 }
 
 class _MyRegisterState extends State<MyRegister> {
+  final Dio _dio = Dio();
+
   TextEditingController nameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
@@ -35,20 +37,19 @@ class _MyRegisterState extends State<MyRegister> {
       };
       print(regBody);
       try {
-        var response = await http.post(
-          Uri.parse('http://10.0.2.2:3000/users/register'),
-          headers: {"Content-Type": "application/json"},
-          body: jsonEncode(regBody),
+        var response = await _dio.post(
+          'http://10.0.2.2:3000/users/register',
+          options: Options(headers: {"Content-Type": "application/json"}),
+          data: jsonEncode(regBody),
         );
-
         print('Response status code: ${response.statusCode}');
-        print('Response body: ${response.body}');
-      } catch (e) {
-        print('Error connecting to server: $e');
+        print('Response body: ${response.data}');
+      } on DioError catch (e) {
+        print('Error connecting to server: ${e.message}');
       }
     } else {
       setState(() {
-        print("BITCH");
+        print("Ay Yo");
         _isNotValidate = true;
       });
     }

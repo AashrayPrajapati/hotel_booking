@@ -43,9 +43,9 @@ class _MainState extends State<Main> {
         'dashboard': (context) => Dashboard(),
         'mainPage': (context) => BottomNavs(),
         'home': (context) => Home(),
-        'user': (context) => User(),
-        'booking': (context) => Booking(),
         'favorite': (context) => Favorite(),
+        'booking': (context) => Booking(),
+        'user': (context) => User(),
         //
         // 'firstRoomCrud': (context) => First(),
         // 'secondRoomCrud': (context) => Second(),
