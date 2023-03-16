@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const Users = require("../models/User"); //Import User Schema
+const bcrypt = require("bcryptjs"); // Import bcryptjs for password hashing
 const { regValidation } = require("../validate"); // Import validation function
 
 // POST a new user
@@ -8,18 +9,23 @@ router.post("/register", async (req, res) => {
   // Validate the request body
   const { error } = regValidation(req.body);
   // if there is error, send the first error detail as a response
+
   if (error) return res.send(error.details[0].message);
 
+  // Check if email already exists
+  const emailExists = await Users.findOne({ email: req.body.email });
+  if (emailExists) return res.send("Email already exists");
+
+  const salt = await bcrypt.genSalt(10); // Generate a salt
+  const hashedPassword = await bcrypt.hash(req.body.password, salt); // Hash the password
   // Create a new instance of User Schema
   const user = new Users({
-    
-        name: req.body.name,
+    name: req.body.name,
     email: req.body.email,
-    password: req.body.password,
+    password: hashedPassword,
   });
 
   try {
-    
     res.json(await user.save()); // Save the user to the database and send the
     // saved user as a JSON object in the response
   } catch (err) {
