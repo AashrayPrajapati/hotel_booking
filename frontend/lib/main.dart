@@ -1,28 +1,24 @@
 import 'package:flutter/material.dart';
-
 // import 'package:flutter/services.dart';
 
-import 'auth/register/register.dart';
-import 'auth/login/login.dart';
+import 'screens/hotels/sunny.dart';
+import 'screens/user/auth/register/register.dart';
+import 'screens/user/auth/login/login.dart';
 
-import 'bottomNavs.dart';
-import 'home/home.dart';
-import 'favorites/favorites.dart';
-import 'booking/booking.dart';
-import 'user/user.dart';
+import 'components/bottomNavs.dart';
+import 'screens/mainPage/mainPage.dart';
+// import 'favorites/favorites.dart';
+import 'screens/user/booking/booking.dart';
+import 'screens/user/user.dart';
 
-import 'dashboard/dashboard.dart';
-// import 'package:hotel_booking/hotelCrud/hotelFirst.dart';
-// import 'package:hotel_booking/hotelCrud/hotelSecond.dart';
-// import 'hotelCrud/third.dart';
-import 'hotelCrud/hotelCrud.dart';
-import 'hotelCrud/hotelDetails.dart';
+import 'screens/admin/dashboard/dashboard.dart';
+import 'screens/admin/hotelCrud/hotelCrud.dart';
+import 'screens/admin/hotelCrud/hotelDetails.dart';
 
 void main() => runApp(Main());
 
 class Main extends StatefulWidget {
   const Main({key}) : super(key: key);
-
   @override
   State<Main> createState() => _MainState();
 }
@@ -43,13 +39,10 @@ class _MainState extends State<Main> {
         'dashboard': (context) => Dashboard(),
         'mainPage': (context) => BottomNavs(),
         'home': (context) => Home(),
-        'favorite': (context) => Favorite(),
+        // 'favorite': (context) => Favorite(),
         'booking': (context) => Booking(),
         'user': (context) => User(),
-        //
-        // 'firstRoomCrud': (context) => First(),
-        // 'secondRoomCrud': (context) => Second(),
-        // 'thirdRoomCrud': (context) => third(),
+        'sunny': (context) => Sunny(),
         'hotelCrud': (context) => HotelCrud(),
         'hotelDetails': (context) => HotelDetails(),
       },

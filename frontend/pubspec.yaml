@@ -5,30 +5,25 @@ version: 1.0.0+1
 
 environment:
   sdk: '>=2.18.6 <3.0.0'
+
+
 dependencies:
   flutter:
     sdk: flutter
-
   cupertino_icons: ^1.0.2
   
   get: ^4.6.1
   intl: ^0.17.0
   flutter_rating_bar: ^4.0.1
   http: ^0.13.5
-
   dio: ^4.0.0
-  google_maps_flutter: ^2.2.5
+  flutter_native_splash: ^2.2.18
+  
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-
-  flutter_launcher_icons: ^0.8.0
-
-flutter_icons:
-  android: "launcher_icon"
-  ios: true
-  image_path: "assets/appLogo.png"
+  
 
 flutter:
   uses-material-design: true
@@ -37,6 +32,11 @@ flutter:
     - assets/
 
   fonts:
+    - family: OpenSans
+      fonts:
+        - asset: fonts/OpenSans/static/OpenSans/OpenSans-Regular.ttf
+
+
     - family: Roboto
       fonts:
         - asset: fonts/Roboto/Roboto-Regular.ttf
@@ -46,7 +46,7 @@ flutter:
     - family: ShantellSans
       fonts:
         - asset: fonts/ShantellSans/static/ShantellSans-Italic.ttf
-    
-    - family: OpenSans
-      fonts:
-        - asset: fonts/OpenSans/static/OpenSans/OpenSans-Regular.ttf
+
+
+flutter_native_splash:
+  background_image: "assets/splash.png"
