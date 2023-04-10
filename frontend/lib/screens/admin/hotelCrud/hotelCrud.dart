@@ -1,6 +1,10 @@
+import 'package:cloudinary_public/cloudinary_public.dart';
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
 import 'dart:convert';
+// import 'dart:io';
+
+import 'package:image_picker/image_picker.dart';
 
 class HotelCrud extends StatefulWidget {
   const HotelCrud({super.key});
@@ -10,6 +14,11 @@ class HotelCrud extends StatefulWidget {
 
 class HotelCrudState extends State<HotelCrud> {
   final Dio _dio = Dio();
+
+  final cloudinary = CloudinaryPublic('dgrkvnovb', 'ml_default', cache: false);
+  final ImagePicker picker = ImagePicker();
+
+  bool passwordVisible = true;
 
   TextEditingController ownerNameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
@@ -99,11 +108,6 @@ class HotelCrudState extends State<HotelCrud> {
                     ),
                   ),
                   Padding(
-                    // padding: const EdgeInsets.only(
-                    //   left: 15,
-                    //   right: 15,
-                    //   bottom: 15,
-                    // ),
                     padding: const EdgeInsets.all(15),
                     child: TextField(
                       controller: ownerNameController,
@@ -155,7 +159,7 @@ class HotelCrudState extends State<HotelCrud> {
                       left: 15,
                     ),
                     child: TextField(
-                      obscureText: true,
+                      obscureText: passwordVisible,
                       controller: passwordController,
                       keyboardType: TextInputType.text,
                       style: TextStyle(fontSize: 15, height: 0.7),
@@ -170,17 +174,26 @@ class HotelCrudState extends State<HotelCrud> {
                           borderRadius: BorderRadius.all(Radius.circular(13)),
                         ),
                         labelText: "   Password",
+                        //
+                        suffixIcon: IconButton(
+                          icon: Icon(
+                            passwordVisible
+                                ? Icons.visibility
+                                : Icons.visibility_off,
+                            color: Colors.black,
+                          ),
+                          onPressed: () {
+                            setState(() {
+                              passwordVisible = !passwordVisible;
+                            });
+                          },
+                        ),
                       ),
                     ),
                   ),
                   Divider(color: Colors.black),
                   Padding(
                     padding: const EdgeInsets.all(15),
-                    // padding: const EdgeInsets.only(
-                    //   bottom: 15,
-                    //   right: 15,
-                    //   left: 15,
-                    // ),
                     child: TextField(
                       controller: propertyNameController,
                       keyboardType: TextInputType.text,
@@ -295,27 +308,31 @@ class HotelCrudState extends State<HotelCrud> {
                       ),
                     ),
                   ),
+                  ElevatedButton(
+                    onPressed: () async {
+                      var image =
+                          await picker.pickImage(source: ImageSource.gallery);
+                      if (image != null) {
+                        try {
+                          CloudinaryResponse response =
+                              await cloudinary.uploadFile(
+                            CloudinaryFile.fromFile(
+                              image.path,
+                              resourceType: CloudinaryResourceType.Image,
+                            ),
+                          );
+                          print(response.secureUrl);
+                        } on CloudinaryException catch (e) {
+                          print(e.message);
+                          print(e.request);
+                        }
+                      }
+                    },
+                    child: Text('Upload Image'),
+                  ),
                   TextButton(
                     onPressed: () {
-                      // final ownerName = ownerNameController.text;
-                      // final email = emailController.text;
-                      // final phoneNumber = phoneNumberController.text;
-                      // final propertyName = propertyNameController.text;
-                      // final country = countryController.text;
-                      // final city = cityController.text;
-                      // final postalCode = postalCodeController.text;
-                      // final streetName = streetNameController.text;
-                      // //
-                      // print("Owner Name: $ownerName\n");
-                      // print("Email: $email");
-                      // print("Phone Number: $phoneNumber");
-                      // print("Property Name: $propertyName");
-                      // print("Country: $country");
-                      // print("City: $city");
-                      // print("Zip/ Postal code: $postalCode");
-                      // print("Street Name: $streetName");
-
-                      // Navigator.pushNamed(context, 'hotelDetails');
+                      // Navigator.pushNamed(context, 'adminDashboard');
 
                       registerHotel();
                     },

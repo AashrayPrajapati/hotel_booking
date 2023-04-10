@@ -11,6 +11,8 @@ class MyRegister extends StatefulWidget {
 }
 
 class _MyRegisterState extends State<MyRegister> {
+  bool passwordVisible = true;
+
   final Dio _dio = Dio();
 
   TextEditingController nameController = TextEditingController();
@@ -54,11 +56,9 @@ class _MyRegisterState extends State<MyRegister> {
     }
   }
 
-  bool _passwordVisible = false;
   @override
   void initState() {
     super.initState();
-    _passwordVisible = false;
   }
 
   @override
@@ -102,7 +102,7 @@ class _MyRegisterState extends State<MyRegister> {
                                 child: IconButton(
                                   color: Colors.white,
                                   onPressed: () {
-                                    Navigator.pushNamed(context, 'home');
+                                    Navigator.pushNamed(context, 'mainPage');
                                   },
                                   icon: Icon(
                                     Icons.close,
@@ -191,7 +191,7 @@ class _MyRegisterState extends State<MyRegister> {
                               height: 30,
                             ),
                             TextField(
-                              obscureText: true,
+                              obscureText: passwordVisible,
                               controller: passwordController,
                               style: TextStyle(color: Colors.white70),
                               decoration: InputDecoration(
@@ -216,6 +216,19 @@ class _MyRegisterState extends State<MyRegister> {
                                   ),
                                 ),
                                 hintText: "Password",
+                                suffixIcon: IconButton(
+                                  icon: Icon(
+                                    passwordVisible
+                                        ? Icons.visibility
+                                        : Icons.visibility_off,
+                                    color: Colors.white,
+                                  ),
+                                  onPressed: () {
+                                    setState(() {
+                                      passwordVisible = !passwordVisible;
+                                    });
+                                  },
+                                ),
                                 hintStyle: TextStyle(color: Colors.white70),
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(10),
@@ -344,6 +357,13 @@ class _MyRegisterState extends State<MyRegister> {
                                 ),
                               ],
                             ),
+                            // Row(
+                            //   children: [
+                            //     Text(
+                            //       "sign up with Google?",
+                            //     ),
+                            //   ],
+                            // ),
                           ],
                         ),
                       )

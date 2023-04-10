@@ -13,16 +13,16 @@ const usersRoute = require('./routes/users');
 const adminRoute = require("./routes/admin");
 
 // MIDDLEWAWRES
-// app.use("/posts", postsRoute);
 app.use('/users', usersRoute);
-app.use('/admin', adminRoute);
+app.use('/hotel', adminRoute);
 
 app.get("/", (req, res) => {
   res.send("We are on home");
 });
 
-// FOR RUNNING ON SPECIFIC PORT
 app.listen(3000);
+
+mongoose.set('strictQuery', true);
 
 mongoose.connect(
   process.env.DB_CONNECTION,

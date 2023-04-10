@@ -11,6 +11,8 @@ class MyLogin extends StatefulWidget {
 }
 
 class _MyLoginState extends State<MyLogin> {
+  bool passwordVisible = true;
+
   final Dio _dio = Dio();
 
   TextEditingController emailController = TextEditingController();
@@ -94,7 +96,7 @@ class _MyLoginState extends State<MyLogin> {
                               child: IconButton(
                                 color: Colors.white,
                                 onPressed: () {
-                                  Navigator.pushNamed(context, 'home');
+                                  Navigator.pushNamed(context, 'mainPage');
                                 },
                                 icon: Icon(
                                   Icons.close,
@@ -114,19 +116,19 @@ class _MyLoginState extends State<MyLogin> {
                       child: Column(
                         children: [
                           TextField(
-                            style: TextStyle(color: Colors.white),
+                            style: TextStyle(color: Colors.white70),
                             decoration: InputDecoration(
                               //
                               filled: true,
                               fillColor: Colors.transparent,
                               errorStyle: TextStyle(color: Colors.white),
                               errorText:
-                                  _isNotValidate ? "Enter full name" : null,
+                                  _isNotValidate ? "Enter correct email" : null,
                               //
                               enabledBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10),
                                 borderSide: BorderSide(
-                                  color: Color.fromARGB(100, 255, 255, 255),
+                                  color: Colors.white,
                                 ),
                               ),
                               focusedBorder: OutlineInputBorder(
@@ -136,7 +138,7 @@ class _MyLoginState extends State<MyLogin> {
                                 ),
                               ),
                               hintText: "Email",
-                              hintStyle: TextStyle(color: Colors.white),
+                              hintStyle: TextStyle(color: Colors.white70),
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10),
                               ),
@@ -146,8 +148,8 @@ class _MyLoginState extends State<MyLogin> {
                             height: 30,
                           ),
                           TextField(
-                            style: TextStyle(),
-                            obscureText: true,
+                            style: TextStyle(color: Colors.white),
+                            obscureText: passwordVisible,
                             decoration: InputDecoration(
                               //
                               filled: true,
@@ -159,7 +161,7 @@ class _MyLoginState extends State<MyLogin> {
                               enabledBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10),
                                 borderSide: BorderSide(
-                                  color: Color.fromARGB(100, 255, 255, 255),
+                                  color: Colors.white,
                                 ),
                               ),
                               focusedBorder: OutlineInputBorder(
@@ -169,7 +171,20 @@ class _MyLoginState extends State<MyLogin> {
                                 ),
                               ),
                               hintText: "Password",
-                              hintStyle: TextStyle(color: Colors.white),
+                              suffixIcon: IconButton(
+                                icon: Icon(
+                                  passwordVisible
+                                      ? Icons.visibility
+                                      : Icons.visibility_off,
+                                  color: Colors.white,
+                                ),
+                                onPressed: () {
+                                  setState(() {
+                                    passwordVisible = !passwordVisible;
+                                  });
+                                },
+                              ),
+                              hintStyle: TextStyle(color: Colors.white70),
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10),
                               ),
@@ -205,7 +220,8 @@ class _MyLoginState extends State<MyLogin> {
                                   SizedBox(width: 5),
                                   CircleAvatar(
                                     radius: 20,
-                                    backgroundColor: Colors.blueAccent,
+                                    backgroundColor:
+                                        Color.fromARGB(255, 0, 180, 216),
                                     child: IconButton(
                                       color: Colors.white,
                                       onPressed: () {

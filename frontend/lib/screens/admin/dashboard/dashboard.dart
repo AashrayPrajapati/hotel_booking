@@ -256,47 +256,45 @@ class _DashboardState extends State<Dashboard> {
                   ),
                   Expanded(
                     flex: 5,
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: Colors.lightBlue,
-                        borderRadius: BorderRadius.circular(15),
-                      ),
-                      child: Column(
-                        children: [
-                          Padding(padding: EdgeInsets.only(top: 30)),
-                          Expanded(
-                            flex: 5,
-                            child: Center(
-                              child: Icon(
-                                Icons.room_preferences,
-                                size: 50,
+                    child: GestureDetector(
+                      onTap: () {
+                        Navigator.pushNamed(context, 'roomCrud');
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Colors.lightBlue,
+                          borderRadius: BorderRadius.circular(15),
+                        ),
+                        child: Column(
+                          children: [
+                            Padding(padding: EdgeInsets.only(top: 30)),
+                            Expanded(
+                              flex: 5,
+                              child: Center(
+                                child: Icon(
+                                  Icons.room_preferences,
+                                  size: 50,
+                                ),
                               ),
                             ),
-                          ),
-                          Expanded(
-                            flex: 5,
-                            child: Column(
-                              children: [
-                                TextButton(
-                                  onPressed: (() {
-                                    // Navigator.pushNamed(
-                                    //     context, 'firstRoomCrud');
-                                    Navigator.pushNamed(context, 'hotelCrud');
-                                  }),
-                                  child: Text(
+                            Expanded(
+                              flex: 5,
+                              child: Column(
+                                children: [
+                                  Text(
                                     "Room CRUD",
                                     style: TextStyle(
                                       fontSize: 23,
                                       fontWeight: FontWeight.bold,
                                       color: Colors.white,
                                     ),
-                                  ),
-                                )
-                              ],
+                                  )
+                                ],
+                              ),
                             ),
-                          ),
-                          // Padding(padding: EdgeInsets.only(bottom: 15)),
-                        ],
+                            // Padding(padding: EdgeInsets.only(bottom: 15)),
+                          ],
+                        ),
                       ),
                     ),
                   ),
