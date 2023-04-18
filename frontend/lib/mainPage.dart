@@ -1,19 +1,20 @@
 import 'package:flutter/material.dart';
-import '../screens/mainPage/mainPage.dart';
-import '../screens/user/booking/booking.dart';
-import '../screens/user/favorites/favorites.dart';
+//
+import 'screens/mainPage/home.dart';
+import 'screens/user/settings.dart';
+import 'screens/user/user.dart';
 
-class BottomNavs extends StatefulWidget {
-  const BottomNavs({super.key});
+class MainPage extends StatefulWidget {
+  const MainPage({super.key});
   @override
-  State<BottomNavs> createState() => _BottomNavsState();
+  State<MainPage> createState() => _MainPageState();
 }
 
-class _BottomNavsState extends State<BottomNavs> {
+class _MainPageState extends State<MainPage> {
   List pages = [
     Home(),
-    Booking(),
-    Favorite(),
+    userSettings(),
+    User(),
   ];
   int thisIndex = 0;
   void thisTap(int index) {
@@ -44,12 +45,12 @@ class _BottomNavsState extends State<BottomNavs> {
             label: "Home",
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: "User",
+            icon: Icon(Icons.settings),
+            label: "Settings",
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.dashboard),
-            label: "Admin Dashboard",
+            icon: Icon(Icons.person),
+            label: "User",
           ),
         ],
       ),

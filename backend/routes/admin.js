@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const Admin = require("../models/Admin");
 const multer = require('multer');
+const HotelRoom = require("../models/HotelRoom");
 // const bcrypt = require("bcryptjs");
 
 router.post('/register', async(req,res) => {
@@ -17,6 +18,7 @@ router.post('/register', async(req,res) => {
         city: req.body.city,
         postalCode: req.body.postalCode,
         streetName: req.body.streetName,
+        description: req.body.description,
     });
 
     try {
@@ -24,6 +26,19 @@ router.post('/register', async(req,res) => {
     } catch (error) {
         res.json(error);
     }
+});
+
+const upload = multer({ dest: 'uploads/' });
+
+router.post('/uploadImage', upload.single('image'), (req, res) => {
+  try {
+    console.log(req.file);
+    // Save the file to MongoDB or any other storage service
+    res.status(200).json({ message: 'Image uploaded successfully' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Failed to upload image' });
+  }
 });
 
 router.get('/getHotels', async(req, res) => {
@@ -57,6 +72,7 @@ router.patch("/getHotels/:id", async (req, res) => {
             city: req.body.city,
             postalCode: req.body.postalCode,
             streetName: req.body.streetName,
+            description: req.body.description,
           },
         }
       );
@@ -66,25 +82,13 @@ router.patch("/getHotels/:id", async (req, res) => {
     }
 });
 
-// Set up storage for uploaded files
-const storage = multer.diskStorage({
-  destination: function(req, file, cb) {
-    cb(null, 'uploads/')
-  },
-  filename: function(req, file, cb) {
-    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9)
-    cb(null, file.fieldname + '-' + uniqueSuffix + '.' + file.originalname.split('.').pop())
+router.get('/rooms/:id', async(req, res)=>{
+  try{
+    const getRooms = await HotelRoom.find({hotelId:req.params.id})
+    res.json(getRooms);
+  } catch (e) {
+    res.json(e)
   }
-});
-
-// Set up multer middleware to handle file uploads
-const upload = multer({ storage: storage });
-
-// Define route for file upload
-router.post('/upload', upload.single('file'), (req, res) => {
-  // Handle uploaded file here
-  console.log(req.file);
-  res.send('File uploaded successfully');
-});
+})
 
 module.exports = router;

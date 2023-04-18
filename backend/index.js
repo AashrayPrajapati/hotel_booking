@@ -11,10 +11,12 @@ app.use(bodyParser.json());
 
 const usersRoute = require('./routes/users');
 const adminRoute = require("./routes/admin");
+const hotelRoomRoute = require("./routes/hotelRoom");
 
 // MIDDLEWAWRES
 app.use('/users', usersRoute);
 app.use('/hotel', adminRoute);
+app.use('/hotelRoom', hotelRoomRoute);
 
 app.get("/", (req, res) => {
   res.send("We are on home");

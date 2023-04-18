@@ -105,7 +105,7 @@ class _DashboardState extends State<Dashboard> {
                               children: [
                                 Center(
                                   child: Text(
-                                    "17",
+                                    "3",
                                     style: TextStyle(
                                       fontSize: 37,
                                       fontWeight: FontWeight.bold,
@@ -157,7 +157,7 @@ class _DashboardState extends State<Dashboard> {
                               children: [
                                 Center(
                                   child: Text(
-                                    "17",
+                                    "2",
                                     style: TextStyle(
                                       fontSize: 37,
                                       fontWeight: FontWeight.bold,
@@ -224,7 +224,7 @@ class _DashboardState extends State<Dashboard> {
                               children: [
                                 Center(
                                   child: Text(
-                                    "23",
+                                    "7",
                                     style: TextStyle(
                                       fontSize: 37,
                                       fontWeight: FontWeight.bold,

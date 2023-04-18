@@ -37,13 +37,8 @@ class _HomePageState extends State<HomePage> {
         appBar: AppBar(
           automaticallyImplyLeading:
               false, // for removing back button in appbar
+          title: Text('yoHotel'),
           centerTitle: true,
-          title: Text(
-            'yoHotel',
-            style: TextStyle(
-              backgroundColor: const Color(0x0077b6),
-            ),
-          ),
         ),
         body: Column(
           children: [
@@ -184,9 +179,6 @@ class _HomePageState extends State<HomePage> {
                                             onTap: () {
                                               var ID = snapshot.data[index]._id;
 
-                                              // Navigator.of(context,
-                                              //         rootNavigator: true)
-                                              //     .pushNamed('roomDetails');
                                               Navigator.of(context,
                                                       rootNavigator: true)
                                                   .pushNamed('hotelInfo',
@@ -201,8 +193,8 @@ class _HomePageState extends State<HomePage> {
                                                     child: Card(
                                                       elevation: 3,
                                                       child: Image.network(
-                                                        'https://cf.bstatic.com/xdata/images/hotel/max1024x768/194624742.jpg?k=12804e9c2e1f8764ed2fdc14ccbee39542aaeb301f9feaab00547498d0d8a41a&o=&hp=1',
-                                                        fit: BoxFit.fill,
+                                                        'https://bit.ly/3KAjXJW',
+                                                        fit: BoxFit.cover,
                                                       ),
                                                     ),
                                                   ),
@@ -224,12 +216,6 @@ class _HomePageState extends State<HomePage> {
                                                               Expanded(
                                                                 flex: 5,
                                                                 child: Row(
-                                                                  mainAxisAlignment:
-                                                                      MainAxisAlignment
-                                                                          .spaceBetween,
-                                                                  crossAxisAlignment:
-                                                                      CrossAxisAlignment
-                                                                          .start,
                                                                   children: [
                                                                     Expanded(
                                                                       child:
@@ -240,7 +226,7 @@ class _HomePageState extends State<HomePage> {
                                                                         style:
                                                                             TextStyle(
                                                                           fontSize:
-                                                                              14,
+                                                                              15,
                                                                           fontWeight:
                                                                               FontWeight.bold,
                                                                         ),
@@ -255,31 +241,25 @@ class _HomePageState extends State<HomePage> {
                                                               Expanded(
                                                                 flex: 5,
                                                                 child: Row(
-                                                                  crossAxisAlignment:
-                                                                      CrossAxisAlignment
-                                                                          .start,
                                                                   children: [
-                                                                    Text(
-                                                                      snapshot
-                                                                          .data[
-                                                                              index]
-                                                                          .streetName,
-                                                                      style:
-                                                                          TextStyle(
-                                                                        fontSize:
-                                                                            13,
-                                                                      ),
-                                                                    ),
-                                                                    Text(', '),
-                                                                    Text(
-                                                                      snapshot
-                                                                          .data[
-                                                                              index]
-                                                                          .city,
-                                                                      style:
-                                                                          TextStyle(
-                                                                        fontSize:
-                                                                            13,
+                                                                    Expanded(
+                                                                      child:
+                                                                          RichText(
+                                                                        text:
+                                                                            TextSpan(
+                                                                          style:
+                                                                              TextStyle(
+                                                                            color:
+                                                                                Colors.black,
+                                                                            fontSize:
+                                                                                13,
+                                                                          ),
+                                                                          children: [
+                                                                            TextSpan(
+                                                                              text: '${snapshot.data[index].streetName}, ${snapshot.data[index].city}',
+                                                                            ),
+                                                                          ],
+                                                                        ),
                                                                       ),
                                                                     ),
                                                                   ],

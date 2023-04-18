@@ -14,6 +14,13 @@ class _BookingState extends State<Booking> {
       appBar: AppBar(
         title: Text("Booking"),
       ),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            Text('This is booking page'),
+          ],
+        ),
+      ),
     );
   }
 }

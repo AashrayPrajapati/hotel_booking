@@ -33,6 +33,10 @@ const AdminSchema = mongoose.Schema({
         type: String,
         required: [true, "Street name is required"],
     },
+    description:{
+        type: String,
+        required: [true, "Description is required"],
+    },
 });
 
 module.exports = mongoose.model("Admin", AdminSchema);

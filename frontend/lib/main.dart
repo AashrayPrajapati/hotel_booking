@@ -1,21 +1,20 @@
 import 'package:flutter/material.dart';
+
 // import 'package:flutter/services.dart';
 
-import 'screens/hotels/hotelInfo.dart';
-import 'screens/user/auth/register/register.dart';
-import 'screens/user/auth/login/login.dart';
+import 'screens/auth/register/register.dart';
+import 'screens/auth/login/login.dart';
 
-import 'components/bottomNavs.dart';
-import 'screens/mainPage/mainPage.dart';
-import 'screens/user/booking/booking.dart';
-import 'screens/user/favorites/favorites.dart';
+import 'mainPage.dart';
+import 'screens/user/booking.dart';
+import 'screens/super admin/registeredUsers.dart';
 import 'screens/user/user.dart';
 
-import 'screens/admin/dashboard/dashboard.dart';
+import 'screens/admin/hotelDashboard/dashboard.dart';
 import 'screens/admin/hotelCrud/hotelCrud.dart';
-import 'screens/admin/hotelCrud/hotelDetails.dart';
+import 'screens/hotels/hotelInfo.dart';
 
-import 'screens/admin/hotelCrud/adminDashboard.dart';
+import 'screens/super admin/registeredHotels.dart';
 import 'screens/admin/roomCrud/roomCrud.dart';
 
 void main() => runApp(Main());
@@ -31,23 +30,23 @@ class _MainState extends State<Main> {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(fontFamily: 'OpenSans'),
-      // home: BottomNavs(),
-      home: BottomNavs(),
+      theme: ThemeData(fontFamily: 'OpenSans'), // OPEN-SANS FONT STYLE
+      home: MainPage(),
       routes: {
         'register': (context) => MyRegister(),
         'login': (context) => MyLogin(),
-        'mainPage': (context) => BottomNavs(),
-        'dashboard': (context) => Dashboard(),
-        'home': (context) => Home(),
-        'favorite': (context) => Favorite(),
-        'hotelInfo': (context) => HotelInfo(),
         'hotelCrud': (context) => HotelCrud(),
-        'hotelDetails': (context) => HotelDetails(),
-        'adminDashboard': (context) => AdminDashboard(),
-        'roomCrud': (context) => RoomCrud(),
+        //
+        'mainPage': (context) => MainPage(),
         'booking': (context) => Booking(),
         'user': (context) => User(),
+        //
+        'dashboard': (context) => Dashboard(),
+        'hotelInfo': (context) => HotelInfo(),
+        'roomCrud': (context) => RoomCrud(),
+        //
+        'loggedInUsers': (context) => loggedInUsers(),
+        'superAdminDashboard': (context) => RegisteredHotels(),
       },
     );
   }

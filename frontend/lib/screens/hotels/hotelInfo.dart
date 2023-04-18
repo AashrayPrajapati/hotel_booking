@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-
-const List<String> list = <String>['One', 'Two', 'Three', 'Four'];
+import 'package:readmore/readmore.dart';
 
 class HotelInfo extends StatelessWidget {
   const HotelInfo({super.key});
@@ -22,8 +21,6 @@ class HotelInfoPage extends StatefulWidget {
 
 class _HotelInfoPageState extends State<HotelInfoPage> {
   final Dio _dio = Dio();
-
-  String dropdownValue = list.first;
 
   double _initialRating = 4.5;
   IconData? _selectedIcon;
@@ -53,193 +50,184 @@ class _HotelInfoPageState extends State<HotelInfoPage> {
             children: [
               Column(
                 children: [
-                  SizedBox(height: 20),
+                  SizedBox(height: 15),
                   Padding(
                     padding: const EdgeInsets.only(left: 15, right: 15),
-                    child: Container(
-                      height: MediaQuery.of(context).size.height * 1,
-                      child: FutureBuilder(
-                        future: getHotel(ID),
-                        builder: (context, AsyncSnapshot snapshot) {
-                          if (snapshot.connectionState ==
-                              ConnectionState.waiting) {
-                            return const Center(
-                                child: CircularProgressIndicator());
-                          } else if (snapshot.hasError) {
-                            return Center(
-                              child: Text("Error: ${snapshot.error}"),
-                            );
-                          } else {
-                            return ListView.builder(
-                              itemCount: 1,
-                              itemBuilder: (context, index) {
-                                return Column(
-                                  children: [
-                                    Container(
-                                      child: Image.network(
-                                        'https://cf.bstatic.com/xdata/images/hotel/max1024x768/194624742.jpg?k=12804e9c2e1f8764ed2fdc14ccbee39542aaeb301f9feaab00547498d0d8a41a&o=&hp=1',
-                                        fit: BoxFit.fill,
-                                      ),
-                                    ),
-
-                                    Padding(
-                                      padding: const EdgeInsets.all(10),
-                                      child: Container(
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Column(
-                                              children: [
-                                                Text(
-                                                  snapshot.data.propertyName,
-                                                  style: TextStyle(
-                                                    fontSize: 20,
-                                                    fontWeight: FontWeight.bold,
-                                                  ),
-                                                ),
-                                                RichText(
-                                                  text: TextSpan(
-                                                    style: TextStyle(
-                                                      color: Colors.black,
-                                                      fontSize: 15,
-                                                    ),
-                                                    children: [
-                                                      TextSpan(
-                                                        text: snapshot
-                                                            .data.streetName,
-                                                        style: TextStyle(
-                                                          fontStyle:
-                                                              FontStyle.italic,
-                                                        ),
-                                                      ),
-                                                      TextSpan(text: ", "),
-                                                      TextSpan(
-                                                        text:
-                                                            snapshot.data.city,
-                                                        style: TextStyle(
-                                                          fontStyle:
-                                                              FontStyle.italic,
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ),
-                                                RichText(
-                                                  text: TextSpan(
-                                                    style: TextStyle(
-                                                      color: Colors.black,
-                                                      fontSize: 15,
-                                                    ),
-                                                    children: [
-                                                      TextSpan(
-                                                        text: 'Id',
-                                                        style: TextStyle(
-                                                          fontStyle:
-                                                              FontStyle.italic,
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                        ),
-                                                      ),
-                                                      TextSpan(text: ": "),
-                                                      TextSpan(
-                                                        text: snapshot.data._id,
-                                                        style: TextStyle(
-                                                          fontStyle:
-                                                              FontStyle.italic,
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ),
-                                                RatingBar.builder(
-                                                  initialRating: _initialRating,
-                                                  minRating: 1,
-                                                  // direction: _isVertical
-                                                  //     ? Axis.vertical
-                                                  //     : Axis.horizontal,
-                                                  allowHalfRating: true,
-                                                  unratedColor: Colors.amber
-                                                      .withAlpha(70),
-                                                  itemCount: 5,
-                                                  itemSize: 20.0,
-                                                  itemPadding:
-                                                      EdgeInsets.symmetric(
-                                                          horizontal: 4.0),
-                                                  itemBuilder: (context, _) =>
-                                                      Icon(
-                                                    _selectedIcon ?? Icons.star,
-                                                    color: Colors.amber,
-                                                  ),
-                                                  onRatingUpdate: (rating) {
-                                                    setState(() {
-                                                      // _rating = rating;
-                                                    });
-                                                  },
-                                                  updateOnDrag: true,
-                                                ),
-                                              ],
-                                            ),
-                                            Container(
-                                              padding: EdgeInsets.all(5),
-                                              decoration: ShapeDecoration(
-                                                color: Colors.blue,
-                                                shape: RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(10),
-                                                  side: BorderSide(
-                                                    color: Color.fromARGB(
-                                                        255, 0, 0, 0),
-                                                  ),
-                                                ),
-                                              ),
-                                              child: Center(
-                                                child: Text(
-                                                  "8.7",
-                                                  style: TextStyle(
-                                                    color: Colors.white,
-                                                    fontWeight: FontWeight.bold,
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                            // Container(child: Text(),),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-
-                                    // DropdownButton<String>(
-                                    //   value: dropdownValue,
-                                    //   icon: const Icon(Icons.arrow_downward),
-                                    //   elevation: 16,
-                                    //   style: const TextStyle(
-                                    //       color: Colors.deepPurple),
-                                    //   underline: Container(
-                                    //     height: 2,
-                                    //     color: Colors.deepPurpleAccent,
-                                    //   ),
-                                    //   onChanged: (String? value) {
-                                    //     // This is called when the user selects an item.
-                                    //     setState(() {
-                                    //       dropdownValue = value!;
-                                    //     });
-                                    //   },
-                                    //   items: list.map<DropdownMenuItem<String>>(
-                                    //       (String value) {
-                                    //     return DropdownMenuItem<String>(
-                                    //       value: value,
-                                    //       child: Text(value),
-                                    //     );
-                                    //   }).toList(),
-                                    // ),
-                                  ],
+                    child: Column(
+                      children: [
+                        Container(
+                          height: MediaQuery.of(context).size.height * 1,
+                          child: FutureBuilder(
+                            future: getHotel(ID),
+                            builder: (context, AsyncSnapshot snapshot) {
+                              if (snapshot.connectionState ==
+                                  ConnectionState.waiting) {
+                                return const Center(
+                                  child: CircularProgressIndicator(),
                                 );
-                              },
-                            );
-                          }
-                        },
-                      ),
+                              } else if (snapshot.hasError) {
+                                return Center(
+                                  child: Text("Error: ${snapshot.error}"),
+                                );
+                              } else {
+                                return ListView.builder(
+                                  itemCount: 1,
+                                  itemBuilder: (context, index) {
+                                    return Column(
+                                      children: [
+                                        Container(
+                                          child: Image.network(
+                                            'https://cf.bstatic.com/xdata/images/hotel/max1024x768/194624742.jpg?k=12804e9c2e1f8764ed2fdc14ccbee39542aaeb301f9feaab00547498d0d8a41a&o=&hp=1',
+                                            fit: BoxFit.cover,
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.all(10),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Text(
+                                                    snapshot.data.propertyName,
+                                                    style: TextStyle(
+                                                      fontSize: 20,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                    ),
+                                                  ),
+                                                  SizedBox(
+                                                    height: 3,
+                                                  ),
+                                                  RichText(
+                                                    text: TextSpan(
+                                                      style: TextStyle(
+                                                        color: Colors.black,
+                                                        fontSize: 12,
+                                                      ),
+                                                      children: [
+                                                        TextSpan(
+                                                          text: snapshot
+                                                              .data.streetName,
+                                                          style: TextStyle(
+                                                            fontStyle: FontStyle
+                                                                .italic,
+                                                          ),
+                                                        ),
+                                                        TextSpan(text: ", "),
+                                                        TextSpan(
+                                                          text: snapshot
+                                                              .data.city,
+                                                          style: TextStyle(
+                                                            fontStyle: FontStyle
+                                                                .italic,
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                  SizedBox(
+                                                    height: 10,
+                                                  ),
+                                                  RatingBar.builder(
+                                                    initialRating:
+                                                        _initialRating,
+                                                    minRating: 1,
+                                                    allowHalfRating: true,
+                                                    unratedColor: Colors.amber
+                                                        .withAlpha(70),
+                                                    itemCount: 5,
+                                                    itemSize: 20.0,
+                                                    itemPadding:
+                                                        EdgeInsets.symmetric(
+                                                            horizontal: 4.0),
+                                                    itemBuilder: (context, _) =>
+                                                        Icon(
+                                                      _selectedIcon ??
+                                                          Icons.star,
+                                                      color: Colors.amber,
+                                                    ),
+                                                    onRatingUpdate: (rating) {
+                                                      setState(() {
+                                                        // _rating = rating;
+                                                      });
+                                                    },
+                                                    updateOnDrag: true,
+                                                  ),
+                                                ],
+                                              ),
+                                              Container(
+                                                padding: EdgeInsets.all(5),
+                                                decoration: ShapeDecoration(
+                                                  color: Colors.blue,
+                                                  shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            10),
+                                                    side: BorderSide(
+                                                      color: Color.fromARGB(
+                                                          255, 0, 0, 0),
+                                                    ),
+                                                  ),
+                                                ),
+                                                child: Center(
+                                                  child: Text(
+                                                    "8.7",
+                                                    style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        Divider(),
+                                        SizedBox(
+                                          height: 5,
+                                        ),
+                                        ReadMoreText(
+                                          snapshot.data.description,
+                                          textAlign: TextAlign.justify,
+                                          //
+                                          trimLength: 333,
+                                          trimMode: TrimMode.Length,
+                                          trimCollapsedText: '   Show more',
+                                          trimExpandedText: '   Show less',
+                                          moreStyle: TextStyle(
+                                            color: Colors.blue[600],
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.bold,
+                                            fontStyle: FontStyle.italic,
+                                          ),
+                                          lessStyle: TextStyle(
+                                            color: Colors.blue[600],
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.bold,
+                                            fontStyle: FontStyle.italic,
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          height: 5,
+                                        ),
+                                        Divider(),
+                                        SizedBox(
+                                          height: 5,
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                );
+                              }
+                            },
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ],
@@ -249,28 +237,6 @@ class _HotelInfoPageState extends State<HotelInfoPage> {
         ),
       ),
     );
-  }
-
-  Future<List<Hotel>> getHotels() async {
-    try {
-      // final response =
-      // await _dio.get('http://100.22.8.195:3000/users/'); //college
-      final response = await _dio.get('http://10.0.2.2:3000/hotel/getHotels/');
-      List<Hotel> hotels = [];
-      var jsonData = response.data;
-      for (var data in jsonData) {
-        Hotel hotel = Hotel(
-          data['propertyName'],
-          data['streetName'],
-          data['city'],
-          data['_id'],
-        );
-        hotels.add(hotel);
-      }
-      return hotels;
-    } on DioError catch (e) {
-      throw Exception("Error retrieving posts: ${e.message}");
-    }
   }
 
   Future<Hotel> getHotel(String id) async {
@@ -286,7 +252,7 @@ class _HotelInfoPageState extends State<HotelInfoPage> {
         jsonData['propertyName'],
         jsonData['streetName'],
         jsonData['city'],
-        jsonData['_id'],
+        jsonData['description'],
       );
 
       return hotel;
@@ -300,11 +266,11 @@ class Hotel {
   final String propertyName;
   final String streetName;
   final String city;
-  final String _id;
+  final String description;
   Hotel(
     this.propertyName,
     this.streetName,
     this.city,
-    this._id,
+    this.description,
   );
 }

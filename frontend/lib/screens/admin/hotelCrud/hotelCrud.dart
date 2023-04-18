@@ -2,9 +2,6 @@ import 'package:cloudinary_public/cloudinary_public.dart';
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
 import 'dart:convert';
-// import 'dart:io';
-
-import 'package:image_picker/image_picker.dart';
 
 class HotelCrud extends StatefulWidget {
   const HotelCrud({super.key});
@@ -16,7 +13,6 @@ class HotelCrudState extends State<HotelCrud> {
   final Dio _dio = Dio();
 
   final cloudinary = CloudinaryPublic('dgrkvnovb', 'ml_default', cache: false);
-  final ImagePicker picker = ImagePicker();
 
   bool passwordVisible = true;
 
@@ -307,28 +303,6 @@ class HotelCrudState extends State<HotelCrud> {
                         labelText: "   Street Name",
                       ),
                     ),
-                  ),
-                  ElevatedButton(
-                    onPressed: () async {
-                      var image =
-                          await picker.pickImage(source: ImageSource.gallery);
-                      if (image != null) {
-                        try {
-                          CloudinaryResponse response =
-                              await cloudinary.uploadFile(
-                            CloudinaryFile.fromFile(
-                              image.path,
-                              resourceType: CloudinaryResourceType.Image,
-                            ),
-                          );
-                          print(response.secureUrl);
-                        } on CloudinaryException catch (e) {
-                          print(e.message);
-                          print(e.request);
-                        }
-                      }
-                    },
-                    child: Text('Upload Image'),
                   ),
                   TextButton(
                     onPressed: () {
