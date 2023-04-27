@@ -10,7 +10,7 @@ app.use(cors());
 app.use(bodyParser.json());
 
 const usersRoute = require('./routes/users');
-const adminRoute = require("./routes/admin");
+const adminRoute = require("./routes/hotel");
 const hotelRoomRoute = require("./routes/hotelRoom");
 
 // MIDDLEWAWRES

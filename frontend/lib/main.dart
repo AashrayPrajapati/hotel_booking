@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 // import 'package:flutter/services.dart';
 
 import 'screens/auth/register/register.dart';
@@ -13,9 +12,10 @@ import 'screens/user/user.dart';
 import 'screens/admin/hotelDashboard/dashboard.dart';
 import 'screens/admin/hotelCrud/hotelCrud.dart';
 import 'screens/hotels/hotelInfo.dart';
+import 'screens/hotels/roomType.dart';
 
 import 'screens/super admin/registeredHotels.dart';
-import 'screens/admin/roomCrud/roomCrud.dart';
+import 'screens/admin/roomCrud/createRoom.dart';
 
 void main() => runApp(Main());
 
@@ -44,9 +44,10 @@ class _MainState extends State<Main> {
         'dashboard': (context) => Dashboard(),
         'hotelInfo': (context) => HotelInfo(),
         'roomCrud': (context) => RoomCrud(),
+        'roomType': (context) => RoomType(),
         //
-        'loggedInUsers': (context) => loggedInUsers(),
-        'superAdminDashboard': (context) => RegisteredHotels(),
+        'registeredUsers': (context) => RegisteredUsers(),
+        'registeredHotels': (context) => RegisteredHotels(),
       },
     );
   }

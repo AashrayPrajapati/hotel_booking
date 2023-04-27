@@ -32,7 +32,10 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(fontFamily: 'OpenSans'),
+      theme: ThemeData(
+        fontFamily: 'OpenSans',
+        scaffoldBackgroundColor: Color.fromARGB(255, 244, 244, 244),
+      ),
       home: Scaffold(
         appBar: AppBar(
           automaticallyImplyLeading:
@@ -129,7 +132,11 @@ class _HomePageState extends State<HomePage> {
                                   backgroundColor: Colors.blue[600]),
                               child: Text('Search'),
                               onPressed: () {
-                                Navigator.pushNamed(context, 'dashboard');
+                                // Navigator.pushNamed(context, 'dashboard');
+                                // showSearch(
+                                //   context: context,
+                                //   delegate: MySearchDelegate(),
+                                // );
                               },
                             ),
                           ),
@@ -300,11 +307,8 @@ class _HomePageState extends State<HomePage> {
 
   Future<List<Hotel>> getHotels() async {
     try {
-      // final response =
-      // await _dio.get('http://100.22.8.195:3000/users/'); //college
-      // final response =
       final response = await _dio.get('http://10.0.2.2:3000/hotel/getHotels');
-      //     await _dio.get('http://192.168.101.1:3000/hotel/getHotels');
+
       List<Hotel> hotels = [];
       var jsonData = response.data;
       for (var data in jsonData) {
@@ -335,3 +339,34 @@ class Hotel {
     this._id,
   );
 }
+
+// class MySearchDelegate extends SearchDelegate {
+//   @override
+//   Widget? buildLeading(BuildContext context) {
+//     IconButton(
+//       icon: const Icon(Icons.arrow_back),
+//       onPressed: () {},
+//     );
+//     return null;
+//   }
+
+//   @override
+//   List<Widget>? buildActions(BuildContext context) {
+//     IconButton(
+//       icon: const Icon(Icons.clear),
+//       onPressed: () {},
+//     );
+//   }
+
+//   @override
+//   Widget buildResults(BuildContext context) {
+//     // TODO: implement buildSuggestions
+//     throw UnimplementedError();
+//   }
+
+//   @override
+//   Widget buildSuggestions(BuildContext context) {
+//     // TODO: implement buildSuggestions
+//     throw UnimplementedError();
+//   }
+// }

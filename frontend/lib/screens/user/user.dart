@@ -25,82 +25,77 @@ class _UserState extends State<User> {
           children: [
             Column(
               children: [
-                TextButton(
-                  onPressed: () {
-                    Navigator.pushNamed(context, 'hotelCrud');
-                  },
-                  child: RichText(
-                    text: TextSpan(
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 18,
+                Container(
+                  width: 250,
+                  child: TextButton(
+                    onPressed: () {
+                      Navigator.pushNamed(context, 'hotelCrud');
+                    },
+                    child: RichText(
+                      text: TextSpan(
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 20,
+                        ),
+                        children: [
+                          TextSpan(
+                            text: "List your property ?",
+                            style: TextStyle(),
+                          ),
+                        ],
                       ),
-                      children: [
-                        TextSpan(
-                          text: "List your property",
-                          style: TextStyle(
-                            fontStyle: FontStyle.italic,
-                          ),
-                        ),
-                        TextSpan(
-                          text: "?  ",
-                          style: TextStyle(
-                            fontStyle: FontStyle.italic,
-                          ),
-                        ),
-                        TextSpan(
-                          text: "Click here",
-                          style: TextStyle(
-                            decoration: TextDecoration.underline,
-                          ),
-                        ),
-                      ],
+                    ),
+                    style: TextButton.styleFrom(
+                      backgroundColor: Color.fromARGB(255, 0, 191, 255),
+                      // add rounded corners
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(23),
+                      ),
                     ),
                   ),
-                  style: ButtonStyle(),
                 ),
               ],
             ),
             Column(
               children: [
-                Text('OR'),
+                Text(
+                  'OR',
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
               ],
             ),
             Column(
               children: [
-                TextButton(
-                  onPressed: () {
-                    Navigator.pushNamed(context, 'login');
-                  },
-                  child: RichText(
-                    text: TextSpan(
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 18,
+                Container(
+                  width: 250,
+                  child: TextButton(
+                    onPressed: () {
+                      Navigator.pushNamed(context, 'login');
+                    },
+                    child: RichText(
+                      text: TextSpan(
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 19,
+                        ),
+                        children: [
+                          TextSpan(
+                            text: "Already have an account ?",
+                            style: TextStyle(),
+                          ),
+                        ],
                       ),
-                      children: [
-                        TextSpan(
-                          text: "Already have an account",
-                          style: TextStyle(
-                            fontStyle: FontStyle.italic,
-                          ),
-                        ),
-                        TextSpan(
-                          text: "?  ",
-                          style: TextStyle(
-                            fontStyle: FontStyle.italic,
-                          ),
-                        ),
-                        TextSpan(
-                          text: "Sign in",
-                          style: TextStyle(
-                            decoration: TextDecoration.underline,
-                          ),
-                        ),
-                      ],
+                    ),
+                    style: TextButton.styleFrom(
+                      backgroundColor: Color.fromARGB(255, 0, 191, 255),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(23),
+                      ),
                     ),
                   ),
-                  style: ButtonStyle(),
                 ),
               ],
             ),

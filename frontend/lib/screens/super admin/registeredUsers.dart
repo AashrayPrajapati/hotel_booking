@@ -3,14 +3,14 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 
-class loggedInUsers extends StatefulWidget {
-  const loggedInUsers({Key? key}) : super(key: key);
+class RegisteredUsers extends StatefulWidget {
+  const RegisteredUsers({Key? key}) : super(key: key);
 
   @override
-  State<loggedInUsers> createState() => _loggedInUsersState();
+  State<RegisteredUsers> createState() => registerednUsersState();
 }
 
-class _loggedInUsersState extends State<loggedInUsers> {
+class registerednUsersState extends State<RegisteredUsers> {
   final Dio _dio = Dio();
 
   @override

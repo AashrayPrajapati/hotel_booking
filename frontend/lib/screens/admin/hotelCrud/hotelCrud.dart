@@ -24,20 +24,8 @@ class HotelCrudState extends State<HotelCrud> {
   TextEditingController cityController = TextEditingController();
   TextEditingController postalCodeController = TextEditingController();
   TextEditingController streetNameController = TextEditingController();
+  TextEditingController descriptionController = TextEditingController();
   bool _isNotValidate = false;
-
-  @override
-  void dispose() {
-    ownerNameController.dispose();
-    emailController.dispose();
-    passwordController.dispose();
-    propertyNameController.dispose();
-    countryController.dispose();
-    cityController.dispose();
-    postalCodeController.dispose();
-    streetNameController.dispose();
-    super.dispose();
-  }
 
   void registerHotel() async {
     if (ownerNameController.text.isNotEmpty &&
@@ -47,7 +35,8 @@ class HotelCrudState extends State<HotelCrud> {
         countryController.text.isNotEmpty &&
         cityController.text.isNotEmpty &&
         postalCodeController.text.isNotEmpty &&
-        streetNameController.text.isNotEmpty) {
+        streetNameController.text.isNotEmpty &&
+        descriptionController.text.isNotEmpty) {
       var regBody = {
         "ownerName": ownerNameController.text,
         "email": emailController.text,
@@ -56,12 +45,13 @@ class HotelCrudState extends State<HotelCrud> {
         "country": countryController.text,
         "city": cityController.text,
         "postalCode": postalCodeController.text,
-        "streetName": streetNameController.text
+        "streetName": streetNameController.text,
+        "description": descriptionController.text,
       };
       print(regBody);
       try {
         var response = await _dio.post(
-          'http://10.0.2.2:3000/admin/',
+          'http://10.0.2.2:3000/hotel/register',
           options: Options(headers: {"Content-Type": "application/json"}),
           data: jsonEncode(regBody),
         );
@@ -75,6 +65,25 @@ class HotelCrudState extends State<HotelCrud> {
         _isNotValidate = true;
       });
     }
+  }
+
+  @override
+  void dispose() {
+    ownerNameController.dispose();
+    emailController.dispose();
+    passwordController.dispose();
+    propertyNameController.dispose();
+    countryController.dispose();
+    cityController.dispose();
+    postalCodeController.dispose();
+    streetNameController.dispose();
+    descriptionController.dispose();
+    super.dispose();
+  }
+
+  @override
+  void initState() {
+    super.initState();
   }
 
   @override
@@ -187,7 +196,7 @@ class HotelCrudState extends State<HotelCrud> {
                       ),
                     ),
                   ),
-                  Divider(color: Colors.black),
+                  Divider(color: Colors.black38),
                   Padding(
                     padding: const EdgeInsets.all(15),
                     child: TextField(
@@ -304,11 +313,64 @@ class HotelCrudState extends State<HotelCrud> {
                       ),
                     ),
                   ),
+                  Padding(
+                    padding: const EdgeInsets.only(
+                      bottom: 15,
+                      right: 15,
+                      left: 15,
+                    ),
+                    child: Expanded(
+                      child: TextField(
+                        maxLines: null,
+                        controller: descriptionController,
+                        keyboardType: TextInputType.text,
+                        style: TextStyle(fontSize: 15, height: 0.7),
+                        decoration: InputDecoration(
+                          //
+                          filled: true,
+                          fillColor: Colors.transparent,
+                          errorStyle: TextStyle(color: Colors.white),
+                          errorText: _isNotValidate ? "Enter full name" : null,
+                          //
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(13)),
+                          ),
+                          labelText: "   Description",
+                        ),
+                      ),
+                    ),
+                  ),
                   TextButton(
                     onPressed: () {
-                      // Navigator.pushNamed(context, 'adminDashboard');
+                      showDialog(
+                        // barrierDismissible: false, // user must tap button!
 
-                      registerHotel();
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            title: Text("Confirm"),
+                            content: Text(
+                                "Are you sure you want to register with this data?"),
+                            actions: [
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                                child: Text("No"),
+                              ),
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                  Navigator.pushNamed(context, 'dashboard');
+                                },
+                                child: Text("Yes"),
+                              ),
+                            ],
+                          );
+                        },
+                      );
+
+                      //registerHotel();
                     },
                     child: Text("Next"),
                   )

@@ -6,26 +6,26 @@ const HotelRoom = require("../models/HotelRoom");
 // const bcrypt = require("bcryptjs");
 
 router.post('/register', async(req,res) => {
-    // const {error} = listValidation(req.body);
-    // if (error) return res.send(error.details[0].message);
+  // const {error} = listValidation(req.body);
+  // if (error) return res.send(error.details[0].message);
 
-    const admin = new Admin({
-        ownerName: req.body.ownerName,
-        email: req.body.email,
-        password: req.body.password,
-        propertyName: req.body.propertyName,
-        country: req.body.country,
-        city: req.body.city,
-        postalCode: req.body.postalCode,
-        streetName: req.body.streetName,
-        description: req.body.description,
-    });
+  const admin = new Admin({
+    ownerName: req.body.ownerName,
+    email: req.body.email,
+    password: req.body.password,
+    propertyName: req.body.propertyName,
+    country: req.body.country,
+    city: req.body.city,
+    postalCode: req.body.postalCode,
+    streetName: req.body.streetName,
+    description: req.body.description,
+  });
 
-    try {
-        res.json(await admin.save());
-    } catch (error) {
-        res.json(error);
-    }
+  try {
+    res.json(await admin.save());
+  } catch (error) {
+    res.json(error);
+  }
 });
 
 const upload = multer({ dest: 'uploads/' });
@@ -49,10 +49,19 @@ router.get('/getHotels', async(req, res) => {
     }
 });
 
+router.get('/getHotel/pName/:propertyName', async(req, res) => {
+  try{
+    const admin = await Admin.findOne({propertyName: req.params.propertyName});
+    res.json(admin);
+  } catch(error) {
+      res.json(error);
+  }
+});
+
 router.get("/getHotels/:id", async (req, res) => {
     try {
-      const user = await Admin.findById({ _id: req.params.id });
-      res.json(user);
+      const admin = await Admin.findById({ _id: req.params.id });
+      res.json(admin);
     } catch (err) {
       res.json("ERROR");
     }

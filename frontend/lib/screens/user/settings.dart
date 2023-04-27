@@ -39,11 +39,12 @@ class _SettingsPageState extends State<SettingsPage> {
                   SizedBox(width: 10),
                   Text(
                     'About Us',
-                    style: TextStyle(fontSize: 23),
+                    style: TextStyle(fontSize: 21),
                   ),
                 ],
               ),
             ),
+            Divider(),
             Padding(
               padding: const EdgeInsets.all(15),
               child: Row(
@@ -55,7 +56,7 @@ class _SettingsPageState extends State<SettingsPage> {
                   SizedBox(width: 10),
                   Text(
                     'v 0.1',
-                    style: TextStyle(fontSize: 23),
+                    style: TextStyle(fontSize: 21),
                   ),
                 ],
               ),

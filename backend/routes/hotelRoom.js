@@ -28,8 +28,21 @@ router.post('/register', async(req,res) => {
     }
 });
 
-// router.get('getRooms', async(req, res) => {
-//     const 
-// });
+router.get('/getRooms/:id', async(req, res) => {
+    try{
+        res.json(await Admin.find());
+    } catch(error) {
+        res.json(error);
+    }
+});
+
+router.get("/getHotels/:id", async (req, res) => {
+    try {
+      const admin = await Admin.findById({ _id: req.params.id });
+      res.json(admin);
+    } catch (err) {
+      res.json("ERROR");
+    }
+});
 
 module.exports = router;
