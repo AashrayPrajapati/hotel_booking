@@ -5,7 +5,6 @@ import 'screens/auth/register/register.dart';
 import 'screens/auth/login/login.dart';
 
 import 'mainPage.dart';
-import 'screens/user/booking.dart';
 import 'screens/super admin/registeredUsers.dart';
 import 'screens/user/user.dart';
 
@@ -38,12 +37,11 @@ class _MainState extends State<Main> {
         'hotelCrud': (context) => HotelCrud(),
         //
         'mainPage': (context) => MainPage(),
-        'booking': (context) => Booking(),
         'user': (context) => User(),
         //
         'dashboard': (context) => Dashboard(),
         'hotelInfo': (context) => HotelInfo(),
-        'roomCrud': (context) => RoomCrud(),
+        'roomCrud': (context) => RoomCreate(),
         'roomType': (context) => RoomType(),
         //
         'registeredUsers': (context) => RegisteredUsers(),

@@ -20,10 +20,12 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   TextEditingController dateRangeInput = TextEditingController();
+  TextEditingController searchInput = TextEditingController();
 
   @override
   void initState() {
     dateRangeInput.text = "";
+    searchInput.text = "";
 
     super.initState();
   }
@@ -55,6 +57,7 @@ class _HomePageState extends State<HomePage> {
                         child: SizedBox(
                           width: MediaQuery.of(context).size.width * 0.83,
                           child: TextField(
+                            controller: searchInput,
                             decoration: InputDecoration(
                               prefixIcon: Icon(Icons.search_outlined),
                               suffixIcon: Icon(Icons.mic_outlined),
@@ -131,12 +134,39 @@ class _HomePageState extends State<HomePage> {
                               style: ElevatedButton.styleFrom(
                                   backgroundColor: Colors.blue[600]),
                               child: Text('Search'),
-                              onPressed: () {
+                              onPressed: () async {
+                                if (searchInput.text == "") {
+                                  ScaffoldMessenger.of(context)
+                                      .showSnackBar(SnackBar(
+                                    content:
+                                        Text('Please enter city or hotel name'),
+                                    duration: Duration(seconds: 2),
+                                  ));
+                                } else {
+                                  var city = searchInput.text;
+                                  var propertyName = searchInput.text;
+
+                                  var dio = Dio();
+                                  // var response = await dio.get(
+                                  //     'http://localhost:3000/hotel/search?propertyName=$propertyName&=city$city');
+                                  var response = await dio.get(
+                                      'http://10.0.2.2:3000/hotel/search?query=Sunny%20hotel%20Bhaktapur');
+
+                                  // if (response.statusCode == 200) {
+                                  //   print(response.data);
+                                  //   Navigator.pushNamed(context, 'search',
+                                  //       arguments: response.data);
+                                  // } else {
+                                  //   print(response.statusCode);
+                                  // }
+
+                                  if (response.statusCode == 200) {
+                                    print(response.data);
+                                  } else {
+                                    print(response.statusCode);
+                                  }
+                                }
                                 // Navigator.pushNamed(context, 'dashboard');
-                                // showSearch(
-                                //   context: context,
-                                //   delegate: MySearchDelegate(),
-                                // );
                               },
                             ),
                           ),
@@ -325,6 +355,28 @@ class _HomePageState extends State<HomePage> {
       throw Exception("Error retrieving posts: ${e.message}");
     }
   }
+
+  // similar to getHotels() write for search button
+  // Future searchHotels() async {
+  //   try {
+  //     final searched = await _dio.get('http://10.0.2.2:3000/hotel/');
+
+  //     List<Hotel> hotels = [];
+  //     var jsonData = searched.data;
+  //     for (var data in jsonData) {
+  //       Hotel hotel = Hotel(
+  //         data['propertyName'],
+  //         data['city'],
+  //         data['streetName'],
+  //         data['_id'],
+  //       );
+  //       hotels.add(hotel);
+  //     }
+  //     return hotels;
+  //   } on DioError catch (e) {
+  //     throw Exception("Error retrieving posts: ${e.message}");
+  //   }
+  // }
 }
 
 class Hotel {
@@ -339,34 +391,3 @@ class Hotel {
     this._id,
   );
 }
-
-// class MySearchDelegate extends SearchDelegate {
-//   @override
-//   Widget? buildLeading(BuildContext context) {
-//     IconButton(
-//       icon: const Icon(Icons.arrow_back),
-//       onPressed: () {},
-//     );
-//     return null;
-//   }
-
-//   @override
-//   List<Widget>? buildActions(BuildContext context) {
-//     IconButton(
-//       icon: const Icon(Icons.clear),
-//       onPressed: () {},
-//     );
-//   }
-
-//   @override
-//   Widget buildResults(BuildContext context) {
-//     // TODO: implement buildSuggestions
-//     throw UnimplementedError();
-//   }
-
-//   @override
-//   Widget buildSuggestions(BuildContext context) {
-//     // TODO: implement buildSuggestions
-//     throw UnimplementedError();
-//   }
-// }

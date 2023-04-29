@@ -1,3 +1,6 @@
+import 'dart:convert';
+
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'dart:io';
@@ -5,23 +8,23 @@ import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart';
 
-class RoomCrud extends StatelessWidget {
-  const RoomCrud({super.key});
+class RoomCreate extends StatelessWidget {
+  const RoomCreate({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return RoomCrudPage();
+    return RoomCreatePage();
   }
 }
 
-class RoomCrudPage extends StatefulWidget {
-  const RoomCrudPage({super.key});
+class RoomCreatePage extends StatefulWidget {
+  const RoomCreatePage({super.key});
 
   @override
-  State<RoomCrudPage> createState() => _RoomCrudPageState();
+  State<RoomCreatePage> createState() => _RoomCreatePageState();
 }
 
-class _RoomCrudPageState extends State<RoomCrudPage> {
+class _RoomCreatePageState extends State<RoomCreatePage> {
   File? _image;
 
   Future getImage(ImageSource source) async {
@@ -52,13 +55,61 @@ class _RoomCrudPageState extends State<RoomCrudPage> {
 
   var number = ['Single Bed', 'Double Bed'];
 
+  TextEditingController priceController = TextEditingController();
+  TextEditingController maxGuestCapacityController = TextEditingController();
+  bool _isNotValidate = false;
+
+  @override
+  void dispose() {
+    priceController.dispose();
+    maxGuestCapacityController.dispose();
+    super.dispose();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  void room() async {
+    if (roomTypeValue.isNotEmpty &&
+        priceController.text.isNotEmpty &&
+        maxGuestCapacityController.text.isNotEmpty) {
+      var regBody = {
+        "roomType": roomTypeValue,
+        "price": priceController.text,
+        "maxCapacity": maxGuestCapacityController.text,
+      };
+      print(regBody);
+      try {
+        final Dio _dio = Dio();
+
+        var response = await _dio.post(
+          'http://10.0.2.2:3000/hotelRoom/register',
+          options: Options(headers: {"Content-Type": "application/json"}),
+          data: jsonEncode(regBody),
+        );
+        print('Response status code: ${response.statusCode}');
+        print('Response body: ${response.data}');
+      } on DioError catch (e) {
+        print('Error connecting to server: ${e.message}');
+      }
+    } else {
+      setState(() {
+        _isNotValidate = true;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    //
+    // hotelRomm/register
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(fontFamily: 'OpenSans'),
       home: Scaffold(
-        backgroundColor: Colors.grey[300],
+        backgroundColor: Colors.grey[200],
         appBar: AppBar(
           backgroundColor: Color.fromARGB(255, 23, 118, 213),
           title: Text("yoHotel"),
@@ -67,186 +118,174 @@ class _RoomCrudPageState extends State<RoomCrudPage> {
         body: SingleChildScrollView(
           child: Padding(
             padding:
-                const EdgeInsets.only(top: 10, bottom: 10, left: 17, right: 17),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Add new room',
-                  style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
-                ),
-                SizedBox(height: 20),
-                Container(
-                  color: Colors.white,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(10),
-                        child: Text(
-                          '  What type of room would you like to add?',
-                          style: TextStyle(
-                              fontSize: 15, fontWeight: FontWeight.bold),
-                        ),
+                const EdgeInsets.only(top: 10, bottom: 17, left: 17, right: 17),
+            child: Container(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Add new room',
+                    style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+                  ),
+                  SizedBox(height: 10),
+                  Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20),
+                      color: Colors.white,
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.only(
+                        top: 25,
+                        bottom: 15,
+                        left: 20,
+                        right: 20,
                       ),
-                      Padding(
-                        padding: const EdgeInsets.only(
-                            right: 10, left: 15, bottom: 10),
-                        child: Center(
-                          child: Container(
-                            color: Colors.white,
-                            child: DropdownButton(
-                              // add underline below dropdownbutton
-                              underline: SizedBox(
-                                height: 1,
-                                child: Container(
-                                  width: 150,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'What type of room would you like to add?',
+                            style: TextStyle(
+                              fontSize: 15,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          SizedBox(height: 10),
+                          Center(
+                            child: Container(
+                              color: Colors.white,
+                              child: DropdownButton(
+                                underline: Container(
+                                  height: 1,
                                   color: Colors.black,
                                 ),
+
+                                // Initial Value
+                                value: roomTypeValue,
+
+                                // Down Arrow Icon
+                                icon: const Icon(
+                                  Icons.keyboard_arrow_down,
+                                  color: Colors.black,
+                                ),
+
+                                // Array list of items
+                                items: number.map((String items) {
+                                  return DropdownMenuItem(
+                                    value: items,
+                                    child: Text(
+                                      items,
+                                    ),
+                                  );
+                                }).toList(),
+                                // After selecting the desired option,it will
+                                // change button value to selected value
+                                onChanged: (String? newValue) {
+                                  setState(() {
+                                    roomTypeValue = newValue!;
+                                  });
+                                },
                               ),
-
-                              // Initial Value
-                              value: roomTypeValue,
-
-                              // Down Arrow Icon
-                              icon: const Icon(
-                                Icons.keyboard_arrow_down,
-                                color: Colors.black,
+                            ),
+                          ),
+                          SizedBox(height: 9),
+                          Text(
+                            'What is the price per Night for this room?',
+                            style: TextStyle(
+                              fontSize: 15,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          SizedBox(height: 10),
+                          Center(
+                            child: SizedBox(
+                              width: 150,
+                              height: 50,
+                              child: TextField(
+                                controller: priceController,
+                                keyboardType: TextInputType.number,
+                                inputFormatters: <TextInputFormatter>[
+                                  FilteringTextInputFormatter.digitsOnly
+                                ],
+                                decoration: InputDecoration(
+                                  filled: true,
+                                  fillColor: Colors.white,
+                                  border: OutlineInputBorder(),
+                                  hintText: 'Price',
+                                ),
                               ),
-
-                              // Array list of items
-                              items: number.map((String items) {
-                                return DropdownMenuItem(
-                                  value: items,
-                                  child: Text(
-                                    items,
+                            ),
+                          ),
+                          SizedBox(height: 20),
+                          Text(
+                            'What is the maximum number of guests allowed in the room?',
+                            style: TextStyle(
+                              fontSize: 15,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          SizedBox(height: 10),
+                          Center(
+                            child: SizedBox(
+                              width: 150,
+                              height: 50,
+                              child: TextField(
+                                controller: maxGuestCapacityController,
+                                keyboardType: TextInputType.number,
+                                inputFormatters: <TextInputFormatter>[
+                                  FilteringTextInputFormatter.digitsOnly
+                                ],
+                                decoration: InputDecoration(
+                                  filled: true,
+                                  fillColor: Colors.white,
+                                  border: OutlineInputBorder(),
+                                  hintText: '3',
+                                ),
+                              ),
+                            ),
+                          ),
+                          SizedBox(height: 20),
+                          Text(
+                            'Upload a photo of the room:',
+                            style: TextStyle(
+                              fontSize: 15,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(15),
+                            child: _image != null
+                                ? Image.file(
+                                    _image!,
+                                    width: 250,
+                                    height: 250,
+                                    fit: BoxFit.cover,
+                                  )
+                                : Placeholder(
+                                    color: Colors.grey,
+                                    fallbackHeight: 180,
                                   ),
-                                );
-                              }).toList(),
-                              // After selecting the desired option,it will
-                              // change button value to selected value
-                              onChanged: (String? newValue) {
-                                setState(() {
-                                  roomTypeValue = newValue!;
-                                });
+                          ),
+                          CustomButton(
+                            title: 'Pick from Gallery',
+                            icon: Icons.image,
+                            onClick: () => getImage(ImageSource.gallery),
+                          ),
+                          SizedBox(height: 15),
+                          Center(
+                            child: ElevatedButton(
+                              onPressed: () {
+                                room();
                               },
+                              child: Text('Submit'),
                             ),
-                          ),
-                        ),
+                          )
+                        ],
                       ),
-                      SizedBox(height: 10),
-                      Padding(
-                        padding: const EdgeInsets.all(10),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              '  What is the price per night for this room?',
-                              style: TextStyle(
-                                fontSize: 15,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            Padding(padding: EdgeInsets.only(bottom: 10)),
-                            Center(
-                              child: SizedBox(
-                                width: 150,
-                                height: 50,
-                                child: TextField(
-                                  keyboardType: TextInputType.number,
-                                  inputFormatters: <TextInputFormatter>[
-                                    FilteringTextInputFormatter.digitsOnly
-                                  ],
-                                  decoration: InputDecoration(
-                                    filled: true,
-                                    fillColor: Colors.white,
-                                    border: OutlineInputBorder(),
-                                    hintText: 'Price',
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(10),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.only(left: 7),
-                              child: Text(
-                                'What is the maximum number of guests allowed in the room?',
-                                style: TextStyle(
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ),
-                            Padding(padding: EdgeInsets.only(bottom: 10)),
-                            Center(
-                              child: SizedBox(
-                                width: 150,
-                                height: 50,
-                                child: TextField(
-                                  // make textfield white color
-
-                                  keyboardType: TextInputType.number,
-                                  inputFormatters: <TextInputFormatter>[
-                                    FilteringTextInputFormatter.digitsOnly
-                                  ],
-                                  decoration: InputDecoration(
-                                    filled: true,
-                                    fillColor: Colors.white,
-                                    border: OutlineInputBorder(),
-                                    hintText: '3',
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(10),
-                        child: Text(
-                          'Upload a photo of the room:',
-                          style: TextStyle(
-                            fontSize: 15,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 10, right: 10),
-                        child: _image != null
-                            ? Image.file(
-                                _image!,
-                                width: 250,
-                                height: 250,
-                                fit: BoxFit.cover,
-                              )
-                            : Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Placeholder(
-                                  color: Colors.grey,
-                                  fallbackHeight: 180,
-                                ),
-                              ),
-                      ),
-                      Center(
-                        child: CustomButton(
-                          title: 'Pick from Gallery',
-                          icon: Icons.image,
-                          onClick: () => getImage(ImageSource.gallery),
-                        ),
-                      ),
-                      SizedBox(height: 10),
-                    ],
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),
@@ -261,7 +300,7 @@ CustomButton({
   required VoidCallback onClick,
 }) {
   return Container(
-    width: 200,
+    width: 170,
     child: ElevatedButton(
       onPressed: () {},
       child: Row(

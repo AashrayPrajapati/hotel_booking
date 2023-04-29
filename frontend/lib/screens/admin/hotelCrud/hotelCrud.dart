@@ -342,35 +342,36 @@ class HotelCrudState extends State<HotelCrud> {
                   ),
                   TextButton(
                     onPressed: () {
-                      showDialog(
-                        // barrierDismissible: false, // user must tap button!
+                      // showDialog(
+                      //   // barrierDismissible: false, // user must tap button!
 
-                        context: context,
-                        builder: (BuildContext context) {
-                          return AlertDialog(
-                            title: Text("Confirm"),
-                            content: Text(
-                                "Are you sure you want to register with this data?"),
-                            actions: [
-                              TextButton(
-                                onPressed: () {
-                                  Navigator.pop(context);
-                                },
-                                child: Text("No"),
-                              ),
-                              TextButton(
-                                onPressed: () {
-                                  Navigator.pop(context);
-                                  Navigator.pushNamed(context, 'dashboard');
-                                },
-                                child: Text("Yes"),
-                              ),
-                            ],
-                          );
-                        },
-                      );
+                      //   context: context,
+                      //   builder: (BuildContext context) {
+                      //     return AlertDialog(
+                      //       title: Text("Confirm"),
+                      //       content: Text(
+                      //           "Are you sure you want to register with this data?"),
+                      //       actions: [
+                      //         TextButton(
+                      //           onPressed: () {
+                      //             Navigator.pop(context);
+                      //           },
+                      //           child: Text("No"),
+                      //         ),
+                      //         TextButton(
+                      //           onPressed: () {
+                      //             Navigator.pop(context);
+                      //             Navigator.pushNamed(context, 'dashboard');
+                      //           },
+                      //           child: Text("Yes"),
+                      //         ),
+                      //       ],
+                      //     );
+                      //   },
+                      // );
+                      Navigator.pushNamed(context, 'roomCrud');
 
-                      //registerHotel();
+                      // registerHotel();
                     },
                     child: Text("Next"),
                   )

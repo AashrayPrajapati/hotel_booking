@@ -15,6 +15,7 @@ class _UserState extends State<User> {
       theme: ThemeData(fontFamily: 'OpenSans'), // OPEN-SANS FONT STYLE
 
       home: Scaffold(
+        backgroundColor: Colors.grey[100],
         appBar: AppBar(
           title: Text('yoHotel'),
           centerTitle: true,
@@ -40,7 +41,10 @@ class _UserState extends State<User> {
                         children: [
                           TextSpan(
                             text: "List your property ?",
-                            style: TextStyle(),
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                            ),
                           ),
                         ],
                       ),
@@ -84,7 +88,10 @@ class _UserState extends State<User> {
                         children: [
                           TextSpan(
                             text: "Already have an account ?",
-                            style: TextStyle(),
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                            ),
                           ),
                         ],
                       ),

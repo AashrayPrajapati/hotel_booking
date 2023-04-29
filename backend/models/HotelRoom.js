@@ -6,7 +6,6 @@ const HotelRoom = mongoose.Schema({
         ref: "Admin",
         required: true,
     },
-    // tala ko print garda pugxa!!!
     roomType: {
         type: String,
         required: true
@@ -18,6 +17,11 @@ const HotelRoom = mongoose.Schema({
     maxCapacity: {
         type: Number,
         required: true
+    },
+    isAvailable: {
+        type: Boolean,
+        required: true,
+        default: true
     },
 });
 
