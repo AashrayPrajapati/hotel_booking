@@ -71,6 +71,8 @@ class _HomePageState extends State<HomePage> {
                           ),
                         ),
                       ),
+                      //   ],
+                      // ),
                       Padding(padding: EdgeInsets.only(bottom: 3)),
                       Container(
                         child: Center(
@@ -143,14 +145,19 @@ class _HomePageState extends State<HomePage> {
                                     duration: Duration(seconds: 2),
                                   ));
                                 } else {
-                                  var city = searchInput.text;
-                                  var propertyName = searchInput.text;
-
                                   var dio = Dio();
                                   // var response = await dio.get(
                                   //     'http://localhost:3000/hotel/search?propertyName=$propertyName&=city$city');
                                   var response = await dio.get(
                                       'http://10.0.2.2:3000/hotel/search?query=Sunny%20hotel%20Bhaktapur');
+                                  if (response.statusCode == 200) {
+                                    print(response.data);
+                                  } else {
+                                    print(response.statusCode);
+                                  }
+                                  //     'http://10.0.2.2:3000/hotel/getHotels');
+
+                                  // var response = await dio.get(
 
                                   // if (response.statusCode == 200) {
                                   //   print(response.data);
@@ -159,12 +166,6 @@ class _HomePageState extends State<HomePage> {
                                   // } else {
                                   //   print(response.statusCode);
                                   // }
-
-                                  if (response.statusCode == 200) {
-                                    print(response.data);
-                                  } else {
-                                    print(response.statusCode);
-                                  }
                                 }
                                 // Navigator.pushNamed(context, 'dashboard');
                               },
@@ -172,7 +173,11 @@ class _HomePageState extends State<HomePage> {
                           ),
                         ),
                       ),
+                      //
+                      //
+                      //
                       SizedBox(height: 33),
+
                       Container(
                         child: Center(
                           child: SizedBox(
@@ -322,6 +327,9 @@ class _HomePageState extends State<HomePage> {
                           ),
                         ),
                       ),
+                      //
+                      //
+                      //
                     ],
                   ),
                 ],
@@ -355,28 +363,6 @@ class _HomePageState extends State<HomePage> {
       throw Exception("Error retrieving posts: ${e.message}");
     }
   }
-
-  // similar to getHotels() write for search button
-  // Future searchHotels() async {
-  //   try {
-  //     final searched = await _dio.get('http://10.0.2.2:3000/hotel/');
-
-  //     List<Hotel> hotels = [];
-  //     var jsonData = searched.data;
-  //     for (var data in jsonData) {
-  //       Hotel hotel = Hotel(
-  //         data['propertyName'],
-  //         data['city'],
-  //         data['streetName'],
-  //         data['_id'],
-  //       );
-  //       hotels.add(hotel);
-  //     }
-  //     return hotels;
-  //   } on DioError catch (e) {
-  //     throw Exception("Error retrieving posts: ${e.message}");
-  //   }
-  // }
 }
 
 class Hotel {

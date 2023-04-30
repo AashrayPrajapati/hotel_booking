@@ -16,6 +16,17 @@ class Hotel {
   );
 }
 
+class Room {
+  final String roomType;
+  final String maxCapacity;
+  final String price;
+  Room(
+    this.roomType,
+    this.maxCapacity,
+    this.price,
+  );
+}
+
 class HotelInfo extends StatelessWidget {
   const HotelInfo({super.key});
 
@@ -41,31 +52,64 @@ class _HotelInfoPageState extends State<HotelInfoPage> {
   Future<Hotel> getHotel(String id) async {
     try {
       final response =
-          await _dio.get('http://10.0.2.2:3000/hotel/getHotels/$id');
+          await _dio.get('http://10.0.2.2:3000/hotel/getHotel/$id');
+
+      final roomResponse =
+          await _dio.get('http://10.0.2.2:3000/hotel/rooms/$id');
 
       var jsonData = response.data;
+      var roomData = roomResponse.data;
+
+      print("Room Data: $roomData");
+      for (var room in roomData) {
+        print("Room Type: ${room['roomType']}");
+      }
 
       Hotel hotel = Hotel(
-        jsonData['propertyName'],
-        jsonData['streetName'],
-        jsonData['city'],
-        jsonData['description'],
+        jsonData['propertyName'] ?? '',
+        jsonData['streetName'] ?? '',
+        jsonData['city'] ?? '',
+        jsonData['description'] ?? '',
       );
 
       return hotel;
     } on DioError catch (e) {
-      throw Exception("Error retrieving posts: ${e.message}");
+      print(e);
+
+      throw Exception("Error retrieving posts: ${e}");
     }
   }
+
+  // Future<Room> getRoom(String id) async {
+  //   try {
+  //     final roomResponse =
+  //         await _dio.get('http://10.0.2.2:3000/hotelRoom/getRooms/$id');
+
+  //     var jsonData = roomResponse.data;
+  //     print(jsonData);
+
+  //     Room room = Room(
+  //       jsonData['roomType'],
+  //       jsonData['maxCapacity'],
+  //       jsonData['price'],
+  //     );
+
+  //     return room;
+  //   } on DioError catch (e) {
+  //     throw Exception("Error retrieving posts: ${e.message}");
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
     var ID = ModalRoute.of(context)!.settings.arguments as String;
     print(ID);
 
-    return Container(
-        height: MediaQuery.of(context).size.height * 1,
-        child: FutureBuilder(
+    return Column(
+      children: [
+        Expanded(
+          flex: 8,
+          child: FutureBuilder(
             future: getHotel(ID),
             builder: (context, AsyncSnapshot snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
@@ -93,17 +137,18 @@ class _HotelInfoPageState extends State<HotelInfoPage> {
                     body: Stack(
                       children: [
                         ListView.builder(
-                            itemCount: 1,
-                            itemBuilder: (context, index) {
-                              return SingleChildScrollView(
-                                child: Stack(
-                                  children: [
-                                    Column(
-                                      children: [
-                                        Padding(
-                                          padding: const EdgeInsets.only(
-                                              left: 15, right: 15),
-                                          child: Column(children: [
+                          itemCount: 1,
+                          itemBuilder: (context, index) {
+                            return SingleChildScrollView(
+                              child: Stack(
+                                children: [
+                                  Column(
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.only(
+                                            left: 15, right: 15),
+                                        child: Column(
+                                          children: [
                                             SizedBox(height: 15),
                                             Container(
                                               child: Image.network(
@@ -112,100 +157,93 @@ class _HotelInfoPageState extends State<HotelInfoPage> {
                                               ),
                                             ),
                                             Padding(
-                                                padding:
-                                                    const EdgeInsets.all(10),
-                                                child: Row(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .spaceBetween,
+                                              padding: const EdgeInsets.all(10),
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: [
+                                                  Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
                                                     children: [
-                                                      Column(
-                                                          crossAxisAlignment:
-                                                              CrossAxisAlignment
-                                                                  .start,
+                                                      Text(
+                                                          snapshot.data
+                                                              .propertyName,
+                                                          style: TextStyle(
+                                                            fontSize: 20,
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                          )),
+                                                      SizedBox(
+                                                        height: 7,
+                                                      ),
+                                                      RichText(
+                                                        text: TextSpan(
+                                                          style: TextStyle(
+                                                            color: Colors.black,
+                                                            fontSize: 13,
+                                                          ),
                                                           children: [
-                                                            Text(
-                                                                snapshot.data
-                                                                    .propertyName,
-                                                                style:
-                                                                    TextStyle(
-                                                                  fontSize: 20,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .bold,
-                                                                )),
-                                                            SizedBox(
-                                                              height: 7,
-                                                            ),
-                                                            RichText(
-                                                                text: TextSpan(
-                                                                    style:
-                                                                        TextStyle(
-                                                                      color: Colors
-                                                                          .black,
-                                                                      fontSize:
-                                                                          13,
-                                                                    ),
-                                                                    children: [
-                                                                  TextSpan(
-                                                                      text: snapshot
-                                                                          .data
-                                                                          .streetName,
-                                                                      style:
-                                                                          TextStyle(
-                                                                        fontStyle:
-                                                                            FontStyle.italic,
-                                                                      )),
-                                                                  TextSpan(
-                                                                      text:
-                                                                          ", "),
-                                                                  TextSpan(
-                                                                      text: snapshot
-                                                                          .data
-                                                                          .city,
-                                                                      style:
-                                                                          TextStyle(
-                                                                        fontStyle:
-                                                                            FontStyle.italic,
-                                                                      ))
-                                                                ])),
-                                                            SizedBox(
-                                                              height: 10,
-                                                            )
-                                                          ]),
-                                                      Container(
-                                                          padding:
-                                                              EdgeInsets.all(5),
-                                                          decoration:
-                                                              ShapeDecoration(
-                                                            color: Colors.blue,
-                                                            shape:
-                                                                RoundedRectangleBorder(
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          10),
-                                                              side: BorderSide(
-                                                                color: Color
-                                                                    .fromARGB(
-                                                                        255,
-                                                                        0,
-                                                                        0,
-                                                                        0),
+                                                            TextSpan(
+                                                              text: snapshot
+                                                                  .data
+                                                                  .streetName,
+                                                              style: TextStyle(
+                                                                fontStyle:
+                                                                    FontStyle
+                                                                        .italic,
                                                               ),
                                                             ),
-                                                          ),
-                                                          child: Center(
-                                                              child: Text("8.7",
-                                                                  style:
-                                                                      TextStyle(
-                                                                    color: Colors
-                                                                        .white,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .bold,
-                                                                  ))))
-                                                    ])),
+                                                            TextSpan(
+                                                                text: ", "),
+                                                            TextSpan(
+                                                              text: snapshot
+                                                                  .data.city,
+                                                              style: TextStyle(
+                                                                fontStyle:
+                                                                    FontStyle
+                                                                        .italic,
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                      SizedBox(
+                                                        height: 10,
+                                                      )
+                                                    ],
+                                                  ),
+                                                  Container(
+                                                    padding: EdgeInsets.all(5),
+                                                    decoration: ShapeDecoration(
+                                                      color: Colors.blue,
+                                                      shape:
+                                                          RoundedRectangleBorder(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(10),
+                                                        side: BorderSide(
+                                                          color: Color.fromARGB(
+                                                              255, 0, 0, 0),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    child: Center(
+                                                      child: Text(
+                                                        "8.7",
+                                                        style: TextStyle(
+                                                          color: Colors.white,
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
                                             Divider(),
                                             SizedBox(
                                               height: 5,
@@ -234,58 +272,44 @@ class _HotelInfoPageState extends State<HotelInfoPage> {
                                             SizedBox(
                                               height: 5,
                                             ),
-                                            Divider(),
+                                            Divider(
+                                              thickness: 1,
+                                            ),
                                             SizedBox(
                                               height: 5,
                                             ),
                                             ElevatedButton(
-                                              // style: ElevatedButton.styleFrom(
-                                              //   primary: Colors.teal[400],
-                                              // ),
                                               onPressed: () {
-                                                var ID =
-                                                    snapshot.data[index]._id;
-                                                Navigator.of(context,
-                                                        rootNavigator: true)
-                                                    .pushNamed(
-                                                  'roomType',
-                                                  arguments: ID,
-                                                );
+                                                // getRoom();
                                               },
-                                              child: Text('Book Now'),
-                                            )
-                                          ]),
+                                              child: Text(
+                                                "Book Now",
+                                                style: TextStyle(
+                                                  fontSize: 20,
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                              ),
+                                            ),
+                                            // make a listview of rooms
+                                          ],
                                         ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              );
-                            }),
-                        // RatingBar.builder(
-                        //   initialRating: _initialRating,
-                        //   minRating: 1,
-                        //   allowHalfRating: true,
-                        //   unratedColor: Colors.amber.withAlpha(70),
-                        //   itemCount: 5,
-                        //   itemSize: 20.0,
-                        //   itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
-                        //   itemBuilder: (context, _) => Icon(
-                        //     _selectedIcon ?? Icons.star,
-                        //     color: Colors.amber,
-                        //   ),
-                        //   onRatingUpdate: (rating) {
-                        //     setState(() {
-                        //       // _rating = rating;
-                        //     });
-                        //   },
-                        //   updateOnDrag: true,
-                        // )
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            );
+                          },
+                        ),
                       ],
                     ),
                   ),
                 );
               }
-            }));
+            },
+          ),
+        ),
+      ],
+    );
   }
 }

@@ -11,15 +11,15 @@ const HotelRoom = mongoose.Schema({
         required: true
     },
     price: {
-        type: Number,
+        type: String,
         required: true
     },
     maxCapacity: {
-        type: Number,
+        type: String,
         required: true
     },
     isAvailable: {
-        type: Boolean,
+        type: String,
         required: true,
         default: true
     },
