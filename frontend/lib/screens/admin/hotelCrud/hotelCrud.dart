@@ -51,7 +51,8 @@ class HotelCrudState extends State<HotelCrud> {
       print(regBody);
       try {
         var response = await _dio.post(
-          'http://10.0.2.2:3000/hotel/register',
+          // 'http://10.0.2.2:3000/hotel/register',
+          'http://192.168.101.6:3000/hotel/register',
           options: Options(headers: {"Content-Type": "application/json"}),
           data: jsonEncode(regBody),
         );

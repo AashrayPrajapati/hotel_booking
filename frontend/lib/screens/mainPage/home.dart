@@ -156,6 +156,7 @@ class _HomePageState extends State<HomePage> {
                                     print(response.statusCode);
                                   }
                                   //     'http://10.0.2.2:3000/hotel/getHotels');
+                                  //     'http://192.168.101.6:3000/hotel/getHotels');
 
                                   // var response = await dio.get(
 
@@ -345,7 +346,9 @@ class _HomePageState extends State<HomePage> {
 
   Future<List<Hotel>> getHotels() async {
     try {
-      final response = await _dio.get('http://10.0.2.2:3000/hotel/getHotels');
+      final response =
+          // await _dio.get('http://10.0.2.2:3000/hotel/getHotels');
+          await _dio.get('http://192.168.101.6:3000/hotel/getHotels');
 
       List<Hotel> hotels = [];
       var jsonData = response.data;

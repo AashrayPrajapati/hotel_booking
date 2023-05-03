@@ -8,6 +8,7 @@ import 'mainPage.dart';
 import 'screens/super admin/registeredUsers.dart';
 import 'screens/user/user.dart';
 
+import 'booking.dart';
 import 'screens/admin/hotelDashboard/dashboard.dart';
 import 'screens/admin/hotelCrud/hotelCrud.dart';
 import 'screens/hotels/hotelInfo.dart';
@@ -34,12 +35,13 @@ class _MainState extends State<Main> {
       routes: {
         'register': (context) => MyRegister(),
         'login': (context) => MyLogin(),
-        'hotelCrud': (context) => HotelCrud(),
         //
         'mainPage': (context) => MainPage(),
         'user': (context) => User(),
         //
+        'booking': (context) => BookingPage(),
         'dashboard': (context) => Dashboard(),
+        'hotelCrud': (context) => HotelCrud(),
         'hotelInfo': (context) => HotelInfo(),
         'roomCrud': (context) => RoomCreate(),
         'roomType': (context) => RoomType(),
