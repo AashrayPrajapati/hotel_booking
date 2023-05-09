@@ -18,9 +18,8 @@ class _RegisteredHotelsState extends State<RegisteredHotels> {
   final Dio _dio = Dio();
   Future<List<Hotel>> getHotels() async {
     try {
-      final response =
-          // await _dio.get('http://10.0.2.2:3000/hotel/getHotels');
-          await _dio.get('http://192.168.101.6:3000/hotel/getHotels');
+      final response = await _dio.get('http://10.0.2.2:3000/hotel/getHotels');
+      // await _dio.get('http://192.168.101.2:3000/hotel/getHotels');
       // await _dio.get('http://100.22.8.195:3000/users/'); //college
       List<Hotel> hotels = [];
       var jsonData = response.data;
