@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
+import 'package:get/get.dart';
 // import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:readmore/readmore.dart';
 
@@ -55,8 +56,7 @@ class _HotelInfoPageState extends State<HotelInfoPage> {
     try {
       final response =
           // await _dio.get('http://10.0.2.2:3000/hotel/getHotel/$id');
-          await _dio.get('http://100.22.61.13:3000/hotel/getHotel/$id');
-      // await _dio.get('http://192.168.101.2:3000/hotel/getHotel/$id');
+          await _dio.get('http://192.168.101.6:3000/hotel/getHotel/$id');
 
       var jsonData = response.data;
 
@@ -80,8 +80,7 @@ class _HotelInfoPageState extends State<HotelInfoPage> {
       List<Room> rooms = [];
       final roomResponse =
           // await _dio.get('http://10.0.2.2:3000/hotel/rooms/$id');
-          await _dio.get('http://100.22.61.13:3000/hotel/rooms/$id');
-      // await _dio.get('http://192.168.101.2:3000/hotel/rooms/$id');
+          await _dio.get('http://192.168.101.6:3000/hotel/rooms/$id');
 
       var roomData = roomResponse.data;
 
@@ -108,9 +107,7 @@ class _HotelInfoPageState extends State<HotelInfoPage> {
 
   @override
   Widget build(BuildContext context) {
-    var id = ModalRoute.of(context)!.settings.arguments as String;
-    var nightsNumber = ModalRoute.of(context)!.settings.arguments as int;
-
+    var ID = ModalRoute.of(context)!.settings.arguments as String;
     // print(ID);
 
     return Column(
@@ -121,7 +118,7 @@ class _HotelInfoPageState extends State<HotelInfoPage> {
               Expanded(
                 flex: 7,
                 child: FutureBuilder(
-                  future: getHotel(id),
+                  future: getHotel(ID),
                   builder: (context, AsyncSnapshot snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
                       return const Center(
@@ -376,7 +373,7 @@ class _HotelInfoPageState extends State<HotelInfoPage> {
               Expanded(
                 flex: 2,
                 child: FutureBuilder(
-                  future: getRoom(id),
+                  future: getRoom(ID),
                   builder: (context, AsyncSnapshot<List<Room>> snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
                       return Center(child: CircularProgressIndicator());
@@ -393,10 +390,7 @@ class _HotelInfoPageState extends State<HotelInfoPage> {
                                 //   Navigator.pushNamed(context, 'booking');
                                 var ID = snapshot.data![index]._id;
                                 Navigator.of(context, rootNavigator: true)
-                                    .pushNamed(
-                                  'booking',
-                                  arguments: ID,
-                                );
+                                    .pushNamed('booking', arguments: ID);
                               },
                               child: Padding(
                                 padding: const EdgeInsets.only(

@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
 import 'dart:convert';
 
-import 'package:flutter/services.dart';
-
 class HotelCrud extends StatefulWidget {
   const HotelCrud({super.key});
   @override
@@ -54,8 +52,7 @@ class HotelCrudState extends State<HotelCrud> {
       try {
         var response = await _dio.post(
           // 'http://10.0.2.2:3000/hotel/register',
-          'http://100.22.61.13:3000/hotel/register',
-          // 'http://192.168.101.2:3000/hotel/register',
+          'http://192.168.101.6:3000/hotel/register',
           options: Options(headers: {"Content-Type": "application/json"}),
           data: jsonEncode(regBody),
         );
@@ -277,11 +274,7 @@ class HotelCrudState extends State<HotelCrud> {
                     ),
                     child: TextField(
                       controller: postalCodeController,
-                      keyboardType: TextInputType.number,
-                      inputFormatters: <TextInputFormatter>[
-                        FilteringTextInputFormatter.digitsOnly
-                      ],
-                      maxLength: 6,
+                      keyboardType: TextInputType.text,
                       style: TextStyle(fontSize: 15, height: 0.7),
                       decoration: InputDecoration(
                         //
@@ -379,7 +372,7 @@ class HotelCrudState extends State<HotelCrud> {
                       // );
                       Navigator.pushNamed(context, 'roomCrud');
 
-                      registerHotel();
+                      // registerHotel();
                     },
                     child: Text("Next"),
                   )

@@ -348,8 +348,7 @@ class _HomePageState extends State<HomePage> {
     try {
       final response =
           // await _dio.get('http://10.0.2.2:3000/hotel/getHotels');
-          // await _dio.get('http://192.168.101.6:3000/hotel/getHotels');
-          await _dio.get('http://100.22.61.13:3000/hotel/getHotels');
+          await _dio.get('http://192.168.101.6:3000/hotel/getHotels');
 
       List<Hotel> hotels = [];
       var jsonData = response.data;

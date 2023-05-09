@@ -36,8 +36,7 @@ class _MyLoginState extends State<MyLogin> {
       try {
         var response = await _dio.post(
           // 'http://10.0.2.2:3000/users/register',
-          'http://100.22.61.13:3000/users/register',
-          // 'http://192.168.101.2:3000/users/register',
+          'http://192.168.101.6:3000/users/register',
           options: Options(headers: {"Content-Type": "application/json"}),
           data: jsonEncode(regBody),
         );
