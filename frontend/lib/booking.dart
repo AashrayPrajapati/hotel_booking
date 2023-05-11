@@ -2,36 +2,8 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-
-// class Booking extends StatefulWidget {
-//   const Booking({super.key});
-
-//   @override
-//   State<Booking> createState() => _BookingState();
-// }
-
-// class _BookingState extends State<Booking> {
-//   @override
-//   Widget build(BuildContext context) {
-//     return MaterialApp(
-//       debugShowCheckedModeBanner: false,
-//       home: Scaffold(
-//         body: Center(
-//           child: Stack(
-//             children: [
-//               Text('Booiing'),
-//               bookRoom(),
-//             ],
-//           ),
-//         ),
-//       ),
-//     );
-//   }
-
-//   bookRoom(String id) {
-//     print('ID: $id');
-//   }
-// }
+import 'package:get/get_connect/http/src/utils/utils.dart';
+import 'package:hexcolor/hexcolor.dart';
 
 class BookingPage extends StatefulWidget {
   @override
@@ -60,7 +32,21 @@ class _BookingPageState extends State<BookingPage> {
 
   @override
   Widget build(BuildContext context) {
-    final String? id = ModalRoute.of(context)?.settings.arguments as String?;
+    final Map<String, dynamic> arguments =
+        ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
+    final String? roomName = arguments['roomName'] as String?;
+    final String? price = arguments['price'] as String?;
+    final String? roomId = arguments['roomId'] as String?;
+    final String? hotelId = arguments['hotelId'] as String?;
+    final String? numberOfNights = arguments['numberOfNights'] as String?;
+    final String? startDate = arguments['startDate'] as String?;
+    final String? endDate = arguments['endDate'] as String?;
+
+    var totalprice = int.parse(price!) * int.parse(numberOfNights!);
+    print('bookingPage');
+    print('Total price: $totalprice');
+
+    // final String? id = ModalRoute.of(context)?.settings.arguments as String?;
 
     // Use the ID value here to fetch the booking details or do any other processing.
 
@@ -70,22 +56,26 @@ class _BookingPageState extends State<BookingPage> {
 
         var regBody = {
           "user": "6412c87cd16ee5e7f1446f33",
-          "hotel": "64365319012a04f615c9dcf0",
-          "room": id,
-          "checkInDate": "2023-05-26T14:30:00Z",
-          "checkOutDate": "2023-05-28T10:00:00Z",
+          "hotel": hotelId,
+          "room": roomId,
+          "checkInDate": startDate,
+          "checkOutDate": endDate,
           "guests": noOfGuests.text,
-          "totalPrice": 10000,
+          "totalPrice": totalprice,
           "paymentStatus": "Pending"
         };
         print(regBody);
 
         var response = await _dio.post(
           // 'http://10.0.2.2:3000/bookRoom/book',
-          'http://192.168.101.6:3000/bookRoom/book',
+          'http://192.168.10.78:3000/bookRoom/book',
           options: Options(headers: {"Content-Type": "application/json"}),
           data: jsonEncode(regBody),
         );
+        // var response = await _dio.post(
+        //   options: Options(headers: {"Content-Type": "application/json"}),
+        //   data: jsonEncode(regBody),
+        // );
         print('Response status code: ${response.statusCode}');
         print('Response body: ${response.data}');
       } on DioError catch (e) {
@@ -93,52 +83,304 @@ class _BookingPageState extends State<BookingPage> {
       }
     }
 
-    // dio.post
-    return Scaffold(
-      appBar: AppBar(title: Text('Booking details')),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(20),
-          child: Column(
-            children: [
-              Text('Booking ID: $id'),
-              TextField(
-                controller: userId,
-                decoration: InputDecoration(
-                  hintText: 'Enter User ID',
+    return MaterialApp(
+      theme: ThemeData(
+        // fontFamily: 'OpenSans',
+        scaffoldBackgroundColor: Colors.grey[200],
+      ),
+      debugShowCheckedModeBanner: false,
+      home: Scaffold(
+        appBar: AppBar(
+          leading: BackButton(
+            // color: Color.fromARGB(255, 34, 150, 243),
+            onPressed: () => Navigator.pop(context),
+          ),
+          backgroundColor: Color.fromARGB(255, 38, 92, 216),
+          elevation: 0,
+          centerTitle: true,
+          title: Text(
+            'Booking Details',
+            style: TextStyle(
+              // color: Color.fromARGB(255, 34, 150, 243),
+              fontSize: 25,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+        ),
+        body: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(10),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(height: 15),
+                Center(
+                  child: Text(
+                    '$roomName Room',
+                    style: TextStyle(
+                      fontSize: 21,
+                      fontWeight: FontWeight.w700,
+                      // color: Color.fromRGBO(52, 92, 125, 1),
+                      color: HexColor('#345c7d'),
+                    ),
+                  ),
                 ),
-              ),
-              TextField(
-                controller: checkIn,
-                decoration: InputDecoration(
-                  hintText: 'Enter check-in date',
+                SizedBox(height: 20),
+                Card(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(15),
+                  ),
+                  elevation: 5,
+                  child: Column(
+                    children: [
+                      SizedBox(height: 20),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          Text(
+                            'Check-in date',
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.grey[700],
+                            ),
+                          ),
+                          Text(
+                            '$startDate',
+                            style: TextStyle(
+                              fontSize: 18,
+                              color: Colors.grey[700],
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 7),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          Text(
+                            'Check-out date',
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.grey[700],
+                            ),
+                          ),
+                          Text(
+                            '$endDate',
+                            style: TextStyle(
+                              fontSize: 18,
+                              color: Colors.grey[700],
+                            ),
+                          ),
+                        ],
+                      ),
+                      // SizedBox(height: 10),
+                      SizedBox(height: 7),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          Text(
+                            'Total length of stay',
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.grey[700],
+                            ),
+                          ),
+                          Text(
+                            '$numberOfNights nights',
+                            style: TextStyle(
+                              fontSize: 18,
+                              color: Colors.grey[700],
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 20),
+                    ],
+                  ),
                 ),
-              ),
-              TextField(
-                controller: checkOut,
-                decoration: InputDecoration(
-                  hintText: 'Enter check-out date',
+
+                SizedBox(height: 30),
+                Center(
+                  child: Text(
+                    'Your price summary',
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.grey[700],
+                    ),
+                  ),
                 ),
-              ),
-              TextField(
-                controller: noOfGuests,
-                decoration: InputDecoration(
-                  hintText: 'Enter number of guests',
+                SizedBox(height: 15),
+                Card(
+                  color: HexColor('#FFCADFFF'),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(15),
+                  ),
+                  elevation: 5,
+                  child: Column(
+                    children: [
+                      SizedBox(height: 10),
+                      Container(
+                        height: MediaQuery.of(context).size.height * 0.15,
+                        child: Padding(
+                          padding: const EdgeInsets.only(
+                            top: 20,
+                            bottom: 20,
+                            left: 33,
+                            right: 33,
+                          ),
+                          child: Column(
+                            children: [
+                              // Row(
+                              //   mainAxisAlignment:
+                              //       MainAxisAlignment.spaceBetween,
+                              //   children: [
+                              //     Text(
+                              //       'Total length of stay',
+                              //       style: TextStyle(
+                              //         fontSize: 20,
+                              //         color: Colors.black,
+                              //         fontWeight: FontWeight.w500,
+                              //       ),
+                              //     ),
+                              //     Text(
+                              //       '$numberOfNights nights',
+                              //       style: TextStyle(
+                              //         fontSize: 20,
+                              //         color: Colors.black,
+                              //         fontWeight: FontWeight.w500,
+                              //       ),
+                              //     ),
+                              //   ],
+                              // ),
+                              // SizedBox(height: 7),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    'Rate per night',
+                                    style: TextStyle(
+                                      fontSize: 20,
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                                  Text(
+                                    '$price',
+                                    style: TextStyle(
+                                      fontSize: 20,
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              Divider(
+                                thickness: 1,
+                                color: Colors.black,
+                              ),
+                              SizedBox(height: 7),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    'Total price',
+                                    style: TextStyle(
+                                      fontSize: 22,
+                                      fontWeight: FontWeight.w600,
+                                      color: Colors.grey[800],
+                                    ),
+                                  ),
+                                  Text(
+                                    'NPR $totalprice',
+                                    style: TextStyle(
+                                      fontSize: 22,
+                                      fontWeight: FontWeight.w600,
+                                      color: Colors.grey[800],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-              ElevatedButton(
-                onPressed: () {
-                  // dio.post
-                  book();
-                  // print('ID: $id');
-                  // print('User ID: ${userId.text}');
-                  // print('Check-in: ${checkIn.text}');
-                  // print('Check-out: ${checkOut.text}');
-                  // print('No. of guests: ${noOfGuests.text}');
-                },
-                child: Text('Book'),
-              ),
-            ],
+                SizedBox(height: 35),
+                //MAKE CONFIG FILE
+                // APPBAR GLOBAL
+                Padding(
+                  padding: const EdgeInsets.only(
+                    left: 10,
+                    right: 10,
+                    bottom: 10,
+                    top: 10,
+                  ),
+                  child: Column(
+                    children: [
+                      // TextField(
+                      //   controller: userId,
+                      //   decoration: InputDecoration(
+                      //     border: OutlineInputBorder(),
+                      //     hintText: 'Enter User ID',
+                      //   ),
+                      // ),
+                      // SizedBox(height: 10),
+                      TextField(
+                        style: TextStyle(
+                          height: 1.0,
+                          // fontSize: 18,
+                          // fontWeight: FontWeight.w500,
+                        ),
+                        // cursorHeight: 25,
+
+                        controller: noOfGuests,
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          hintText: 'Enter number of guests',
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(height: 25),
+                Center(
+                  child: Container(
+                    // color: Color.fromARGB(255, 38, 92, 216),
+                    height: 50,
+                    width: 200,
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(50),
+                        ),
+                        backgroundColor: HexColor('#FF265CD8'),
+                      ),
+                      onPressed: () {
+                        book();
+                      },
+                      child: Text(
+                        'Book Now',
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.w600,
+                          // letterSpacing: 1.5,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),

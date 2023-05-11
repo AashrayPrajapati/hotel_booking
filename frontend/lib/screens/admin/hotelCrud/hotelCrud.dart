@@ -52,10 +52,15 @@ class HotelCrudState extends State<HotelCrud> {
       try {
         var response = await _dio.post(
           // 'http://10.0.2.2:3000/hotel/register',
-          'http://192.168.101.6:3000/hotel/register',
+          'http://192.168.10.78:3000/hotel/register',
           options: Options(headers: {"Content-Type": "application/json"}),
           data: jsonEncode(regBody),
         );
+        // var response = await _dio.post(
+        //   options: Options(headers: {"Content-Type": "application/json"}),
+        //   data: jsonEncode(regBody),
+        // );
+
         print('Response status code: ${response.statusCode}');
         print('Response body: ${response.data}');
       } on DioError catch (e) {
@@ -107,7 +112,7 @@ class HotelCrudState extends State<HotelCrud> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    "List Hotels",
+                    "Create Hotel",
                     style: TextStyle(
                       fontSize: 22,
                       fontWeight: FontWeight.bold,
@@ -116,6 +121,7 @@ class HotelCrudState extends State<HotelCrud> {
                   Padding(
                     padding: const EdgeInsets.all(15),
                     child: TextField(
+                      cursorHeight: 20,
                       controller: ownerNameController,
                       keyboardType: TextInputType.text,
                       //
@@ -372,7 +378,7 @@ class HotelCrudState extends State<HotelCrud> {
                       // );
                       Navigator.pushNamed(context, 'roomCrud');
 
-                      // registerHotel();
+                      registerHotel();
                     },
                     child: Text("Next"),
                   )

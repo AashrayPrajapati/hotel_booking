@@ -19,49 +19,58 @@ class SettingsPage extends StatefulWidget {
 class _SettingsPageState extends State<SettingsPage> {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        appBar: AppBar(
-          title: Text('yoHotel'),
-          centerTitle: true,
+    return Container(
+      decoration: BoxDecoration(
+        image: DecorationImage(
+          image: AssetImage('assets/check.png'),
+          fit: BoxFit.cover,
         ),
-        body: ListView(
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(15),
-              child: Row(
-                children: [
-                  Icon(
-                    Icons.question_mark,
-                    size: 32,
-                  ),
-                  SizedBox(width: 10),
-                  Text(
-                    'About Us',
-                    style: TextStyle(fontSize: 21),
-                  ),
-                ],
+      ),
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        home: Scaffold(
+          backgroundColor: Colors.transparent,
+          appBar: AppBar(
+            title: Text('yoHotel'),
+            centerTitle: true,
+          ),
+          body: ListView(
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(15),
+                child: Row(
+                  children: [
+                    Icon(
+                      Icons.question_mark,
+                      size: 32,
+                    ),
+                    SizedBox(width: 10),
+                    Text(
+                      'About Us',
+                      style: TextStyle(fontSize: 21),
+                    ),
+                  ],
+                ),
               ),
-            ),
-            Divider(),
-            Padding(
-              padding: const EdgeInsets.all(15),
-              child: Row(
-                children: [
-                  Icon(
-                    Icons.info_outline,
-                    size: 32,
-                  ),
-                  SizedBox(width: 10),
-                  Text(
-                    'v 0.1',
-                    style: TextStyle(fontSize: 21),
-                  ),
-                ],
+              Divider(),
+              Padding(
+                padding: const EdgeInsets.all(15),
+                child: Row(
+                  children: [
+                    Icon(
+                      Icons.info_outline,
+                      size: 32,
+                    ),
+                    SizedBox(width: 10),
+                    Text(
+                      'v 0.1',
+                      style: TextStyle(fontSize: 21),
+                    ),
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

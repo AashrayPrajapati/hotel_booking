@@ -52,11 +52,19 @@ class _HotelInfoPageState extends State<HotelInfoPage> {
   // double _initialRating = 4.5;
   // IconData? _selectedIcon;
 
-  Future<Hotel> getHotel(String id) async {
+  Future<Hotel> getHotel(
+      String id, String nights, String startDate, String endDate) async {
     try {
+      print('HotelInfoPage');
+      print('number of night: $nights');
+      print('check-in date: $startDate');
+      print('check-out date: $endDate');
+      // final response =
+      //     await _dio.get('http://10.0.2.2:3000/hotel/getHotel/$id');
       final response =
-          // await _dio.get('http://10.0.2.2:3000/hotel/getHotel/$id');
-          await _dio.get('http://192.168.101.6:3000/hotel/getHotel/$id');
+          await _dio.get('http://192.168.10.78:3000/hotel/getHotel/$id');
+
+      // await _dio.get('http://10.0.2.2:3000/hotel/getHotel/$id');
 
       var jsonData = response.data;
 
@@ -75,12 +83,12 @@ class _HotelInfoPageState extends State<HotelInfoPage> {
     }
   }
 
-  Future<List<Room>> getRoom(String id) async {
+  Future<List<Room>> getRoom(String roomID) async {
     try {
       List<Room> rooms = [];
       final roomResponse =
-          // await _dio.get('http://10.0.2.2:3000/hotel/rooms/$id');
-          await _dio.get('http://192.168.101.6:3000/hotel/rooms/$id');
+          // await _dio.get('http://10.0.2.2:3000/hotel/rooms/$roomID');
+          await _dio.get('http://192.168.10.78:3000/hotel/rooms/$roomID');
 
       var roomData = roomResponse.data;
 
@@ -107,8 +115,13 @@ class _HotelInfoPageState extends State<HotelInfoPage> {
 
   @override
   Widget build(BuildContext context) {
-    var ID = ModalRoute.of(context)!.settings.arguments as String;
-    // print(ID);
+    final Map<String, dynamic> arguments =
+        ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
+    final String? price = arguments['price'] as String?;
+    final String? HotelID = arguments['id'] as String?;
+    final String? numberOfNights = arguments['numberOfNights'] as String?;
+    final String? startDate = arguments['startDate'] as String?;
+    final String? endDate = arguments['endDate'] as String?;
 
     return Column(
       children: [
@@ -118,7 +131,8 @@ class _HotelInfoPageState extends State<HotelInfoPage> {
               Expanded(
                 flex: 7,
                 child: FutureBuilder(
-                  future: getHotel(ID),
+                  future:
+                      getHotel(HotelID!, numberOfNights!, startDate!, endDate!),
                   builder: (context, AsyncSnapshot snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
                       return const Center(
@@ -150,22 +164,6 @@ class _HotelInfoPageState extends State<HotelInfoPage> {
                               },
                             ),
                           ),
-
-                          // appBar: AppBar(
-                          //   title: Row(
-                          //     mainAxisAlignment: MainAxisAlignment.center,
-                          //     children: [
-                          //       Image.network(
-                          //         'https://bit.ly/3qI4KoK',
-                          //         fit: BoxFit.contain,
-                          //         height: 32,
-                          //       ),
-                          //       Container(
-                          //           padding: const EdgeInsets.all(8.0),
-                          //           child: Text('YourAppTitle')),
-                          //     ],
-                          //   ),
-                          // ),
                           body: Stack(
                             children: [
                               ListView.builder(
@@ -174,22 +172,6 @@ class _HotelInfoPageState extends State<HotelInfoPage> {
                                   return SingleChildScrollView(
                                     child: Stack(
                                       children: [
-                                        // Positioned(
-                                        //   left: 10,
-                                        //   top: 10,
-                                        //   child: IconButton(
-                                        //     icon: Icon(
-                                        //       Icons.arrow_back,
-                                        //       color: Color.fromARGB(
-                                        //           255, 23, 118, 213),
-                                        //     ),
-                                        //     onPressed: () {
-                                        //       Navigator.pushNamed(
-                                        //           context, 'mainPage');
-                                        //     },
-                                        //   ),
-                                        // ),
-
                                         Column(
                                           children: [
                                             Container(
@@ -373,7 +355,7 @@ class _HotelInfoPageState extends State<HotelInfoPage> {
               Expanded(
                 flex: 2,
                 child: FutureBuilder(
-                  future: getRoom(ID),
+                  future: getRoom(HotelID),
                   builder: (context, AsyncSnapshot<List<Room>> snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
                       return Center(child: CircularProgressIndicator());
@@ -387,10 +369,41 @@ class _HotelInfoPageState extends State<HotelInfoPage> {
                             return GestureDetector(
                               onTap: () {
                                 //   var ID = snapshot.data![index]._id;
-                                //   Navigator.pushNamed(context, 'booking');
+
                                 var ID = snapshot.data![index]._id;
+                                var price = snapshot.data![index].price;
+                                var roomName = snapshot.data![index].roomType;
+
+                                // Navigator.of(context, rootNavigator: true)
+                                //     .pushNamed('booking', arguments: ID);
                                 Navigator.of(context, rootNavigator: true)
-                                    .pushNamed('booking', arguments: ID);
+                                    .pushNamed(
+                                  'booking',
+                                  arguments: {
+                                    'roomName': roomName.toString(),
+                                    'hotelId': HotelID.toString(),
+                                    'roomId': ID,
+                                    'startDate': startDate.toString(),
+                                    'endDate': endDate.toString(),
+                                    'numberOfNights': numberOfNights.toString(),
+                                    'price': price,
+                                  },
+                                );
+
+                                print('Hotel ID: $HotelID');
+                                print('Hotel room name: $roomName');
+                                print('Room ID: $ID');
+                                print('Check-in date: $startDate');
+                                print('Check-out date: $endDate');
+                                print(
+                                    'This is the numberOfNights: $numberOfNights');
+                                print('This is the price: $price');
+
+                                // print(ID);
+                                // print(price);
+                                // print(numberOfNights);
+                                // print(startDate);
+                                // print(endDate);
                               },
                               child: Padding(
                                 padding: const EdgeInsets.only(

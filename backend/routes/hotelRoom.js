@@ -7,7 +7,7 @@ router.post('/register', async(req,res) => {
     // const {error} = listValidation(req.body);
     // if (error) return res.send(error.details[0].message);
 
-    let hotel= "64365319012a04f615c9dcf0"
+    let hotel= "645b27bee84cbb9b7d228e2d"
 
     const admin = await Admin.findById(hotel);
     if(!admin) {

@@ -54,11 +54,12 @@ class registerednUsersState extends State<RegisteredUsers> {
 
   Future<List<Post>> getPosts() async {
     try {
+      // final response = await _dio.get('http://10.0.2.2:3000/users/');
+      final response = await _dio.get('http://192.168.10.78:3000/users/');
+
       // final response =
       // await _dio.get('http://100.22.8.195:3000/users/'); //college
-      final response =
-          // await _dio.get('http://10.0.2.2:3000/users/');
-          await _dio.get('http://192.168.101.6:3000/users/');
+
       List<Post> posts = [];
       var jsonData = response.data;
       for (var p in jsonData) {

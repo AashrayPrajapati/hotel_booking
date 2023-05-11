@@ -22,9 +22,11 @@ router.post('/register', async(req,res) => {
   });
 
   try {
-    res.json(await admin.save());
+    const savedHotel = await admin.save();
+    res.send(savedHotel);
+    console.log(savedHotel);
   } catch (error) {
-    res.json(error);
+    res.json(error.message);
   }
 });
 
@@ -46,7 +48,9 @@ router.post('/uploadImage', upload.single('image'), (req, res) => {
 // get all hotels
 router.get('/getHotels', async(req, res) => {
   try{
-      res.json(await Admin.find());
+      // res.json(await Admin.find());
+      const Hotels = await Admin.find();
+      res.json(Hotels);
   } 
   catch(error) {
     res.json(error);
