@@ -19,6 +19,10 @@ class _MyLoginState extends State<MyLogin> {
   TextEditingController passwordController = TextEditingController();
   bool _isNotValidate = false;
 
+  String selectedRole = 'User';
+
+  var role = ['User', 'Admin'];
+
   @override
   void dispose() {
     emailController.dispose();
@@ -67,59 +71,98 @@ class _MyLoginState extends State<MyLogin> {
           fit: BoxFit.cover,
         ),
       ),
-      child: Scaffold(
-        backgroundColor: Colors.transparent,
-        body: Stack(
-          children: [
-            Container(
-              padding: EdgeInsets.only(left: 35, top: 130),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [],
-              ),
-            ),
-            SingleChildScrollView(
-              child: Container(
-                padding: EdgeInsets.only(left: 35, top: 130),
-
-                // padding: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.3),
-
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(),
+        home: Scaffold(
+          backgroundColor: Colors.transparent,
+          body: Stack(
+            children: [
+              SingleChildScrollView(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Container(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            'Welcome\nBack',
-                            style: TextStyle(color: Colors.white, fontSize: 34),
-                          ),
-                          Align(
-                            child: Container(
-                              margin: EdgeInsets.only(right: 33),
-                              child: IconButton(
-                                color: Colors.white,
-                                onPressed: () {
-                                  Navigator.pushNamed(context, 'mainPage');
-                                },
-                                icon: Icon(
-                                  Icons.close,
-                                  size: 37,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
+                    SizedBox(
+                      height: 120,
                     ),
-                    Container(
-                      padding: EdgeInsets.only(
-                        top: MediaQuery.of(context).size.height * 0.15,
-                      ),
-                      margin: EdgeInsets.only(left: 1, right: 35),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        Text(
+                          'Welcome\nBack',
+                          style: TextStyle(color: Colors.white, fontSize: 34),
+                        ),
+                        IconButton(
+                          color: Colors.white,
+                          onPressed: () {
+                            Navigator.pushNamed(context, 'mainPage');
+                          },
+                          icon: Icon(
+                            Icons.close,
+                            size: 37,
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 50,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(30),
                       child: Column(
                         children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              Text(
+                                "Your role",
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 20,
+                                ),
+                              ),
+                              Icon(Icons.arrow_right_alt, color: Colors.white),
+                              DropdownButton(
+                                underline: Container(
+                                  height: 1,
+                                  color: Colors.white,
+                                ),
+
+                                // Initial Value
+                                value: selectedRole,
+
+                                // Down Arrow Icon
+                                icon: const Icon(
+                                  Icons.arrow_drop_down_rounded,
+                                  color: Colors.black,
+                                ),
+
+                                // Array list of items
+                                items: role.map((String items) {
+                                  return DropdownMenuItem(
+                                    value: items,
+                                    child: Text(
+                                      items,
+                                      style: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 20,
+                                      ),
+                                    ),
+                                  );
+                                }).toList(),
+
+                                onChanged: (String? newValue) {
+                                  setState(() {
+                                    selectedRole = newValue!;
+                                    // print('You are $selectedRole');
+                                  });
+                                },
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: 20,
+                          ),
                           TextField(
                             style: TextStyle(color: Colors.white70),
                             decoration: InputDecoration(
@@ -150,7 +193,7 @@ class _MyLoginState extends State<MyLogin> {
                             ),
                           ),
                           SizedBox(
-                            height: 30,
+                            height: 20,
                           ),
                           TextField(
                             style: TextStyle(color: Colors.white),
@@ -196,7 +239,7 @@ class _MyLoginState extends State<MyLogin> {
                             ),
                           ),
                           SizedBox(
-                            height: 40,
+                            height: 50,
                           ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -230,6 +273,7 @@ class _MyLoginState extends State<MyLogin> {
                                     child: IconButton(
                                       color: Colors.white,
                                       onPressed: () {
+                                        print('You are $selectedRole');
                                         Navigator.pushNamed(
                                             context, 'mainPage');
                                       },
@@ -291,8 +335,8 @@ class _MyLoginState extends State<MyLogin> {
                   ],
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

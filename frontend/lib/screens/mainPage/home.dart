@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:dio/dio.dart';
+import 'package:hotel_booking/config.dart';
 
 int calculateNumberOfNights(DateTimeRange dateRange) {
   Duration difference = dateRange.end.difference(dateRange.start);
@@ -394,6 +395,8 @@ class _HomePageState extends State<HomePage> {
       // final response = await _dio.get('http://10.0.2.2:3000/hotel/getHotels');
       final response =
           await _dio.get('http://192.168.10.78:3000/hotel/getHotels');
+      // final response =
+      //     await _dio.get('http://192.168.10.78:3000/hotel/getHotels');
 
       List<Hotel> hotels = [];
       var jsonData = response.data;
