@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
-import 'package:get/get.dart';
+// import 'package:get/get.dart';
 // import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:readmore/readmore.dart';
 
@@ -117,7 +117,7 @@ class _HotelInfoPageState extends State<HotelInfoPage> {
   Widget build(BuildContext context) {
     final Map<String, dynamic> arguments =
         ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
-    final String? price = arguments['price'] as String?;
+    // final String? price = arguments['price'] as String?;
     final String? HotelID = arguments['id'] as String?;
     final String? numberOfNights = arguments['numberOfNights'] as String?;
     final String? startDate = arguments['startDate'] as String?;
@@ -129,7 +129,7 @@ class _HotelInfoPageState extends State<HotelInfoPage> {
           child: Column(
             children: [
               Expanded(
-                flex: 7,
+                flex: 3,
                 child: FutureBuilder(
                   future:
                       getHotel(HotelID!, numberOfNights!, startDate!, endDate!),
@@ -305,6 +305,9 @@ class _HotelInfoPageState extends State<HotelInfoPage> {
                                                   ),
                                                   ReadMoreText(
                                                     snapshot.data.description,
+                                                    style: TextStyle(
+                                                      color: Colors.grey[700],
+                                                    ),
                                                     textAlign:
                                                         TextAlign.justify,
                                                     //
@@ -334,6 +337,7 @@ class _HotelInfoPageState extends State<HotelInfoPage> {
                                                   SizedBox(
                                                     height: 5,
                                                   ),
+                                                  // El
                                                 ],
                                               ),
                                             ),
@@ -352,8 +356,9 @@ class _HotelInfoPageState extends State<HotelInfoPage> {
                   },
                 ),
               ),
+
               Expanded(
-                flex: 2,
+                // flex: 2,
                 child: FutureBuilder(
                   future: getRoom(HotelID),
                   builder: (context, AsyncSnapshot<List<Room>> snapshot) {
@@ -444,7 +449,18 @@ class _HotelInfoPageState extends State<HotelInfoPage> {
                     }
                   },
                 ),
-              )
+              ),
+              // add a button to add a review
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Color.fromARGB(255, 23, 118, 213),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                ),
+                onPressed: () {},
+                child: Text('Add a review'),
+              ),
             ],
           ),
         ),

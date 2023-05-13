@@ -10,7 +10,7 @@ require("dotenv/config");
 router.post("/register", async (req, res) => {
   const { error } = regValidation(req.body); // Validate the request body
 
-  if (error) return res.status(400).send(error.details[0].message);  // If there is an error, send the first error detail as a response
+  if (error) return res.status(400).send(error.details[0].message); // If there is an error, send the first error detail as a response
 
   // Check if email already exists
   const emailExists = await Users.findOne({ email: req.body.email });
@@ -46,11 +46,11 @@ router.post("/login", async (req, res) => {
   const salt = await bcrypt.genSalt(10);
   const hashedPassword = await bcrypt.hash(req.body.password, salt);
 
-  const {error } = LoginValidation(req.body); // Validate the request body
-  if (error) return res.status(400).send(error.details[0].message); // If there is an error, send the first error detail as a response
-
+  // const {error } = LoginValidation(req.body); // Validate the request body
+  // if (error) return res.status(400).send(error.details[0].message); // If there is an error, send the first error detail as a response
 
   // check if email exists
+  console.log('Checking user database')
   const user = await Users.findOne({ email: req.body.email });
   if (!user) return res.send("Email or password is wrong");
   // res.send(user.password);
@@ -60,10 +60,19 @@ router.post("/login", async (req, res) => {
 
   // create and assign a token
   const token = jwt.sign({ _id: user._id }, "whatsup");
+  // const token = null;
 
-  return res.status(200).json({
-    token,
-  });
+  if (token)
+
+    return res.status(200).json({
+      token: token,
+      message: "Login successful",
+    });
+  else
+    return res.status(400).json({
+      status: "Error",
+      message: "Invalid credentials",
+    });
 });
 
 router.get("/", async (req, res) => {
@@ -99,7 +108,7 @@ router.patch("/:id", async (req, res) => {
         $set: {
           name: { firstName: req.body.firstName, lastName: req.body.lastName },
           email: req.body.email,
-          password: req.body.password
+          password: req.body.password,
         },
       }
     );

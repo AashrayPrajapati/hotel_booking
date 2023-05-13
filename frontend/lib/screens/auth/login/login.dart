@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
+// import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'dart:convert';
+import 'package:hotel_booking/mainPage.dart';
 // import 'config.dart';
 
 class MyLogin extends StatefulWidget {
@@ -11,6 +13,7 @@ class MyLogin extends StatefulWidget {
 }
 
 class _MyLoginState extends State<MyLogin> {
+  bool notValidate = false;
   bool passwordVisible = true;
 
   final Dio _dio = Dio();
@@ -21,7 +24,7 @@ class _MyLoginState extends State<MyLogin> {
 
   String selectedRole = 'User';
 
-  var role = ['User', 'Admin'];
+  var role = ['User', 'Hotel Owner'];
 
   @override
   void dispose() {
@@ -30,35 +33,65 @@ class _MyLoginState extends State<MyLogin> {
     super.dispose();
   }
 
-  void registerUser() async {
-    if (emailController.text.isNotEmpty && passwordController.text.isNotEmpty) {
-      var regBody = {
-        "email": emailController.text,
-        "password": passwordController.text
-      };
-      print(regBody);
-      try {
-        var response = await _dio.post(
-          // 'http://10.0.2.2:3000/users/register',
-          'http://192.168.10.78:3000/users/register',
-          options: Options(headers: {"Content-Type": "application/json"}),
-          data: jsonEncode(regBody),
-        );
-        // var response = await _dio.post(
-        //   options: Options(headers: {"Content-Type": "application/json"}),
-        //   data: jsonEncode(regBody),
-        // );
-        print(response.data);
-        print('Response status code: ${response.statusCode}');
-        print('Response body: ${response.data}');
-      } on DioError catch (e) {
-        print('Error connecting to server: ${e.message}');
-      }
+  void login() async {
+    // if (emailController.text.isNotEmpty && passwordController.text.isNotEmpty) {
+    var regBody = {
+      "email": emailController.text,
+      "password": passwordController.text
+    };
+    print(regBody);
+
+    String apiRole = '';
+
+    if (selectedRole == 'User') {
+      // API endpoint for User role
+      apiRole = 'http://192.168.10.78:3000/users/login';
+    } else if (selectedRole == 'Hotel Owner') {
+      // API endpoint for Hotel Owner role
+      apiRole = 'http://192.168.10.78:3000/hotel/login';
     } else {
-      setState(() {
-        print("Ay Yo");
-        _isNotValidate = true;
-      });
+      // Handle the case when no role is selected or handle other roles
+      return;
+    }
+
+    try {
+      var response = await _dio.post(
+        // 'http://10.0.2.2:3000/users/login',
+        apiRole,
+        options: Options(headers: {
+          "Content-Type": "application/json",
+        }),
+        data: jsonEncode(regBody),
+      );
+      if (response.data != null) {
+        String responseData = response.data.toString();
+
+        RegExp tokenRegex = RegExp(r'token: (.+)');
+        Match? tokenMatch = tokenRegex.firstMatch(responseData);
+
+        if (tokenMatch != null) {
+          String token = tokenMatch.group(1) ?? '';
+          print(token); // Output: the extracted token value
+
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => MainPage(),
+            ),
+          );
+        } else {
+          notValidate = true;
+        }
+      } else {
+        print('Response data is null');
+      }
+    } on DioError catch (e) {
+      print('Error connecting to server: ${e.message}');
+      // }
+      // } else {
+      //   setState(() {
+      //     _isNotValidate = true;
+      //   });
     }
   }
 
@@ -105,36 +138,39 @@ class _MyLoginState extends State<MyLogin> {
                       ],
                     ),
                     SizedBox(
-                      height: 50,
+                      height: 25,
                     ),
                     Padding(
                       padding: const EdgeInsets.all(30),
                       child: Column(
                         children: [
                           Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
-                                "Your role",
+                                "Sign in as",
                                 style: TextStyle(
                                   color: Colors.white,
                                   fontSize: 20,
                                 ),
                               ),
-                              Icon(Icons.arrow_right_alt, color: Colors.white),
                               DropdownButton(
+                                elevation: 0,
+                                dropdownColor: Colors.transparent,
+                                isExpanded: false,
+                                // focusColor: Colors.blue,
+
                                 underline: Container(
                                   height: 1,
-                                  color: Colors.white,
+                                  color: Colors.transparent,
                                 ),
 
                                 // Initial Value
                                 value: selectedRole,
 
-                                // Down Arrow Icon
                                 icon: const Icon(
                                   Icons.arrow_drop_down_rounded,
-                                  color: Colors.black,
+                                  color: Colors.white,
                                 ),
 
                                 // Array list of items
@@ -144,7 +180,7 @@ class _MyLoginState extends State<MyLogin> {
                                     child: Text(
                                       items,
                                       style: TextStyle(
-                                        color: Colors.black,
+                                        color: Colors.white,
                                         fontSize: 20,
                                       ),
                                     ),
@@ -154,16 +190,16 @@ class _MyLoginState extends State<MyLogin> {
                                 onChanged: (String? newValue) {
                                   setState(() {
                                     selectedRole = newValue!;
-                                    // print('You are $selectedRole');
                                   });
                                 },
                               ),
                             ],
                           ),
                           SizedBox(
-                            height: 20,
+                            height: 50,
                           ),
                           TextField(
+                            controller: emailController,
                             style: TextStyle(color: Colors.white70),
                             decoration: InputDecoration(
                               //
@@ -172,7 +208,7 @@ class _MyLoginState extends State<MyLogin> {
                               errorStyle: TextStyle(color: Colors.white),
                               errorText:
                                   _isNotValidate ? "Enter correct email" : null,
-                              //
+
                               enabledBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10),
                                 borderSide: BorderSide(
@@ -196,6 +232,7 @@ class _MyLoginState extends State<MyLogin> {
                             height: 20,
                           ),
                           TextField(
+                            controller: passwordController,
                             style: TextStyle(color: Colors.white),
                             obscureText: passwordVisible,
                             decoration: InputDecoration(
@@ -203,9 +240,10 @@ class _MyLoginState extends State<MyLogin> {
                               filled: true,
                               fillColor: Colors.transparent,
                               errorStyle: TextStyle(color: Colors.white),
-                              errorText:
-                                  _isNotValidate ? "Enter full name" : null,
-                              //
+                              errorText: _isNotValidate
+                                  ? "Enter correct password"
+                                  : null,
+
                               enabledBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10),
                                 borderSide: BorderSide(
@@ -272,11 +310,31 @@ class _MyLoginState extends State<MyLogin> {
                                         Color.fromARGB(255, 0, 180, 216),
                                     child: IconButton(
                                       color: Colors.white,
+                                      // onPressed: (() => {
+                                      //       login(),
+                                      //       print(notValidate),
+                                      //       if (!notValidate) {
+
+                                      //       }
+                                      //     }),
+
                                       onPressed: () {
-                                        print('You are $selectedRole');
-                                        Navigator.pushNamed(
-                                            context, 'mainPage');
+                                        login();
+                                        print(notValidate);
+                                        if (notValidate) {
+                                          SnackBar(
+                                            backgroundColor: Colors.red,
+                                            content: Text(
+                                              "Invalid email or password",
+                                              style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 16,
+                                              ),
+                                            ),
+                                          );
+                                        }
                                       },
+
                                       icon: Icon(
                                         Icons.arrow_forward,
                                       ),
