@@ -52,17 +52,19 @@ class _HotelInfoPageState extends State<HotelInfoPage> {
   // double _initialRating = 4.5;
   // IconData? _selectedIcon;
 
-  Future<Hotel> getHotel(
-      String id, String nights, String startDate, String endDate) async {
+  Future<Hotel> getHotel(String id, String userId, String nights,
+      String startDate, String endDate) async {
     try {
       print('HotelInfoPage');
       print('number of night: $nights');
       print('check-in date: $startDate');
       print('check-out date: $endDate');
+      print('user ID: $userId');
+      print('````````````````````````````````````````````');
       // final response =
       //     await _dio.get('http://10.0.2.2:3000/hotel/getHotel/$id');
       final response =
-          await _dio.get('http://192.168.10.78:3000/hotel/getHotel/$id');
+          await _dio.get('http://100.22.1.130:3000/hotel/getHotel/$id');
 
       // await _dio.get('http://10.0.2.2:3000/hotel/getHotel/$id');
 
@@ -88,7 +90,7 @@ class _HotelInfoPageState extends State<HotelInfoPage> {
       List<Room> rooms = [];
       final roomResponse =
           // await _dio.get('http://10.0.2.2:3000/hotel/rooms/$roomID');
-          await _dio.get('http://192.168.10.78:3000/hotel/rooms/$roomID');
+          await _dio.get('http://100.22.1.130:3000/hotel/rooms/$roomID');
 
       var roomData = roomResponse.data;
 
@@ -119,6 +121,7 @@ class _HotelInfoPageState extends State<HotelInfoPage> {
         ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
     // final String? price = arguments['price'] as String?;
     final String? HotelID = arguments['id'] as String?;
+    final String? userId = arguments['userId'] as String?;
     final String? numberOfNights = arguments['numberOfNights'] as String?;
     final String? startDate = arguments['startDate'] as String?;
     final String? endDate = arguments['endDate'] as String?;
@@ -131,8 +134,8 @@ class _HotelInfoPageState extends State<HotelInfoPage> {
               Expanded(
                 flex: 3,
                 child: FutureBuilder(
-                  future:
-                      getHotel(HotelID!, numberOfNights!, startDate!, endDate!),
+                  future: getHotel(
+                      HotelID!, userId!, numberOfNights!, startDate!, endDate!),
                   builder: (context, AsyncSnapshot snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
                       return const Center(
@@ -149,15 +152,23 @@ class _HotelInfoPageState extends State<HotelInfoPage> {
                         home: Scaffold(
                           extendBodyBehindAppBar: true,
                           appBar: AppBar(
-                            toolbarHeight: 35,
+                            // toolbarHeight: 35,
                             elevation: 0,
-                            // title: Text(snapshot.data.propertyName),
+                            title: Text(
+                              snapshot.data.propertyName,
+                              style: TextStyle(
+                                // color: Color.fromARGB(255, 34, 150, 243),
+                                fontSize: 25,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                            centerTitle: true,
                             // centerTitle: true,
-                            backgroundColor: Colors.transparent,
+                            backgroundColor: Color.fromARGB(255, 39, 92, 216),
                             leading: IconButton(
                               icon: Icon(
                                 Icons.arrow_back,
-                                color: Color.fromARGB(255, 23, 118, 213),
+                                color: Color.fromARGB(255, 238, 241, 252),
                               ),
                               onPressed: () {
                                 Navigator.pushNamed(context, 'mainPage');
@@ -177,7 +188,7 @@ class _HotelInfoPageState extends State<HotelInfoPage> {
                                             Container(
                                               child: ClipRRect(
                                                 // borderRadius:
-                                                //     BorderRadius.circular(20),
+                                                //     BorderRadius.circular(10),
                                                 child: Image.network(
                                                   'https://bit.ly/3KAjXJW',
                                                   height: 250,
@@ -262,6 +273,18 @@ class _HotelInfoPageState extends State<HotelInfoPage> {
                                                             )
                                                           ],
                                                         ),
+                                                        IconButton(
+                                                          onPressed: () {},
+                                                          icon: Icon(
+                                                            Icons.star_border,
+                                                            color:
+                                                                Color.fromARGB(
+                                                                    255,
+                                                                    209,
+                                                                    171,
+                                                                    70),
+                                                          ),
+                                                        ),
                                                         Container(
                                                           padding:
                                                               EdgeInsets.all(5),
@@ -300,9 +323,9 @@ class _HotelInfoPageState extends State<HotelInfoPage> {
                                                       ],
                                                     ),
                                                   ),
-                                                  SizedBox(
-                                                    height: 5,
-                                                  ),
+                                                  // SizedBox(
+                                                  //   height: 5,
+                                                  // ),
                                                   ReadMoreText(
                                                     snapshot.data.description,
                                                     style: TextStyle(
@@ -334,10 +357,6 @@ class _HotelInfoPageState extends State<HotelInfoPage> {
                                                           FontStyle.italic,
                                                     ),
                                                   ),
-                                                  SizedBox(
-                                                    height: 5,
-                                                  ),
-                                                  // El
                                                 ],
                                               ),
                                             ),
@@ -385,6 +404,7 @@ class _HotelInfoPageState extends State<HotelInfoPage> {
                                     .pushNamed(
                                   'booking',
                                   arguments: {
+                                    'userId': userId,
                                     'roomName': roomName.toString(),
                                     'hotelId': HotelID.toString(),
                                     'roomId': ID,
@@ -410,35 +430,28 @@ class _HotelInfoPageState extends State<HotelInfoPage> {
                                 // print(startDate);
                                 // print(endDate);
                               },
-                              child: Padding(
-                                padding: const EdgeInsets.only(
-                                  left: 15,
-                                  right: 15,
-                                  bottom: 10,
-                                ),
-                                child: Card(
-                                  elevation: 5,
-                                  child: ListTile(
-                                    title: Text(
-                                      snapshot.data![index].roomType,
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 18,
-                                      ),
+                              child: Card(
+                                elevation: 5,
+                                child: ListTile(
+                                  title: Text(
+                                    snapshot.data![index].roomType,
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 18,
                                     ),
-                                    subtitle: Text(
-                                      snapshot.data![index].price,
-                                      style: TextStyle(
-                                        color: Colors.black,
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 15,
-                                      ),
-                                    ),
-                                    trailing: Icon(
+                                  ),
+                                  subtitle: Text(
+                                    snapshot.data![index].price,
+                                    style: TextStyle(
                                       color: Colors.black,
-                                      Icons.arrow_forward_ios,
-                                      size: 15,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 15,
                                     ),
+                                  ),
+                                  trailing: Icon(
+                                    color: Colors.black,
+                                    Icons.arrow_forward_ios,
+                                    size: 15,
                                   ),
                                 ),
                               ),
@@ -451,16 +464,6 @@ class _HotelInfoPageState extends State<HotelInfoPage> {
                 ),
               ),
               // add a button to add a review
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Color.fromARGB(255, 23, 118, 213),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                ),
-                onPressed: () {},
-                child: Text('Add a review'),
-              ),
             ],
           ),
         ),

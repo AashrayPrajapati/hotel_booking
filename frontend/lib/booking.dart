@@ -40,10 +40,12 @@ class _BookingPageState extends State<BookingPage> {
     final String? numberOfNights = arguments['numberOfNights'] as String?;
     final String? startDate = arguments['startDate'] as String?;
     final String? endDate = arguments['endDate'] as String?;
+    final String? userId = arguments['userId'] as String?;
 
     var totalprice = int.parse(price!) * int.parse(numberOfNights!);
     print('bookingPage');
     print('Total price: $totalprice');
+    print('User id: $userId');
 
     // final String? id = ModalRoute.of(context)?.settings.arguments as String?;
 
@@ -54,7 +56,7 @@ class _BookingPageState extends State<BookingPage> {
         final Dio _dio = Dio();
 
         var regBody = {
-          "user": "6412c87cd16ee5e7f1446f33",
+          "user": userId,
           "hotel": hotelId,
           "room": roomId,
           "checkInDate": startDate,
@@ -67,7 +69,7 @@ class _BookingPageState extends State<BookingPage> {
 
         var response = await _dio.post(
           // 'http://10.0.2.2:3000/bookRoom/book',
-          'http://192.168.10.78:3000/bookRoom/book',
+          'http://100.22.1.130:3000/bookRoom/book',
           options: Options(headers: {"Content-Type": "application/json"}),
           data: jsonEncode(regBody),
         );

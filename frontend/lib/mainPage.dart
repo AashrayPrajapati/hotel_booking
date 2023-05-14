@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:hotel_booking/screens/admin/roomCrud/createRoom.dart';
+import 'package:hotel_booking/screens/auth/login/login.dart';
 //
 import 'screens/mainPage/home.dart';
 import 'screens/user/settings.dart';
@@ -13,6 +15,7 @@ class MainPage extends StatefulWidget {
 class _MainPageState extends State<MainPage> {
   List pages = [
     Home(),
+    if (selectedRole == "Hotel Owner") RoomCreate(),
     userSettings(),
     User(),
   ];
@@ -34,8 +37,9 @@ class _MainPageState extends State<MainPage> {
         type: BottomNavigationBarType.fixed,
         onTap: thisTap,
         currentIndex: thisIndex,
-        selectedItemColor: Colors.black54,
-        unselectedItemColor: Colors.grey.withOpacity(0.5),
+        selectedItemColor: Color.fromARGB(255, 39, 92, 216),
+        unselectedItemColor: Colors.black54,
+        // unselectedItemColor: Colors.grey.withOpacity(0.5),
         showSelectedLabels: false,
         showUnselectedLabels: false,
         elevation: 0,
@@ -44,6 +48,11 @@ class _MainPageState extends State<MainPage> {
             icon: Icon(Icons.home),
             label: "Home",
           ),
+          if (selectedRole == "Hotel Owner")
+            BottomNavigationBarItem(
+              icon: Icon(Icons.add),
+              label: "Create rooms",
+            ),
           BottomNavigationBarItem(
             icon: Icon(Icons.settings),
             label: "Settings",

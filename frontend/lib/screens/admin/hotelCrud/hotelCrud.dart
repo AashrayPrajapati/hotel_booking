@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
 import 'dart:convert';
 
+import 'package:shared_preferences/shared_preferences.dart';
+
 class HotelCrud extends StatefulWidget {
   const HotelCrud({super.key});
   @override
@@ -15,6 +17,8 @@ class HotelCrudState extends State<HotelCrud> {
   final cloudinary = CloudinaryPublic('dgrkvnovb', 'ml_default', cache: false);
 
   bool passwordVisible = true;
+
+  String ownerId = '';
 
   TextEditingController ownerNameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
@@ -52,7 +56,7 @@ class HotelCrudState extends State<HotelCrud> {
       try {
         var response = await _dio.post(
           // 'http://10.0.2.2:3000/hotel/register',
-          'http://192.168.10.78:3000/hotel/register',
+          'http://100.22.1.130:3000/hotel/register',
           options: Options(headers: {"Content-Type": "application/json"}),
           data: jsonEncode(regBody),
         );
@@ -73,6 +77,26 @@ class HotelCrudState extends State<HotelCrud> {
     }
   }
 
+  void jwtDecode() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    String storedToken = prefs.getString('jwtToken') ?? '';
+    String userRole = prefs.getString('role') ?? '';
+
+    // Decode the stored token
+    List<String> tokenParts = storedToken.split('.');
+    String encodedPayload = tokenParts[1];
+    String decodedPayload = utf8.decode(base64Url.decode(encodedPayload));
+
+    // Parse the decoded payload as JSON
+    Map<String, dynamic> payloadJson = jsonDecode(decodedPayload);
+
+    // Access the token claims from the payload
+    ownerId = payloadJson['_id'];
+    print('Stored Role: $userRole');
+    print('USER ID: $ownerId');
+  }
+
   @override
   void dispose() {
     ownerNameController.dispose();
@@ -89,6 +113,7 @@ class HotelCrudState extends State<HotelCrud> {
 
   @override
   void initState() {
+    jwtDecode();
     super.initState();
   }
 
@@ -103,6 +128,11 @@ class HotelCrudState extends State<HotelCrud> {
           centerTitle: true,
           title: Text(
             'yoHotel',
+            style: TextStyle(
+              // color: Color.fromARGB(255, 34, 150, 243),
+              fontSize: 25,
+              fontWeight: FontWeight.w600,
+            ),
           ),
         ),
         body: SingleChildScrollView(

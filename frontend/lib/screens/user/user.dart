@@ -17,7 +17,15 @@ class _UserState extends State<User> {
       home: Scaffold(
         backgroundColor: Colors.grey[100],
         appBar: AppBar(
-          title: Text('yoHotel'),
+          backgroundColor: Color.fromARGB(255, 39, 92, 216),
+          title: Text(
+            'yoHotel',
+            style: TextStyle(
+              // color: Color.fromARGB(255, 34, 150, 243),
+              fontSize: 25,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
           centerTitle: true,
         ),
         body: Column(

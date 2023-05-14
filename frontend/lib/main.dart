@@ -31,7 +31,7 @@ class _MainState extends State<Main> {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(fontFamily: 'OpenSans'), // OPEN-SANS FONT STYLE
-      home: MainPage(),
+      home: MyLogin(),
       routes: {
         'register': (context) => MyRegister(),
         'login': (context) => MyLogin(),

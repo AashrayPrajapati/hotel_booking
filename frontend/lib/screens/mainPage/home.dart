@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:dio/dio.dart';
 // import 'package:hotel_booking/config.dart';
+import 'dart:convert';
+
+import 'package:shared_preferences/shared_preferences.dart';
 
 int calculateNumberOfNights(DateTimeRange dateRange) {
   Duration difference = dateRange.end.difference(dateRange.start);
@@ -25,11 +28,41 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  @override
+  void initState() {
+    // jwtDecode();
+    dateRangeInput.text = "";
+    searchInput.text = "";
+    super.initState();
+  }
+
   TextEditingController dateRangeInput = TextEditingController();
   TextEditingController searchInput = TextEditingController();
   String numberOfNights = ''; // Declare numberOfNights as a member variable
   String formattedStartDate = '';
   String formattedEndDate = '';
+
+  String userId = '';
+
+  void jwtDecode() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    String storedToken = prefs.getString('jwtToken') ?? '';
+    String userRole = prefs.getString('role') ?? '';
+
+    // Decode the stored token
+    List<String> tokenParts = storedToken.split('.');
+    String encodedPayload = tokenParts[1];
+    String decodedPayload = utf8.decode(base64Url.decode(encodedPayload));
+
+    // Parse the decoded payload as JSON
+    Map<String, dynamic> payloadJson = jsonDecode(decodedPayload);
+
+    // Access the token claims from the payload
+    userId = payloadJson['_id'];
+    print('Stored Role: $userRole');
+    print('User ID: $userId');
+  }
 
   void updateNumberOfNights(DateTimeRange pickedDateRange) {
     formattedStartDate = DateFormat('yyyy-MM-dd').format(pickedDateRange.start);
@@ -46,13 +79,11 @@ class _HomePageState extends State<HomePage> {
     // print("Number of nights: $numberOfNights"); // Print the number of nights
   }
 
-  @override
-  void initState() {
-    dateRangeInput.text = "";
-    searchInput.text = "";
+  // @override
+  // void initState() {
 
-    super.initState();
-  }
+  //   super.initState();
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -66,17 +97,21 @@ class _HomePageState extends State<HomePage> {
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
-          fontFamily: 'OpenSans',
+          // fontFamily: 'OpenSans',
           scaffoldBackgroundColor: Color.fromARGB(255, 244, 244, 244),
         ),
         home: Scaffold(
           // backgroundColor: Colors.transparent,
           appBar: AppBar(
             elevation: 3,
-            backgroundColor: Color.fromARGB(255, 0, 140, 255),
+            backgroundColor: Color.fromARGB(255, 39, 92, 216),
             automaticallyImplyLeading:
                 false, // for removing back button in appbar
-            title: Text('yoHotel'),
+            title: Text('yoHotel',
+                style: TextStyle(
+                  fontSize: 25,
+                  fontWeight: FontWeight.w600,
+                )),
             centerTitle: true,
           ),
           body: ListView(
@@ -165,7 +200,8 @@ class _HomePageState extends State<HomePage> {
                         width: MediaQuery.of(context).size.width * 0.83,
                         child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.blue[600]),
+                            backgroundColor: Color.fromARGB(255, 39, 92, 216),
+                          ),
                           child: Text('Search'),
                           onPressed: () async {
                             if (searchInput.text == "") {
@@ -181,7 +217,7 @@ class _HomePageState extends State<HomePage> {
                               // var response = await dio.get(
                               //     'http://10.0.2.2:3000/hotel/search?query=Sunny%20hotel%20Bhaktapur');
                               var response = await dio.get(
-                                  'http://192.168.10.78:3000/hotel/search?query=Sunny%20hotel%20Bhaktapur');
+                                  'http://100.22.1.130:3000/hotel/search?query=Sunny%20hotel%20Bhaktapur');
                               if (response.statusCode == 200) {
                                 print(response.data);
                               } else {
@@ -255,6 +291,7 @@ class _HomePageState extends State<HomePage> {
                                               .pushNamed(
                                             'hotelInfo',
                                             arguments: {
+                                              'userId': userId, // 'userId
                                               'id': ID,
                                               'numberOfNights':
                                                   numberOfNights.toString(),
@@ -272,6 +309,8 @@ class _HomePageState extends State<HomePage> {
                                               "Check-out date: $formattedEndDate"); // Print the end date
                                           print(
                                               "Number of nights: $numberOfNights"); // Print the number of nights
+                                          print('homePage');
+                                          // Print the user ID
                                         },
                                         child: Row(
                                           children: [
@@ -394,9 +433,9 @@ class _HomePageState extends State<HomePage> {
     try {
       // final response = await _dio.get('http://10.0.2.2:3000/hotel/getHotels');
       final response =
-          await _dio.get('http://192.168.10.78:3000/hotel/getHotels');
+          await _dio.get('http://100.22.1.130:3000/hotel/getHotels');
       // final response =
-      //     await _dio.get('http://192.168.10.78:3000/hotel/getHotels');
+      //     await _dio.get('http://100.22.1.130:3000/hotel/getHotels');
 
       List<Hotel> hotels = [];
       var jsonData = response.data;

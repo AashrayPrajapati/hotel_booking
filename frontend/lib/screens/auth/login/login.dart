@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
+// import 'package:fluttertoast/fluttertoast.dart';
 // import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'dart:convert';
 import 'package:hotel_booking/mainPage.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 // import 'config.dart';
 
 class MyLogin extends StatefulWidget {
@@ -11,6 +13,8 @@ class MyLogin extends StatefulWidget {
   @override
   _MyLoginState createState() => _MyLoginState();
 }
+
+String selectedRole = 'User';
 
 class _MyLoginState extends State<MyLogin> {
   bool notValidate = false;
@@ -22,7 +26,7 @@ class _MyLoginState extends State<MyLogin> {
   TextEditingController passwordController = TextEditingController();
   bool _isNotValidate = false;
 
-  String selectedRole = 'User';
+  String userId = '';
 
   var role = ['User', 'Hotel Owner'];
 
@@ -33,70 +37,95 @@ class _MyLoginState extends State<MyLogin> {
     super.dispose();
   }
 
-  void login() async {
-    // if (emailController.text.isNotEmpty && passwordController.text.isNotEmpty) {
-    var regBody = {
-      "email": emailController.text,
-      "password": passwordController.text
-    };
-    print(regBody);
-
-    String apiRole = '';
-
-    if (selectedRole == 'User') {
-      // API endpoint for User role
-      apiRole = 'http://192.168.10.78:3000/users/login';
-    } else if (selectedRole == 'Hotel Owner') {
-      // API endpoint for Hotel Owner role
-      apiRole = 'http://192.168.10.78:3000/hotel/login';
-    } else {
-      // Handle the case when no role is selected or handle other roles
-      return;
-    }
-
-    try {
-      var response = await _dio.post(
-        // 'http://10.0.2.2:3000/users/login',
-        apiRole,
-        options: Options(headers: {
-          "Content-Type": "application/json",
-        }),
-        data: jsonEncode(regBody),
-      );
-      if (response.data != null) {
-        String responseData = response.data.toString();
-
-        RegExp tokenRegex = RegExp(r'token: (.+)');
-        Match? tokenMatch = tokenRegex.firstMatch(responseData);
-
-        if (tokenMatch != null) {
-          String token = tokenMatch.group(1) ?? '';
-          print(token); // Output: the extracted token value
-
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => MainPage(),
-            ),
-          );
-        } else {
-          notValidate = true;
-        }
-      } else {
-        print('Response data is null');
-      }
-    } on DioError catch (e) {
-      print('Error connecting to server: ${e.message}');
-      // }
-      // } else {
-      //   setState(() {
-      //     _isNotValidate = true;
-      //   });
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
+    void login() async {
+      var regBody = {
+        "email": emailController.text,
+        "password": passwordController.text,
+      };
+
+      String apiRole = '';
+
+      if (selectedRole == 'User') {
+        apiRole = 'http://100.22.1.130:3000/users/login';
+      } else if (selectedRole == 'Hotel Owner') {
+        apiRole = 'http://100.22.1.130:3000/hotel/login';
+      } else {
+        // Handle the case when no role is selected or handle other roles
+        return;
+      }
+
+      try {
+        var response = await _dio.post(
+          apiRole,
+          options: Options(headers: {
+            "Content-Type": "application/json",
+          }),
+          data: jsonEncode(regBody),
+        );
+
+        if (response.data != null) {
+          String responseData = response.data.toString();
+
+          RegExp tokenRegex = RegExp(r'token: (.+)');
+          Match? tokenMatch = tokenRegex.firstMatch(responseData);
+
+          if (tokenMatch != null) {
+            String token = tokenMatch.group(1) ?? '';
+            // print(token); // Output: the extracted token value
+            String role = selectedRole;
+
+            SharedPreferences prefs = await SharedPreferences.getInstance();
+            await prefs.setString('jwtToken', token);
+            await prefs.setString('role', role);
+
+            // Check if the token is saved in SharedPreferences
+            String storedToken = prefs.getString('jwtToken') ?? '';
+            String storedRole = prefs.getString('role') ?? '';
+
+            print('Stored Token: $storedToken');
+            print('Stored Token: $storedRole');
+
+            Navigator.of(context, rootNavigator: true).pushNamed(
+              'mainPage',
+              arguments: {
+                'userId': userId.toString(),
+              },
+            );
+
+            // Navigator.push(
+            //   context,
+            //   MaterialPageRoute(
+            //     builder: (context) => MainPage(),
+            //   ),
+            // );
+
+            // Navigator.of(context, rootNavigator: true).pushNamed(
+            //   'mainPage',
+            //   arguments: {
+            //     'userId': userId.toString(),
+            //   },
+            // );
+
+            print('this is the user id: ');
+            print(userId);
+          } else {
+            // Handle case when token extraction fails
+
+            print('Token extraction failed');
+          }
+        } else {
+          // Handle case when response data is null
+          print('Response data is null');
+        }
+      } on DioError catch (e) {
+        // Handle DioError or network-related errors
+        print('Error connecting to server: ${e.message}');
+        // Show error message to the user or handle the error appropriately
+      }
+    }
+
     return Container(
       decoration: BoxDecoration(
         image: DecorationImage(

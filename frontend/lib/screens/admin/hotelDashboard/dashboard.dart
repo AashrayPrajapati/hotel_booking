@@ -25,7 +25,14 @@ class _DashboardState extends State<Dashboard> {
         // backgroundColor: Colors.grey[350],
         // backgroundColor: Color.fromRGBO(158, 235, 251, 1),
         appBar: AppBar(
-          title: Text("yoHotel"),
+          title: Text(
+            "yoHotel",
+            style: TextStyle(
+              // color: Color.fromARGB(255, 34, 150, 243),
+              fontSize: 25,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
           centerTitle: true,
           automaticallyImplyLeading: false,
           backgroundColor: Color.fromRGBO(0, 119, 182, 1),
