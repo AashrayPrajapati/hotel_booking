@@ -48,9 +48,9 @@ class _MyLoginState extends State<MyLogin> {
       String apiRole = '';
 
       if (selectedRole == 'User') {
-        apiRole = 'http://100.22.1.130:3000/users/login';
+        apiRole = 'http://192.168.31.116:3000/users/login';
       } else if (selectedRole == 'Hotel Owner') {
-        apiRole = 'http://100.22.1.130:3000/hotel/login';
+        apiRole = 'http://192.168.31.116:3000/hotel/login';
       } else {
         // Handle the case when no role is selected or handle other roles
         return;

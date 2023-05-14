@@ -64,7 +64,7 @@ class _HotelInfoPageState extends State<HotelInfoPage> {
       // final response =
       //     await _dio.get('http://10.0.2.2:3000/hotel/getHotel/$id');
       final response =
-          await _dio.get('http://100.22.1.130:3000/hotel/getHotel/$id');
+          await _dio.get('http://192.168.31.116:3000/hotel/getHotel/$id');
 
       // await _dio.get('http://10.0.2.2:3000/hotel/getHotel/$id');
 
@@ -90,7 +90,7 @@ class _HotelInfoPageState extends State<HotelInfoPage> {
       List<Room> rooms = [];
       final roomResponse =
           // await _dio.get('http://10.0.2.2:3000/hotel/rooms/$roomID');
-          await _dio.get('http://100.22.1.130:3000/hotel/rooms/$roomID');
+          await _dio.get('http://192.168.31.116:3000/hotel/rooms/$roomID');
 
       var roomData = roomResponse.data;
 

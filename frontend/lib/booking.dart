@@ -69,7 +69,7 @@ class _BookingPageState extends State<BookingPage> {
 
         var response = await _dio.post(
           // 'http://10.0.2.2:3000/bookRoom/book',
-          'http://100.22.1.130:3000/bookRoom/book',
+          'http://192.168.31.116:3000/bookRoom/book',
           options: Options(headers: {"Content-Type": "application/json"}),
           data: jsonEncode(regBody),
         );

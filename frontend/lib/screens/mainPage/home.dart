@@ -217,7 +217,7 @@ class _HomePageState extends State<HomePage> {
                               // var response = await dio.get(
                               //     'http://10.0.2.2:3000/hotel/search?query=Sunny%20hotel%20Bhaktapur');
                               var response = await dio.get(
-                                  'http://100.22.1.130:3000/hotel/search?query=Sunny%20hotel%20Bhaktapur');
+                                  'http://192.168.31.116:3000/hotel/search?query=Sunny%20hotel%20Bhaktapur');
                               if (response.statusCode == 200) {
                                 print(response.data);
                               } else {
@@ -433,9 +433,9 @@ class _HomePageState extends State<HomePage> {
     try {
       // final response = await _dio.get('http://10.0.2.2:3000/hotel/getHotels');
       final response =
-          await _dio.get('http://100.22.1.130:3000/hotel/getHotels');
+          await _dio.get('http://192.168.31.116:3000/hotel/getHotels');
       // final response =
-      //     await _dio.get('http://100.22.1.130:3000/hotel/getHotels');
+      //     await _dio.get('http://192.168.31.116:3000/hotel/getHotels');
 
       List<Hotel> hotels = [];
       var jsonData = response.data;
