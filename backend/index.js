@@ -12,7 +12,7 @@ app.use(bodyParser.json());
 const usersRoute = require('./routes/users');
 const adminRoute = require("./routes/hotel");
 const hotelRoomRoute = require("./routes/hotelRoom");
-const bookingRoute = require("./routes/booking")
+const bookingRoute = require("./routes/booking");
 
 // MIDDLEWAWRES
 app.use('/users', usersRoute);

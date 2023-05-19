@@ -105,8 +105,13 @@ class _HomePageState extends State<HomePage> {
           appBar: AppBar(
             elevation: 3,
             backgroundColor: Color.fromARGB(255, 39, 92, 216),
-            automaticallyImplyLeading:
-                false, // for removing back button in appbar
+            leading: IconButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              icon: Icon(Icons.arrow_back_ios),
+              //replace with our own icon data.
+            ),
             title: Text('yoHotel',
                 style: TextStyle(
                   fontSize: 25,
@@ -320,10 +325,13 @@ class _HomePageState extends State<HomePage> {
                                                 height: 100,
                                                 child: Card(
                                                   elevation: 3,
-                                                  child: Image.network(
-                                                    'https://bit.ly/3KAjXJW',
-                                                    fit: BoxFit.cover,
-                                                  ),
+                                                  // child: Image.network(
+                                                  //   'https://bit.ly/3KAjXJW',
+                                                  //   fit: BoxFit.cover,
+                                                  // ),
+                                                  child: Placeholder(
+                                                      fallbackHeight: 100,
+                                                      fallbackWidth: 100),
                                                 ),
                                               ),
                                             ),

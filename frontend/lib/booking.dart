@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:quantity_input/quantity_input.dart';
 
 class BookingPage extends StatefulWidget {
   @override
@@ -202,7 +203,6 @@ class _BookingPageState extends State<BookingPage> {
                     ],
                   ),
                 ),
-
                 SizedBox(height: 30),
                 Center(
                   child: Text(
@@ -292,8 +292,8 @@ class _BookingPageState extends State<BookingPage> {
                                   Text(
                                     'Total price',
                                     style: TextStyle(
-                                      fontSize: 22,
-                                      fontWeight: FontWeight.w600,
+                                      fontSize: 26,
+                                      fontWeight: FontWeight.w700,
                                       color: Colors.grey[800],
                                     ),
                                   ),
@@ -301,7 +301,7 @@ class _BookingPageState extends State<BookingPage> {
                                     'NPR $totalprice',
                                     style: TextStyle(
                                       fontSize: 22,
-                                      fontWeight: FontWeight.w600,
+                                      fontWeight: FontWeight.w900,
                                       color: Colors.grey[800],
                                     ),
                                   ),
@@ -315,8 +315,6 @@ class _BookingPageState extends State<BookingPage> {
                   ),
                 ),
                 SizedBox(height: 35),
-                //MAKE CONFIG FILE
-                // APPBAR GLOBAL
                 Padding(
                   padding: const EdgeInsets.only(
                     left: 10,
@@ -334,29 +332,54 @@ class _BookingPageState extends State<BookingPage> {
                       //   ),
                       // ),
                       // SizedBox(height: 10),
-                      TextField(
-                        style: TextStyle(
-                          height: 1.0,
-                          // fontSize: 18,
-                          // fontWeight: FontWeight.w500,
-                        ),
-                        // cursorHeight: 25,
+                      // QuantityInput(value: noOfGuests, onChanged: () ),
+                      Center(
+                        child: Container(
+                          width: 120,
+                          child: TextField(
+                            style: TextStyle(
+                              height: 1.0,
 
-                        controller: noOfGuests,
-                        decoration: InputDecoration(
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(20),
+                              // fontSize: 18,
+                              // fontWeight: FontWeight.w500,
+                            ),
+                            // cursorHeight: 25,
+
+                            controller: noOfGuests,
+                            decoration: InputDecoration(
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(20),
+                              ),
+                              hintText: 'No. of guests',
+                            ),
                           ),
-                          hintText: 'Enter number of guests',
                         ),
                       ),
+                      // Center(
+                      //   child: Container(
+                      //     width: 120,
+                      //     child: QuantityInput(
+                      //       value: int.parse(noOfGuests.text),
+                      //       onChanged: (value) {
+                      //         setState(() {
+                      //           noOfGuests.text = value.toString();
+                      //         });
+                      //       },
+                      //       decoration: InputDecoration(
+                      //         border: OutlineInputBorder(
+                      //           borderRadius: BorderRadius.circular(20),
+                      //         ),
+                      //         hintText: 'No. of guests',
+                      //       ),
+                      //     ),
+                      //   ),
+                      // ),
                     ],
                   ),
                 ),
                 SizedBox(height: 25),
                 Center(
                   child: Container(
-                    // color: Color.fromARGB(255, 38, 92, 216),
                     height: 50,
                     width: 200,
                     child: ElevatedButton(
@@ -368,13 +391,102 @@ class _BookingPageState extends State<BookingPage> {
                       ),
                       onPressed: () {
                         book();
+                        //
+                        //
+                        //
+                        showModalBottomSheet(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return Container(
+                              constraints: BoxConstraints(
+                                maxHeight:
+                                    MediaQuery.of(context).size.height * 0.8,
+                              ),
+                              child: SingleChildScrollView(
+                                child: Column(
+                                  crossAxisAlignment:
+                                      CrossAxisAlignment.stretch,
+                                  children: [
+                                    Align(
+                                      alignment: Alignment.topRight,
+                                      child: IconButton(
+                                        onPressed: () {
+                                          Navigator.pop(context);
+                                        },
+                                        icon: Icon(
+                                          Icons.close,
+                                          size: 30,
+                                          color: Colors.grey[700],
+                                        ),
+                                      ),
+                                    ),
+                                    Container(
+                                      padding: EdgeInsets.all(16),
+                                      color: Colors.white,
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.stretch,
+                                        children: [
+                                          ElevatedButton(
+                                            onPressed: () {},
+                                            child: Text(
+                                              'Pay with Khalti',
+                                              style: TextStyle(
+                                                fontSize: 20,
+                                                fontWeight: FontWeight.w600,
+                                              ),
+                                            ),
+                                            style: ElevatedButton.styleFrom(
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(50),
+                                              ),
+                                              primary: Color(0xFF572C8A),
+                                              onPrimary: Colors.white,
+                                              padding: EdgeInsets.symmetric(
+                                                  vertical: 16),
+                                            ),
+                                          ),
+                                          SizedBox(height: 10),
+                                          ElevatedButton(
+                                            onPressed: () {
+                                              book();
+                                            },
+                                            child: Text(
+                                              'Pay with Cash',
+                                              style: TextStyle(
+                                                fontSize: 20,
+                                                fontWeight: FontWeight.w600,
+                                              ),
+                                            ),
+                                            style: ElevatedButton.styleFrom(
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(50),
+                                              ),
+                                              primary: Color(0xFF265CD8),
+                                              onPrimary: Colors.white,
+                                              padding: EdgeInsets.symmetric(
+                                                  vertical: 16),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            );
+                          },
+                        );
                       },
                       child: Text(
                         'Book Now',
                         style: TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.w600,
-                          // letterSpacing: 1.5,
                         ),
                       ),
                     ),

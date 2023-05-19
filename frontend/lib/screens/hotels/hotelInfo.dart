@@ -189,10 +189,15 @@ class _HotelInfoPageState extends State<HotelInfoPage> {
                                               child: ClipRRect(
                                                 // borderRadius:
                                                 //     BorderRadius.circular(10),
-                                                child: Image.network(
-                                                  'https://bit.ly/3KAjXJW',
-                                                  height: 250,
-                                                  fit: BoxFit.cover,
+                                                // child: Image.network(
+                                                //   'https://bit.ly/3KAjXJW',
+                                                //   height: 250,
+                                                //   fit: BoxFit.cover,
+                                                // ),
+                                                child: Placeholder(
+                                                  fallbackHeight: 250,
+                                                  fallbackWidth:
+                                                      double.infinity,
                                                 ),
                                               ),
                                             ),
@@ -430,28 +435,32 @@ class _HotelInfoPageState extends State<HotelInfoPage> {
                                 // print(startDate);
                                 // print(endDate);
                               },
-                              child: Card(
-                                elevation: 5,
-                                child: ListTile(
-                                  title: Text(
-                                    snapshot.data![index].roomType,
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 18,
+                              child: Padding(
+                                padding: const EdgeInsets.only(
+                                    left: 10, right: 10, bottom: 5),
+                                child: Card(
+                                  elevation: 5,
+                                  child: ListTile(
+                                    title: Text(
+                                      snapshot.data![index].roomType,
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 18,
+                                      ),
                                     ),
-                                  ),
-                                  subtitle: Text(
-                                    snapshot.data![index].price,
-                                    style: TextStyle(
+                                    subtitle: Text(
+                                      snapshot.data![index].price,
+                                      style: TextStyle(
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 15,
+                                      ),
+                                    ),
+                                    trailing: Icon(
                                       color: Colors.black,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 15,
+                                      Icons.arrow_forward_ios,
+                                      size: 15,
                                     ),
-                                  ),
-                                  trailing: Icon(
-                                    color: Colors.black,
-                                    Icons.arrow_forward_ios,
-                                    size: 15,
                                   ),
                                 ),
                               ),

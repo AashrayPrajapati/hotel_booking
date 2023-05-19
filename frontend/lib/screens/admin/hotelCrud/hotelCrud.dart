@@ -124,6 +124,14 @@ class HotelCrudState extends State<HotelCrud> {
       theme: ThemeData(fontFamily: 'OpenSans'),
       home: Scaffold(
         appBar: AppBar(
+          backgroundColor: Color.fromARGB(255, 39, 92, 216),
+          leading: IconButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            icon: Icon(Icons.arrow_back_ios),
+            //replace with our own icon data.
+          ),
           automaticallyImplyLeading: false,
           centerTitle: true,
           title: Text(
@@ -141,6 +149,7 @@ class HotelCrudState extends State<HotelCrud> {
               Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
+                  // SizedBox(height: 15),
                   Text(
                     "Create Hotel",
                     style: TextStyle(
@@ -196,7 +205,7 @@ class HotelCrudState extends State<HotelCrud> {
                   ),
                   Padding(
                     padding: const EdgeInsets.only(
-                      bottom: 15,
+                      bottom: 7,
                       right: 15,
                       left: 15,
                     ),
@@ -235,7 +244,8 @@ class HotelCrudState extends State<HotelCrud> {
                   ),
                   Divider(color: Colors.black38),
                   Padding(
-                    padding: const EdgeInsets.all(15),
+                    padding: const EdgeInsets.only(
+                        left: 15, right: 15, bottom: 15, top: 3),
                     child: TextField(
                       controller: propertyNameController,
                       keyboardType: TextInputType.text,
