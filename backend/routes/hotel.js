@@ -6,7 +6,6 @@ const HotelRoom = require("../models/HotelRoom");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
-
 router.post("/register", async (req, res) => {
   // const {error} = listValidation(req.body);
   // if (error) return res.send(error.details[0].message);
@@ -40,45 +39,39 @@ router.post("/login", async (req, res) => {
   // if (error) return res.status(400).send(error.details[0].message); // If there is an error, send the first error detail as a response
 
   // check if email exists
-  console.log('Checking user database')
+  console.log("Checking user database");
   const user = await Admin.findOne({ email: req.body.email });
   if (!user) return res.send("Email or  is wrong");
   // res.send(user.password);
 
-  
-  console.log(req.body.password)
-  console.log(user.password)
+  console.log(req.body.password);
+  console.log(user.password);
 
   //check if the password is correct
   if (req.body.password == user.password) {
+    // const validPwd = await bcrypt.compare(req.body.password, user.password);
+    // if (!validPwd) return res.send("Email or password is wrong");
 
+    // create and assign a token
+    const token = jwt.sign({ _id: user._id }, "whatsup");
+    // const token = null;
 
-  // const validPwd = await bcrypt.compare(req.body.password, user.password);
-  // if (!validPwd) return res.send("Email or password is wrong");
-
-  // create and assign a token
-  const token = jwt.sign({ _id: user._id }, "whatsup");
-  // const token = null;
-
-  if (token)
-
-    return res.status(200).json({
-      token: token,
-      message: "Login successful",
-    });
-  else
-    return res.status(400).json({
-      status: "Error",
-      message: "Invalid credentials",
-    });
-  }else{
+    if (token)
+      return res.status(200).json({
+        token: token,
+        message: "Login successful",
+      });
+    else
+      return res.status(400).json({
+        status: "Error",
+        message: "Invalid credentials",
+      });
+  } else {
     return res.status(400).json({
       status: "Error",
       message: "Invalid credentials",
     });
   }
-  
-
 });
 
 const upload = multer({ dest: "uploads/" });

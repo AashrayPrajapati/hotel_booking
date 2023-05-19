@@ -50,7 +50,7 @@ router.post("/login", async (req, res) => {
   // if (error) return res.status(400).send(error.details[0].message); // If there is an error, send the first error detail as a response
 
   // check if email exists
-  console.log('Checking user database')
+  console.log("Checking user database");
   const user = await Users.findOne({ email: req.body.email });
   if (!user) return res.send("Email or password is wrong");
   // res.send(user.password);
@@ -63,7 +63,6 @@ router.post("/login", async (req, res) => {
   // const token = null;
 
   if (token)
-
     return res.status(200).json({
       token: token,
       message: "Login successful",

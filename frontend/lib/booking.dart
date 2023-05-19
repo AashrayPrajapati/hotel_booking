@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
-import 'package:quantity_input/quantity_input.dart';
+import 'package:input_quantity/input_quantity.dart';
 
 class BookingPage extends StatefulWidget {
   @override
@@ -355,25 +355,6 @@ class _BookingPageState extends State<BookingPage> {
                           ),
                         ),
                       ),
-                      // Center(
-                      //   child: Container(
-                      //     width: 120,
-                      //     child: QuantityInput(
-                      //       value: int.parse(noOfGuests.text),
-                      //       onChanged: (value) {
-                      //         setState(() {
-                      //           noOfGuests.text = value.toString();
-                      //         });
-                      //       },
-                      //       decoration: InputDecoration(
-                      //         border: OutlineInputBorder(
-                      //           borderRadius: BorderRadius.circular(20),
-                      //         ),
-                      //         hintText: 'No. of guests',
-                      //       ),
-                      //     ),
-                      //   ),
-                      // ),
                     ],
                   ),
                 ),
@@ -466,7 +447,8 @@ class _BookingPageState extends State<BookingPage> {
                                                 borderRadius:
                                                     BorderRadius.circular(50),
                                               ),
-                                              primary: Color(0xFF265CD8),
+                                              backgroundColor:
+                                                  Color(0xFF265CD8),
                                               onPrimary: Colors.white,
                                               padding: EdgeInsets.symmetric(
                                                   vertical: 16),

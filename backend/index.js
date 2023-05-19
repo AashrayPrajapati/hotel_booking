@@ -13,12 +13,14 @@ const usersRoute = require('./routes/users');
 const adminRoute = require("./routes/hotel");
 const hotelRoomRoute = require("./routes/hotelRoom");
 const bookingRoute = require("./routes/booking");
+const commentRoute = require("./routes/comment");
 
 // MIDDLEWAWRES
 app.use('/users', usersRoute);
 app.use('/hotel', adminRoute);
 app.use('/hotelRoom', hotelRoomRoute);
 app.use('/bookRoom', bookingRoute);
+app.use('/comment', commentRoute);
 
 
 app.get("/", (req, res) => {

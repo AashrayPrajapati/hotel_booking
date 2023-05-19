@@ -37,15 +37,15 @@ class _MainPageState extends State<MainPage> {
         type: BottomNavigationBarType.fixed,
         onTap: thisTap,
         currentIndex: thisIndex,
-        selectedItemColor: Color.fromARGB(255, 39, 92, 216),
+        selectedItemColor: Color.fromARGB(255, 74, 128, 255),
         unselectedItemColor: Colors.black54,
         // unselectedItemColor: Colors.grey.withOpacity(0.5),
         showSelectedLabels: false,
         showUnselectedLabels: false,
-        elevation: 0,
+        elevation: 1,
         items: [
           BottomNavigationBarItem(
-            icon: Icon(Icons.home),
+            icon: Icon(Icons.home_outlined),
             label: "Home",
           ),
           if (selectedRole == "Hotel Owner")
@@ -54,11 +54,11 @@ class _MainPageState extends State<MainPage> {
               label: "Create rooms",
             ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.settings),
+            icon: Icon(Icons.settings_outlined),
             label: "Settings",
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.person),
+            icon: Icon(Icons.person_outlined),
             label: "User",
           ),
         ],

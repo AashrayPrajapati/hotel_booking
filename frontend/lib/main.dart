@@ -6,6 +6,7 @@ import 'screens/auth/login/login.dart';
 
 import 'mainPage.dart';
 import 'screens/super admin/registeredUsers.dart';
+import 'screens/user/editUser.dart';
 import 'screens/user/user.dart';
 
 import 'booking.dart';
@@ -48,6 +49,8 @@ class _MainState extends State<Main> {
         //
         'registeredUsers': (context) => RegisteredUsers(),
         'registeredHotels': (context) => RegisteredHotels(),
+        //
+        'editUser': (context) => EditUser(),
       },
     );
   }

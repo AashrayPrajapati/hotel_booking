@@ -30,7 +30,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   @override
   void initState() {
-    // jwtDecode();
+    jwtDecode();
     dateRangeInput.text = "";
     searchInput.text = "";
     super.initState();
