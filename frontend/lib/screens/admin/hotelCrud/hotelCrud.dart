@@ -26,7 +26,7 @@ class HotelCrudState extends State<HotelCrud> {
   TextEditingController propertyNameController = TextEditingController();
   TextEditingController countryController = TextEditingController();
   TextEditingController cityController = TextEditingController();
-  TextEditingController postalCodeController = TextEditingController();
+  // TextEditingController postalCodeController = TextEditingController();
   TextEditingController streetNameController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
   bool _isNotValidate = false;
@@ -38,7 +38,7 @@ class HotelCrudState extends State<HotelCrud> {
         propertyNameController.text.isNotEmpty &&
         countryController.text.isNotEmpty &&
         cityController.text.isNotEmpty &&
-        postalCodeController.text.isNotEmpty &&
+        // postalCodeController.text.isNotEmpty &&
         streetNameController.text.isNotEmpty &&
         descriptionController.text.isNotEmpty) {
       var regBody = {
@@ -48,7 +48,7 @@ class HotelCrudState extends State<HotelCrud> {
         "propertyName": propertyNameController.text,
         "country": countryController.text,
         "city": cityController.text,
-        "postalCode": postalCodeController.text,
+        "postalCode": "1000",
         "streetName": streetNameController.text,
         "description": descriptionController.text,
       };
@@ -67,6 +67,7 @@ class HotelCrudState extends State<HotelCrud> {
 
         print('Response status code: ${response.statusCode}');
         print('Response body: ${response.data}');
+        Navigator.pushNamed(context, 'login');
       } on DioError catch (e) {
         print('Error connecting to server: ${e.message}');
       }
@@ -105,7 +106,7 @@ class HotelCrudState extends State<HotelCrud> {
     propertyNameController.dispose();
     countryController.dispose();
     cityController.dispose();
-    postalCodeController.dispose();
+    // postalCodeController.dispose();
     streetNameController.dispose();
     descriptionController.dispose();
     super.dispose();
@@ -121,7 +122,7 @@ class HotelCrudState extends State<HotelCrud> {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(fontFamily: 'OpenSans'),
+      // theme: ThemeData(fontFamily: 'OpenSans'),
       home: Scaffold(
         appBar: AppBar(
           backgroundColor: Color.fromARGB(255, 39, 92, 216),
@@ -129,7 +130,7 @@ class HotelCrudState extends State<HotelCrud> {
             onPressed: () {
               Navigator.pop(context);
             },
-            icon: Icon(Icons.arrow_back_ios),
+            icon: Icon(Icons.arrow_back_ios_new),
             //replace with our own icon data.
           ),
           automaticallyImplyLeading: false,
@@ -149,7 +150,7 @@ class HotelCrudState extends State<HotelCrud> {
               Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  // SizedBox(height: 15),
+                  SizedBox(height: 20),
                   Text(
                     "Create Hotel",
                     style: TextStyle(
@@ -312,30 +313,30 @@ class HotelCrudState extends State<HotelCrud> {
                       ),
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(
-                      bottom: 15,
-                      right: 15,
-                      left: 15,
-                    ),
-                    child: TextField(
-                      controller: postalCodeController,
-                      keyboardType: TextInputType.text,
-                      style: TextStyle(fontSize: 15, height: 0.7),
-                      decoration: InputDecoration(
-                        //
-                        filled: true,
-                        fillColor: Colors.transparent,
-                        errorStyle: TextStyle(color: Colors.white),
-                        errorText: _isNotValidate ? "Enter full name" : null,
-                        //
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(13)),
-                        ),
-                        labelText: "   Zip/ Postal code",
-                      ),
-                    ),
-                  ),
+                  // Padding(
+                  //   padding: const EdgeInsets.only(
+                  //     bottom: 15,
+                  //     right: 15,
+                  //     left: 15,
+                  //   ),
+                  //   child: TextField(
+                  //     controller: postalCodeController,
+                  //     keyboardType: TextInputType.text,
+                  //     style: TextStyle(fontSize: 15, height: 0.7),
+                  //     decoration: InputDecoration(
+                  //       //
+                  //       filled: true,
+                  //       fillColor: Colors.transparent,
+                  //       errorStyle: TextStyle(color: Colors.white),
+                  //       errorText: _isNotValidate ? "Enter full name" : null,
+                  //       //
+                  //       border: OutlineInputBorder(
+                  //         borderRadius: BorderRadius.all(Radius.circular(13)),
+                  //       ),
+                  //       labelText: "   Zip/ Postal code",
+                  //     ),
+                  //   ),
+                  // ),
                   Padding(
                     padding: const EdgeInsets.only(
                       bottom: 15,
@@ -416,7 +417,6 @@ class HotelCrudState extends State<HotelCrud> {
                       //     );
                       //   },
                       // );
-                      Navigator.pushNamed(context, 'roomCrud');
 
                       registerHotel();
                     },

@@ -3,7 +3,10 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:hotel_booking/khalti.dart';
+import 'package:hotel_booking/khalti2.dart';
 import 'package:input_quantity/input_quantity.dart';
+import 'package:khalti_flutter/khalti_flutter.dart';
 
 class BookingPage extends StatefulWidget {
   @override
@@ -16,6 +19,8 @@ class _BookingPageState extends State<BookingPage> {
   TextEditingController checkOut = TextEditingController();
   TextEditingController noOfGuests = TextEditingController();
 
+  String referenceId = "";
+
   @override
   void dispose() {
     userId.dispose();
@@ -23,6 +28,55 @@ class _BookingPageState extends State<BookingPage> {
     checkOut.dispose();
     noOfGuests.dispose();
     super.dispose();
+  }
+
+  payWithKhaltiInApp() {
+    KhaltiScope.of(context).pay(
+      config: PaymentConfig(
+        amount: 1000, //in paisa
+        productIdentity: 'Product Id',
+        productName: 'Product Name',
+        mobileReadOnly: false,
+      ),
+      preferences: [
+        PaymentPreference.khalti,
+      ],
+      onSuccess: onSuccess,
+      onFailure: onFailure,
+      onCancel: onCancel,
+    );
+  }
+
+  void onSuccess(PaymentSuccessModel success) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text('Payment Successful'),
+          actions: [
+            SimpleDialogOption(
+                child: const Text('OK'),
+                onPressed: () {
+                  setState(() {
+                    referenceId = success.idx;
+                  });
+
+                  Navigator.pop(context);
+                })
+          ],
+        );
+      },
+    );
+  }
+
+  void onFailure(PaymentFailureModel failure) {
+    debugPrint(
+      failure.toString(),
+    );
+  }
+
+  void onCancel() {
+    debugPrint('Cancelled');
   }
 
   @override
@@ -51,6 +105,25 @@ class _BookingPageState extends State<BookingPage> {
     // final String? id = ModalRoute.of(context)?.settings.arguments as String?;
 
     // Use the ID value here to fetch the booking details or do any other processing.
+
+    KhaltiScope(
+      publicKey: 'test_public_key_19908edd96ba473297852ed745f2f615',
+      enabledDebugging: true,
+      builder: (context, navKey) {
+        return MaterialApp(
+          debugShowCheckedModeBanner: false,
+          home: Khalti(),
+          navigatorKey: navKey,
+          supportedLocales: const [
+            Locale('en', 'US'),
+            Locale('ne', 'NP'),
+          ],
+          localizationsDelegates: const [
+            KhaltiLocalizations.delegate,
+          ],
+        );
+      },
+    );
 
     void book() async {
       try {
@@ -93,21 +166,23 @@ class _BookingPageState extends State<BookingPage> {
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         appBar: AppBar(
-          leading: BackButton(
-            // color: Color.fromARGB(255, 34, 150, 243),
-            onPressed: () => Navigator.pop(context),
+          elevation: 3,
+          backgroundColor: Color.fromARGB(255, 39, 92, 216),
+          leading: IconButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            icon: Icon(Icons.arrow_back_ios_new),
+            //replace with our own icon data.
           ),
-          backgroundColor: Color.fromARGB(255, 38, 92, 216),
-          elevation: 0,
-          centerTitle: true,
           title: Text(
             'Booking Details',
             style: TextStyle(
-              // color: Color.fromARGB(255, 34, 150, 243),
               fontSize: 25,
               fontWeight: FontWeight.w600,
             ),
           ),
+          centerTitle: true,
         ),
         body: SingleChildScrollView(
           child: Padding(
@@ -371,7 +446,7 @@ class _BookingPageState extends State<BookingPage> {
                         backgroundColor: HexColor('#FF265CD8'),
                       ),
                       onPressed: () {
-                        book();
+                        // book();
                         //
                         //
                         //
@@ -405,13 +480,25 @@ class _BookingPageState extends State<BookingPage> {
                                       padding: EdgeInsets.all(16),
                                       color: Colors.white,
                                       child: Column(
+                                        mainAxisSize: MainAxisSize.max,
                                         mainAxisAlignment:
                                             MainAxisAlignment.center,
                                         crossAxisAlignment:
                                             CrossAxisAlignment.stretch,
                                         children: [
                                           ElevatedButton(
-                                            onPressed: () {},
+                                            onPressed: () {
+                                              // payWithKhaltiInApp();
+                                              // Navigator.pushNamed(
+                                              //     context, 'khalti2');
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      Khalti2(),
+                                                ),
+                                              );
+                                            },
                                             child: Text(
                                               'Pay with Khalti',
                                               style: TextStyle(
@@ -424,12 +511,14 @@ class _BookingPageState extends State<BookingPage> {
                                                 borderRadius:
                                                     BorderRadius.circular(50),
                                               ),
-                                              primary: Color(0xFF572C8A),
+                                              backgroundColor:
+                                                  Color(0xFF572C8A),
                                               onPrimary: Colors.white,
                                               padding: EdgeInsets.symmetric(
                                                   vertical: 16),
                                             ),
                                           ),
+                                          // Text(referenceId),
                                           SizedBox(height: 10),
                                           ElevatedButton(
                                             onPressed: () {

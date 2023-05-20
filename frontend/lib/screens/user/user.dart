@@ -1,5 +1,7 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:hotel_booking/screens/auth/login/login.dart';
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -10,7 +12,55 @@ class User extends StatefulWidget {
   State<User> createState() => _UserState();
 }
 
+class Hotel {
+  final String propertyName;
+  final String streetName;
+  final String city;
+  final String description;
+  final String password;
+
+  Hotel(
+    this.propertyName,
+    this.streetName,
+    this.city,
+    this.description,
+    this.password,
+  );
+}
+
 class _UserState extends State<User> {
+  final Dio _dio = Dio();
+
+  // double _initialRating = 4.5;
+  // IconData? _selectedIcon;
+
+  Future<Hotel> getHotel(String id) async {
+    try {
+      // final response =
+      //     await _dio.get('http://10.0.2.2:3000/hotel/getHotel/$id');
+      final response =
+          await _dio.get('http://192.168.31.116:3000/hotel/getHotel/$id');
+
+      // await _dio.get('http://10.0.2.2:3000/hotel/getHotel/$id');
+
+      var jsonData = response.data;
+
+      Hotel hotel = Hotel(
+        jsonData['propertyName'] ?? '',
+        jsonData['streetName'] ?? '',
+        jsonData['city'] ?? '',
+        jsonData['description'] ?? '',
+        jsonData['password'] ?? '',
+      );
+
+      return hotel;
+    } on DioError catch (e) {
+      print(e);
+
+      throw Exception("Error retrieving posts: ${e}");
+    }
+  }
+
   String userId = '';
   bool isLoggedIn = false;
 
@@ -103,89 +153,101 @@ class _UserState extends State<User> {
   }
 
   Widget buildLoggedInUI() {
-    return Column(
-      children: [
-        Padding(
-          padding: const EdgeInsets.only(
-            top: 20,
-            bottom: 20,
-          ),
-          child: Center(
-            child: CircleAvatar(
-              // backgroundImage: AssetImage('assets/images/user.png'),
-              radius: 50,
-            ),
-          ),
-        ),
-        Text(
-          'user1@gmail.com',
-          style: TextStyle(
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        SizedBox(
-          height: 30,
-        ),
-        Padding(
-          padding: const EdgeInsets.only(
-            left: 15,
-            right: 15,
-          ),
-          child: Card(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(17),
-            ),
-            color: HexColor('#f5f6fa'),
-            child: ListTile(
-              leading: Icon(
-                Icons.menu_outlined,
-                color: Colors.amber[700],
+    return Center(
+      child: Card(
+        // color: Colors.grey[200],
+        elevation: 3,
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(
+                top: 20,
+                bottom: 20,
               ),
-              title: Text('Edit Info'),
-              trailing: Icon(
-                Icons.arrow_forward_ios,
-                color: Colors.amber[700],
+              child: Center(
+                child: CircleAvatar(
+                  // backgroundImage: AssetImage('assets/images/user.png'),
+                  radius: 50,
+                ),
               ),
-              onTap: () {
-                Navigator.pushNamed(context, 'editUser');
-              },
             ),
-          ),
+            Text(
+              'example@gmail.com',
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            SizedBox(
+              height: 30,
+            ),
+            Padding(
+              padding: const EdgeInsets.only(
+                left: 15,
+                right: 15,
+              ),
+              child: Card(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(17),
+                ),
+                // color: Color(0xf5f6fa),
+                child: ListTile(
+                  leading: Icon(
+                    Icons.menu_outlined,
+                    color: Color.fromARGB(255, 39, 92, 216),
+                  ),
+                  title: Text('Edit Info'),
+                  trailing: Icon(
+                    Icons.arrow_forward_ios,
+                    color: Color.fromARGB(255, 39, 92, 216),
+                  ),
+                  onTap: () {
+                    if (selectedRole == "Hotel Owner")
+                      Navigator.pushNamed(context, 'updateHotel', arguments: {
+                        'id': userId,
+                      });
+                    else
+                      Navigator.pushNamed(context, 'editUser');
+                  },
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(
+                left: 15,
+                right: 15,
+              ),
+              child: Card(
+                elevation: 3,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(17),
+                ),
+                child: ListTile(
+                  leading: Icon(
+                    Icons.logout_outlined,
+                    color: Color.fromARGB(255, 39, 92, 216),
+                  ),
+                  title: Text('Log Out'),
+                  trailing: Icon(
+                    Icons.arrow_forward_ios,
+                    color: Color.fromARGB(255, 39, 92, 216),
+                  ),
+                  onTap: () async {
+                    Navigator.pushNamed(context, 'mainPage');
+                    SharedPreferences prefs =
+                        await SharedPreferences.getInstance();
+                    prefs.remove('jwtToken');
+                    prefs.remove('role');
+                    setState(() {
+                      isLoggedIn = false;
+                    });
+                  },
+                ),
+              ),
+            )
+          ],
         ),
-        Padding(
-          padding: const EdgeInsets.only(
-            left: 15,
-            right: 15,
-          ),
-          child: Card(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(17),
-            ),
-            color: HexColor('#f5f6fa'),
-            child: ListTile(
-              leading: Icon(
-                Icons.logout_outlined,
-                color: Colors.amber[700],
-              ),
-              title: Text('Log Out'),
-              trailing: Icon(
-                Icons.arrow_forward_ios,
-                color: Colors.amber[700],
-              ),
-              onTap: () async {
-                Navigator.pushNamed(context, 'mainPage');
-                SharedPreferences prefs = await SharedPreferences.getInstance();
-                prefs.remove('jwtToken');
-                prefs.remove('role');
-                setState(() {
-                  isLoggedIn = false;
-                });
-              },
-            ),
-          ),
-        )
-      ],
+      ),
     );
   }
 

@@ -10,6 +10,7 @@ import 'dart:io';
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class RoomCreate extends StatelessWidget {
   const RoomCreate({super.key});
@@ -29,6 +30,7 @@ class RoomCreatePage extends StatefulWidget {
 
 class _RoomCreatePageState extends State<RoomCreatePage> {
   File? _image;
+  String ownerId = '';
 
   Future getImage(ImageSource source) async {
     try {
@@ -44,6 +46,26 @@ class _RoomCreatePageState extends State<RoomCreatePage> {
     } on PlatformException catch (e) {
       print('Failed to pick image: $e');
     }
+  }
+
+  void jwtDecode() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    String storedToken = prefs.getString('jwtToken') ?? '';
+    String userRole = prefs.getString('role') ?? '';
+
+    // Decode the stored token
+    List<String> tokenParts = storedToken.split('.');
+    String encodedPayload = tokenParts[1];
+    String decodedPayload = utf8.decode(base64Url.decode(encodedPayload));
+
+    // Parse the decoded payload as JSON
+    Map<String, dynamic> payloadJson = jsonDecode(decodedPayload);
+
+    // Access the token claims from the payload
+    ownerId = payloadJson['_id'];
+    print('Stored Role: $userRole');
+    print('USER ID: $ownerId');
   }
 
   Future<File> saveFilePermanently(String imagePath) async {
@@ -71,16 +93,19 @@ class _RoomCreatePageState extends State<RoomCreatePage> {
 
   @override
   void initState() {
+    jwtDecode();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    print(ownerId);
     void room() async {
       if (roomTypeValue.isNotEmpty &&
           priceController.text.isNotEmpty &&
           maxGuestCapacityController.text.isNotEmpty) {
         var regBody = {
+          "hotelId": ownerId,
           "roomType": roomTypeValue,
           "price": priceController.text,
           "maxCapacity": maxGuestCapacityController.text,
@@ -95,11 +120,6 @@ class _RoomCreatePageState extends State<RoomCreatePage> {
             options: Options(headers: {"Content-Type": "application/json"}),
             data: jsonEncode(regBody),
           );
-          // var response = await _dio.post(
-          //   options: Options(headers: {"Content-Type": "application/json"}),
-          //   data: jsonEncode(regBody),
-          // );
-
           Navigator.of(context, rootNavigator: true).pushNamed('mainPage');
 
           print('Response status code: ${response.statusCode}');
@@ -118,12 +138,26 @@ class _RoomCreatePageState extends State<RoomCreatePage> {
     // hotelRomm/register
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(fontFamily: 'OpenSans'),
+// theme: ThemeData(fontFamily: 'OpenSans'),
       home: Scaffold(
         backgroundColor: Colors.grey[200],
         appBar: AppBar(
-          backgroundColor: Color.fromARGB(255, 23, 118, 213),
-          title: Text("yoHotel"),
+          elevation: 3,
+          backgroundColor: Color.fromARGB(255, 39, 92, 216),
+          leading: IconButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            icon: Icon(Icons.arrow_back_ios_new),
+            //replace with our own icon data.
+          ),
+          title: Text(
+            'yoHotel',
+            style: TextStyle(
+              fontSize: 25,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
           centerTitle: true,
         ),
         body: SingleChildScrollView(

@@ -23,6 +23,9 @@ const HotelRoom = mongoose.Schema({
         required: true,
         default: true
     },
+    image: {
+        type: String,
+    }
 });
 
 module.exports = mongoose.model("HotelRoom", HotelRoom);

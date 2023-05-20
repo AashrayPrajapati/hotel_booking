@@ -32,7 +32,7 @@ class _RoomTypePageState extends State<RoomTypePage> {
 
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(fontFamily: 'OpenSans'),
+      // theme: ThemeData(fontFamily: 'OpenSans'),
       home: Scaffold(
         appBar: AppBar(
           title: Text("Hotel Info Page"),

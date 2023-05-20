@@ -109,7 +109,7 @@ class _HomePageState extends State<HomePage> {
               onPressed: () {
                 Navigator.pop(context);
               },
-              icon: Icon(Icons.arrow_back_ios),
+              icon: Icon(Icons.arrow_back_ios_new),
               //replace with our own icon data.
             ),
             title: Text('yoHotel',
@@ -131,7 +131,6 @@ class _HomePageState extends State<HomePage> {
                         controller: searchInput,
                         decoration: InputDecoration(
                           prefixIcon: Icon(Icons.search_outlined),
-                          suffixIcon: Icon(Icons.mic_outlined),
                           contentPadding: EdgeInsets.symmetric(vertical: 10),
                           hintText: "City or hotels' name",
                           border: OutlineInputBorder(
@@ -325,13 +324,14 @@ class _HomePageState extends State<HomePage> {
                                                 height: 100,
                                                 child: Card(
                                                   elevation: 3,
-                                                  // child: Image.network(
-                                                  //   'https://bit.ly/3KAjXJW',
-                                                  //   fit: BoxFit.cover,
+                                                  child: Image.network(
+                                                    'https://bit.ly/3KAjXJW',
+                                                    fit: BoxFit.cover,
+                                                  ),
+                                                  // child: Placeholder(
+                                                  //   fallbackHeight: 100,
+                                                  //   fallbackWidth: 100,
                                                   // ),
-                                                  child: Placeholder(
-                                                      fallbackHeight: 100,
-                                                      fallbackWidth: 100),
                                                 ),
                                               ),
                                             ),

@@ -25,17 +25,23 @@ class _DashboardState extends State<Dashboard> {
         // backgroundColor: Colors.grey[350],
         // backgroundColor: Color.fromRGBO(158, 235, 251, 1),
         appBar: AppBar(
+          elevation: 3,
+          backgroundColor: Color.fromARGB(255, 39, 92, 216),
+          leading: IconButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            icon: Icon(Icons.arrow_back_ios_new),
+            //replace with our own icon data.
+          ),
           title: Text(
-            "yoHotel",
+            'yoHotel',
             style: TextStyle(
-              // color: Color.fromARGB(255, 34, 150, 243),
               fontSize: 25,
               fontWeight: FontWeight.w600,
             ),
           ),
           centerTitle: true,
-          automaticallyImplyLeading: false,
-          backgroundColor: Color.fromRGBO(0, 119, 182, 1),
         ),
         body: Column(
           children: [

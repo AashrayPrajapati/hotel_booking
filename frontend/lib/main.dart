@@ -1,10 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:hotel_booking/khalti2.dart';
+import 'package:hotel_booking/screens/hotels/getRoom.dart';
+import 'package:khalti_flutter/khalti_flutter.dart';
 // import 'package:flutter/services.dart';
 
+import 'khalti.dart';
 import 'screens/auth/register/register.dart';
 import 'screens/auth/login/login.dart';
 
 import 'mainPage.dart';
+import 'screens/hotels/updateHotel.dart';
+import 'screens/hotels/updateRoom.dart';
+import 'screens/hotels/viewBooking.dart';
 import 'screens/super admin/registeredUsers.dart';
 import 'screens/user/editUser.dart';
 import 'screens/user/user.dart';
@@ -29,9 +36,13 @@ class Main extends StatefulWidget {
 class _MainState extends State<Main> {
   @override
   Widget build(BuildContext context) {
+    // return KhaltiScope(
+    //   publicKey: 'test_public_key_19908edd96ba473297852ed745f2f615',
+    //   enabledDebugging: true,
+    //   builder: (context, navKey) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(fontFamily: 'OpenSans'), // OPEN-SANS FONT STYLE
+      // theme: ThemeData(fontFamily: 'OpenSans'), // OPEN-SANS FONT STYLE
       home: MyLogin(),
       routes: {
         'register': (context) => MyRegister(),
@@ -51,7 +62,19 @@ class _MainState extends State<Main> {
         'registeredHotels': (context) => RegisteredHotels(),
         //
         'editUser': (context) => EditUser(),
+        'updateHotel': (context) => UpdateHotel(),
+        'khalti': (context) => Khalti(),
+        'khalti2': (context) => Khalti2(),
+        'updateRoom': (context) => UpdateRoom(),
+        'getRooms': (context) => GetRooms(),
+        'viewBooking': (context) => ViewBooking(),
       },
+      // navigatorKey: navKey,
+      // localizationsDelegates: const [
+      //   KhaltiLocalizations.delegate,
+      // ])
+
+      // },
     );
   }
 }
