@@ -175,35 +175,70 @@ class UpdateRoomState extends State<UpdateRoom> {
                         ),
                       ),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.only(
-                        top: 10,
-                        bottom: 20,
-                      ),
-                      child: ElevatedButton(
-                        onPressed: () {
-                          updateRoom(roomId!);
-                          print(roomTypeController.text);
-                          print(capacityController.text);
-                          print(priceController.text);
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(
+                            top: 10,
+                            bottom: 20,
+                          ),
+                          child: ElevatedButton(
+                            onPressed: () {
+                              updateRoom(roomId!);
+                              print(roomTypeController.text);
+                              print(capacityController.text);
+                              print(priceController.text);
 
-                          // Navigator.pushNamed(context, 'mainPage');
-                        },
-                        child: Text(
-                          'Save',
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
+                              // Navigator.pushNamed(context, 'mainPage');
+                            },
+                            child: Text(
+                              'Save',
+                              style: TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Color.fromARGB(255, 39, 92, 216),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(17),
+                              ),
+                              minimumSize: Size(150, 50),
+                            ),
                           ),
                         ),
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Color.fromARGB(255, 39, 92, 216),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(17),
+                        Padding(
+                          padding: const EdgeInsets.only(
+                            top: 10,
+                            bottom: 20,
                           ),
-                          minimumSize: Size(150, 50),
+                          child: ElevatedButton(
+                            onPressed: () {
+                              updateRoom(roomId!);
+                              print(roomTypeController.text);
+                              print(capacityController.text);
+                              print(priceController.text);
+
+                              // Navigator.pushNamed(context, 'mainPage');
+                            },
+                            child: Text(
+                              'Delete',
+                              style: TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Color.fromARGB(255, 179, 65, 65),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(17),
+                              ),
+                              minimumSize: Size(150, 50),
+                            ),
+                          ),
                         ),
-                      ),
+                      ],
                     ),
                   ],
                 ),

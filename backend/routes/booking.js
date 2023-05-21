@@ -116,6 +116,8 @@ router.post("/book", async (req, res) => {
         .status(409)
         .send("Hotel room does not exist in the specified hotel");
 
+    const type = HotelRoomExists.roomType;
+
     // Check if the room is already booked during the selected dates
     const existingBooking = await Booking.findOne({
       room: req.body.room,
@@ -131,8 +133,9 @@ router.post("/book", async (req, res) => {
     // Create a new instance of User Schema
     const booking = new Booking({
       user: req.body.user,
-      hotel: req.body.hotel,
+      hotel: req.body.hotel,  
       room: req.body.room,
+      roomType: type,
       checkInDate: req.body.checkInDate,
       checkOutDate: req.body.checkOutDate,
       guests: req.body.guests,
@@ -154,5 +157,21 @@ router.post("/book", async (req, res) => {
     res.status(400).json(err);
   }
 });
+
+  
+
+//get all bookings with hotel id
+router.get("/getBookings/:id", async (req, res) => {
+  try {
+
+    const bookings = await Booking.find({hotel: req.params.id});
+    res.json(bookings);
+  } catch (error) {
+    res.json(error);
+  }
+});
+
+
+
 
 module.exports = router;

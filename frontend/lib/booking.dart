@@ -3,10 +3,6 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
-import 'package:hotel_booking/khalti.dart';
-import 'package:hotel_booking/khalti2.dart';
-import 'package:input_quantity/input_quantity.dart';
-import 'package:khalti_flutter/khalti_flutter.dart';
 
 class BookingPage extends StatefulWidget {
   @override
@@ -28,55 +24,6 @@ class _BookingPageState extends State<BookingPage> {
     checkOut.dispose();
     noOfGuests.dispose();
     super.dispose();
-  }
-
-  payWithKhaltiInApp() {
-    KhaltiScope.of(context).pay(
-      config: PaymentConfig(
-        amount: 1000, //in paisa
-        productIdentity: 'Product Id',
-        productName: 'Product Name',
-        mobileReadOnly: false,
-      ),
-      preferences: [
-        PaymentPreference.khalti,
-      ],
-      onSuccess: onSuccess,
-      onFailure: onFailure,
-      onCancel: onCancel,
-    );
-  }
-
-  void onSuccess(PaymentSuccessModel success) {
-    showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: const Text('Payment Successful'),
-          actions: [
-            SimpleDialogOption(
-                child: const Text('OK'),
-                onPressed: () {
-                  setState(() {
-                    referenceId = success.idx;
-                  });
-
-                  Navigator.pop(context);
-                })
-          ],
-        );
-      },
-    );
-  }
-
-  void onFailure(PaymentFailureModel failure) {
-    debugPrint(
-      failure.toString(),
-    );
-  }
-
-  void onCancel() {
-    debugPrint('Cancelled');
   }
 
   @override
@@ -106,55 +53,38 @@ class _BookingPageState extends State<BookingPage> {
 
     // Use the ID value here to fetch the booking details or do any other processing.
 
-    KhaltiScope(
-      publicKey: 'test_public_key_19908edd96ba473297852ed745f2f615',
-      enabledDebugging: true,
-      builder: (context, navKey) {
-        return MaterialApp(
-          debugShowCheckedModeBanner: false,
-          home: Khalti(),
-          navigatorKey: navKey,
-          supportedLocales: const [
-            Locale('en', 'US'),
-            Locale('ne', 'NP'),
-          ],
-          localizationsDelegates: const [
-            KhaltiLocalizations.delegate,
-          ],
-        );
-      },
-    );
-
     void book() async {
       try {
         final Dio _dio = Dio();
 
         var regBody = {
-          "user": userId,
-          "hotel": hotelId,
-          "room": roomId,
-          "checkInDate": startDate,
-          "checkOutDate": endDate,
-          "guests": noOfGuests.text,
+          "user": userId!,
+          "hotel": hotelId!,
+          "room": roomId!,
+          "checkInDate": startDate!,
+          "checkOutDate": endDate!,
+          "guests": int.parse(noOfGuests.text),
           "totalPrice": totalprice,
           "paymentStatus": "Pending"
         };
         print(regBody);
 
         var response = await _dio.post(
-          // 'http://10.0.2.2:3000/bookRoom/book',
           'http://192.168.31.116:3000/bookRoom/book',
           options: Options(headers: {"Content-Type": "application/json"}),
-          data: jsonEncode(regBody),
+          data: regBody,
         );
-        // var response = await _dio.post(
-        //   options: Options(headers: {"Content-Type": "application/json"}),
-        //   data: jsonEncode(regBody),
-        // );
-        print('Response status code: ${response.statusCode}');
-        print('Response body: ${response.data}');
-      } on DioError catch (e) {
-        print('Error connecting to server: ${e.message}');
+
+        if (response.statusCode == 200) {
+          print('Booking successful!');
+          print('Response body: ${response.data}');
+          Navigator.pushNamed(context, 'mainPage');
+        } else {
+          print('Booking failed. Response status code: ${response.statusCode}');
+          print('Response body: ${response.data}');
+        }
+      } catch (e) {
+        print('Error connecting to server: $e');
       }
     }
 
@@ -310,29 +240,6 @@ class _BookingPageState extends State<BookingPage> {
                           ),
                           child: Column(
                             children: [
-                              // Row(
-                              //   mainAxisAlignment:
-                              //       MainAxisAlignment.spaceBetween,
-                              //   children: [
-                              //     Text(
-                              //       'Total length of stay',
-                              //       style: TextStyle(
-                              //         fontSize: 20,
-                              //         color: Colors.black,
-                              //         fontWeight: FontWeight.w500,
-                              //       ),
-                              //     ),
-                              //     Text(
-                              //       '$numberOfNights nights',
-                              //       style: TextStyle(
-                              //         fontSize: 20,
-                              //         color: Colors.black,
-                              //         fontWeight: FontWeight.w500,
-                              //       ),
-                              //     ),
-                              //   ],
-                              // ),
-                              // SizedBox(height: 7),
                               Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
@@ -399,27 +306,13 @@ class _BookingPageState extends State<BookingPage> {
                   ),
                   child: Column(
                     children: [
-                      // TextField(
-                      //   controller: userId,
-                      //   decoration: InputDecoration(
-                      //     border: OutlineInputBorder(),
-                      //     hintText: 'Enter User ID',
-                      //   ),
-                      // ),
-                      // SizedBox(height: 10),
-                      // QuantityInput(value: noOfGuests, onChanged: () ),
                       Center(
                         child: Container(
                           width: 120,
                           child: TextField(
                             style: TextStyle(
                               height: 1.0,
-
-                              // fontSize: 18,
-                              // fontWeight: FontWeight.w500,
                             ),
-                            // cursorHeight: 25,
-
                             controller: noOfGuests,
                             decoration: InputDecoration(
                               border: OutlineInputBorder(
@@ -446,115 +339,10 @@ class _BookingPageState extends State<BookingPage> {
                         backgroundColor: HexColor('#FF265CD8'),
                       ),
                       onPressed: () {
-                        // book();
-                        //
-                        //
-                        //
-                        showModalBottomSheet(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return Container(
-                              constraints: BoxConstraints(
-                                maxHeight:
-                                    MediaQuery.of(context).size.height * 0.8,
-                              ),
-                              child: SingleChildScrollView(
-                                child: Column(
-                                  crossAxisAlignment:
-                                      CrossAxisAlignment.stretch,
-                                  children: [
-                                    Align(
-                                      alignment: Alignment.topRight,
-                                      child: IconButton(
-                                        onPressed: () {
-                                          Navigator.pop(context);
-                                        },
-                                        icon: Icon(
-                                          Icons.close,
-                                          size: 30,
-                                          color: Colors.grey[700],
-                                        ),
-                                      ),
-                                    ),
-                                    Container(
-                                      padding: EdgeInsets.all(16),
-                                      color: Colors.white,
-                                      child: Column(
-                                        mainAxisSize: MainAxisSize.max,
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.stretch,
-                                        children: [
-                                          ElevatedButton(
-                                            onPressed: () {
-                                              // payWithKhaltiInApp();
-                                              // Navigator.pushNamed(
-                                              //     context, 'khalti2');
-                                              Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      Khalti2(),
-                                                ),
-                                              );
-                                            },
-                                            child: Text(
-                                              'Pay with Khalti',
-                                              style: TextStyle(
-                                                fontSize: 20,
-                                                fontWeight: FontWeight.w600,
-                                              ),
-                                            ),
-                                            style: ElevatedButton.styleFrom(
-                                              shape: RoundedRectangleBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(50),
-                                              ),
-                                              backgroundColor:
-                                                  Color(0xFF572C8A),
-                                              onPrimary: Colors.white,
-                                              padding: EdgeInsets.symmetric(
-                                                  vertical: 16),
-                                            ),
-                                          ),
-                                          // Text(referenceId),
-                                          SizedBox(height: 10),
-                                          ElevatedButton(
-                                            onPressed: () {
-                                              book();
-                                            },
-                                            child: Text(
-                                              'Pay with Cash',
-                                              style: TextStyle(
-                                                fontSize: 20,
-                                                fontWeight: FontWeight.w600,
-                                              ),
-                                            ),
-                                            style: ElevatedButton.styleFrom(
-                                              shape: RoundedRectangleBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(50),
-                                              ),
-                                              backgroundColor:
-                                                  Color(0xFF265CD8),
-                                              onPrimary: Colors.white,
-                                              padding: EdgeInsets.symmetric(
-                                                  vertical: 16),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            );
-                          },
-                        );
+                        book();
                       },
                       child: Text(
-                        'Book Now',
+                        'Pay With Cash',
                         style: TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.w600,

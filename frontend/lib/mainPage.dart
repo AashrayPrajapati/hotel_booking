@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:hotel_booking/screens/admin/roomCrud/createRoom.dart';
 import 'package:hotel_booking/screens/auth/login/login.dart';
-import 'package:hotel_booking/screens/hotels/getRoom.dart';
 //
+import 'screens/hotels/getRoom.dart';
 import 'screens/mainPage/home.dart';
 import 'screens/user/settings.dart';
 import 'screens/user/user.dart';
@@ -16,8 +16,11 @@ class MainPage extends StatefulWidget {
 class _MainPageState extends State<MainPage> {
   List pages = [
     Home(),
-    if (selectedRole == "Hotel Owner") RoomCreate() else Home(),
-    if (selectedRole == "Hotel Owner") GetRooms() else userSettings(),
+    if (selectedRole == "Hotel Owner")
+      RoomCreate()
+    else if (selectedRole == "User")
+      userSettings(),
+    if (selectedRole == "Hotel Owner") GetRooms(),
     User(),
   ];
   int thisIndex = 0;
