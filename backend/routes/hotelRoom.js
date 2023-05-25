@@ -16,8 +16,6 @@ router.post("/register", async (req, res) => {
     return res.status(404).json({ message: "Admin not found" });
   }
 
-  console.log("suiiiiiii");
-
   const hotelRoom = new HotelRoom({
     hotelId: req.body.hotelId,
     roomType: req.body.roomType,
@@ -31,6 +29,16 @@ router.post("/register", async (req, res) => {
   } catch (error) {
     res.json(error);
   }
+});
+
+//delete a room
+router.delete("/deleteRoom/:id", async (req, res) => {
+    try {
+        const removedRoom = await HotelRoom.remove({ _id: req.params.id });
+        res.json(removedRoom);
+    } catch (error) {
+        res.json(error);
+    }
 });
 
 //create a patch request to update the room

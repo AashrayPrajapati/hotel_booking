@@ -69,8 +69,8 @@ class _ViewBookingState extends State<ViewBooking> {
   Future<List<Bookings>> getBookings(String hotelId) async {
     try {
       List<Bookings> bookings = [];
-      final bookingResponse = await _dio
-          .get('http://192.168.31.116:3000/bookRoom/getBookings/$hotelId');
+      final bookingResponse =
+          await _dio.get('http://10.0.2.2:3000/bookRoom/getBookings/$hotelId');
 
       var bookingData = bookingResponse.data;
 

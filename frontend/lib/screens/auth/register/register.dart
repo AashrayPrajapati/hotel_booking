@@ -31,7 +31,8 @@ class _MyRegisterState extends State<MyRegister> {
   void registerUser() async {
     if (nameController.text.isNotEmpty &&
         emailController.text.isNotEmpty &&
-        passwordController.text.isNotEmpty) {
+        passwordController.text.isNotEmpty &&
+        passwordController.text.length > 6) {
       var regBody = {
         "name": nameController.text,
         "email": emailController.text,
@@ -40,8 +41,7 @@ class _MyRegisterState extends State<MyRegister> {
       print(regBody);
       try {
         var response = await _dio.post(
-          // 'http://10.0.2.2:3000/users/register',
-          'http://192.168.31.116:3000/users/register',
+          'http://10.0.2.2:3000/users/register',
           options: Options(headers: {"Content-Type": "application/json"}),
           data: jsonEncode(regBody),
         );
@@ -55,6 +55,7 @@ class _MyRegisterState extends State<MyRegister> {
         print('Error connecting to server: ${e.message}');
       }
     } else {
+      print('Enter valid data');
       setState(() {
         _isNotValidate = true;
       });
@@ -126,7 +127,7 @@ class _MyRegisterState extends State<MyRegister> {
                         margin: EdgeInsets.only(left: 35, right: 35),
                         child: Column(
                           children: [
-                            TextField(
+                            TextFormField(
                               controller: nameController,
                               keyboardType: TextInputType.text,
                               //
@@ -157,6 +158,12 @@ class _MyRegisterState extends State<MyRegister> {
                                   borderRadius: BorderRadius.circular(10),
                                 ),
                               ),
+                              validator: (value) {
+                                if (value!.isEmpty) {
+                                  return 'Please enter name';
+                                }
+                                return null;
+                              },
                             ),
                             SizedBox(
                               height: 30,

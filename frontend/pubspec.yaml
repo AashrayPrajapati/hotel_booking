@@ -33,6 +33,7 @@ dependencies:
   quantity_input: ^1.0.2
   input_quantity: ^1.1.5
   khalti_flutter: ^2.1.0
+  email_validator: ^2.1.17
   
 
 dev_dependencies:
@@ -64,4 +65,7 @@ flutter:
 
 
 flutter_native_splash:
-  background_image: "assets/splash.png"
+  background_image: "assets/splash.jpg"
+  android: true,
+  ios: true,
+  web: false,

@@ -10,7 +10,8 @@ require("dotenv/config");
 const nodemailer = require("nodemailer");
 
 // async..await is not allowed in global scope, must use a wrapper
-async function mail() {
+async function mail(t_price, checkInDate, checkOutDate) {
+
   // Generate test SMTP service account from ethereal.email
   // Only needed if you don't have a real mail account for testing
   let testAccount = await nodemailer.createTestAccount();
@@ -24,7 +25,7 @@ async function mail() {
     },
   });
 
-  console.log("SUIIIIIIIIIIII");
+  console.log(t_price);
 
   // send mail with defined transport object
   let info = await transporter.sendMail({
@@ -75,6 +76,12 @@ async function mail() {
         <div class="message">
           Hello,<br><br>
           Your hotel room has been booked.<br><br>
+          total price is: ${t_price}<br><br>
+          for <br><br>
+          
+          Check-in Date: ${checkInDate}<br><br>
+          
+          Check-out Date: ${checkOutDate}<br><br>
           Thank you.
         </div>
         <div class="footer">This is an automated email. Please do not reply.</div>
@@ -130,6 +137,10 @@ router.post("/book", async (req, res) => {
         .status(409)
         .send("The room is already booked during the selected dates");
 
+    let t_price = req.body.totalPrice;
+    let checkInDate = new Date(req.body.checkInDate);
+    let checkOutDate = new Date(req.body.checkOutDate);
+    
     // Create a new instance of User Schema
     const booking = new Booking({
       user: req.body.user,
@@ -146,7 +157,7 @@ router.post("/book", async (req, res) => {
     // Save the user to the database
     const createBooking = await booking.save();
 
-    await mail();
+    await mail(t_price, checkInDate, checkOutDate);
 
     return res.status(200).json({
       status: "Success",
@@ -158,8 +169,6 @@ router.post("/book", async (req, res) => {
   }
 });
 
-  
-
 //get all bookings with hotel id
 router.get("/getBookings/:id", async (req, res) => {
   try {
@@ -170,8 +179,5 @@ router.get("/getBookings/:id", async (req, res) => {
     res.json(error);
   }
 });
-
-
-
 
 module.exports = router;

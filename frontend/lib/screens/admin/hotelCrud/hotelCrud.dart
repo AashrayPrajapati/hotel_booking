@@ -55,8 +55,8 @@ class HotelCrudState extends State<HotelCrud> {
       print(regBody);
       try {
         var response = await _dio.post(
-          // 'http://10.0.2.2:3000/hotel/register',
-          'http://192.168.31.116:3000/hotel/register',
+          'http://10.0.2.2:3000/hotel/register',
+          // 'http://192.168.31.116:3000/hotel/register',
           options: Options(headers: {"Content-Type": "application/json"}),
           data: jsonEncode(regBody),
         );
@@ -371,7 +371,8 @@ class HotelCrudState extends State<HotelCrud> {
                       child: TextField(
                         maxLines: null,
                         controller: descriptionController,
-                        keyboardType: TextInputType.text,
+                        keyboardType: TextInputType.multiline,
+                        // expands: true,
                         style: TextStyle(fontSize: 15, height: 0.7),
                         decoration: InputDecoration(
                           //
@@ -421,7 +422,7 @@ class HotelCrudState extends State<HotelCrud> {
                       registerHotel();
                     },
                     child: Text("Next"),
-                  )
+                  ),
                 ],
               ),
             ],

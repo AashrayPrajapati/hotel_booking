@@ -63,7 +63,7 @@ class _GetRoomsState extends State<GetRooms> {
     try {
       List<Room> rooms = [];
       final roomResponse =
-          await _dio.get('http://192.168.31.116:3000/hotel/rooms/$hotelId');
+          await _dio.get('http://10.0.2.2:3000/hotel/rooms/$hotelId');
 
       var roomData = roomResponse.data;
 

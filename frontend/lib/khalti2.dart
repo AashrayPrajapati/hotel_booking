@@ -62,9 +62,6 @@ class _Khalti2State extends State<Khalti2> {
       },
     );
 
-    // print(
-    //     '99999999999999999999999999999999999999999999999999999999999999999999999999999999999');
-
     // return Scaffold(
     //   appBar: AppBar(
     //     title: const Text("Khalti Payment"),

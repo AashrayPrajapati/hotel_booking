@@ -61,12 +61,9 @@ class _HotelInfoPageState extends State<HotelInfoPage> {
       print('check-out date: $endDate');
       print('user ID: $userId');
       print('````````````````````````````````````````````');
-      // final response =
-      //     await _dio.get('http://10.0.2.2:3000/hotel/getHotel/$id');
-      final response =
-          await _dio.get('http://192.168.31.116:3000/hotel/getHotel/$id');
 
-      // await _dio.get('http://10.0.2.2:3000/hotel/getHotel/$id');
+      final response =
+          await _dio.get('http://10.0.2.2:3000/hotel/getHotel/$id');
 
       var jsonData = response.data;
 
@@ -89,8 +86,7 @@ class _HotelInfoPageState extends State<HotelInfoPage> {
     try {
       List<Room> rooms = [];
       final roomResponse =
-          // await _dio.get('http://10.0.2.2:3000/hotel/rooms/$roomID');
-          await _dio.get('http://192.168.31.116:3000/hotel/rooms/$roomID');
+          await _dio.get('http://10.0.2.2:3000/hotel/rooms/$roomID');
 
       var roomData = roomResponse.data;
 
@@ -269,69 +265,69 @@ class _HotelInfoPageState extends State<HotelInfoPage> {
                                                     ],
                                                   ),
 
-                                                  Padding(
-                                                    padding:
-                                                        const EdgeInsets.only(
-                                                            right: 20,
-                                                            bottom: 20),
-                                                    child: IconButton(
-                                                      onPressed: () {
-                                                        showModalBottomSheet(
-                                                          context: context,
-                                                          builder: (context) {
-                                                            return Container(
-                                                              height:
-                                                                  MediaQuery.of(
-                                                                          context)
-                                                                      .size
-                                                                      .height,
+                                                  Expanded(
+                                                    child: Padding(
+                                                      padding:
+                                                          const EdgeInsets.only(
+                                                              right: 20,
+                                                              bottom: 20),
+                                                      child: IconButton(
+                                                        onPressed: () {
+                                                          showModalBottomSheet(
+                                                            context: context,
+                                                            builder: (context) {
+                                                              return Container(
+                                                                // height: MediaQuery.of(
+                                                                //             context)
+                                                                //         .size
+                                                                //         .height *
+                                                                //     0.5,
+                                                                height: 350,
 
-                                                              // create a comment section
-                                                              child: Column(
-                                                                children: [
-                                                                  Padding(
-                                                                    padding:
-                                                                        const EdgeInsets.all(
-                                                                            15),
-                                                                    child:
-                                                                        TextField(
-                                                                      decoration:
-                                                                          InputDecoration(
-                                                                        suffixIcon:
-                                                                            IconButton(
-                                                                          onPressed:
-                                                                              () {},
-                                                                          icon:
-                                                                              Icon(
-                                                                            Icons.send,
-                                                                            color: Color.fromARGB(
-                                                                                255,
-                                                                                39,
-                                                                                92,
-                                                                                216),
+                                                                // create a comment section
+                                                                child: Column(
+                                                                  children: [
+                                                                    Padding(
+                                                                      padding:
+                                                                          const EdgeInsets.all(
+                                                                              15),
+                                                                      child:
+                                                                          TextField(
+                                                                        decoration:
+                                                                            InputDecoration(
+                                                                          suffixIcon:
+                                                                              IconButton(
+                                                                            onPressed:
+                                                                                () {},
+                                                                            icon:
+                                                                                Icon(
+                                                                              Icons.send,
+                                                                              color: Color.fromARGB(255, 39, 92, 216),
+                                                                            ),
                                                                           ),
-                                                                        ),
-                                                                        hintText:
-                                                                            'Add a comment',
-                                                                        border:
-                                                                            OutlineInputBorder(
-                                                                          borderRadius:
-                                                                              BorderRadius.circular(10),
+                                                                          hintText:
+                                                                              'Add a comment',
+                                                                          border:
+                                                                              OutlineInputBorder(
+                                                                            borderRadius:
+                                                                                BorderRadius.circular(10),
+                                                                          ),
                                                                         ),
                                                                       ),
                                                                     ),
-                                                                  ),
-                                                                ],
-                                                              ),
-                                                            );
-                                                          },
-                                                        );
-                                                      },
-                                                      icon: Icon(
-                                                        Icons.comment_outlined,
-                                                        color: Color.fromARGB(
-                                                            255, 39, 92, 216),
-                                                        size: 30,
+                                                                  ],
+                                                                ),
+                                                              );
+                                                            },
+                                                          );
+                                                        },
+                                                        icon: Icon(
+                                                          Icons
+                                                              .comment_outlined,
+                                                          color: Color.fromARGB(
+                                                              255, 39, 92, 216),
+                                                          size: 30,
+                                                        ),
                                                       ),
                                                     ),
                                                   ),

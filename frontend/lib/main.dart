@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:hotel_booking/khalti2.dart';
 import 'package:hotel_booking/screens/hotels/getRoom.dart';
-import 'package:khalti_flutter/khalti_flutter.dart';
+// import 'package:khalti_flutter/khalti_flutter.dart';
 // import 'package:flutter/services.dart';
 
 import 'khalti.dart';
+import 'screens/admin/hotelCrud/hotelCrud.dart';
 import 'screens/auth/register/register.dart';
 import 'screens/auth/login/login.dart';
 
@@ -18,14 +20,19 @@ import 'screens/user/user.dart';
 
 import 'booking.dart';
 import 'screens/admin/hotelDashboard/dashboard.dart';
-import 'screens/admin/hotelCrud/hotelCrud.dart';
 import 'screens/hotels/hotelInfo.dart';
 import 'screens/hotels/roomType.dart';
 
 import 'screens/super admin/registeredHotels.dart';
 import 'screens/admin/roomCrud/createRoom.dart';
 
-void main() => runApp(Main());
+Future main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Future.delayed(const Duration(seconds: 1));
+  FlutterNativeSplash.remove();
+
+  runApp(Main());
+}
 
 class Main extends StatefulWidget {
   const Main({key}) : super(key: key);
@@ -36,10 +43,6 @@ class Main extends StatefulWidget {
 class _MainState extends State<Main> {
   @override
   Widget build(BuildContext context) {
-    // return KhaltiScope(
-    //   publicKey: 'test_public_key_19908edd96ba473297852ed745f2f615',
-    //   enabledDebugging: true,
-    //   builder: (context, navKey) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       // theme: ThemeData(fontFamily: 'OpenSans'), // OPEN-SANS FONT STYLE
@@ -69,12 +72,6 @@ class _MainState extends State<Main> {
         'getRooms': (context) => GetRooms(),
         'viewBooking': (context) => ViewBooking(),
       },
-      // navigatorKey: navKey,
-      // localizationsDelegates: const [
-      //   KhaltiLocalizations.delegate,
-      // ])
-
-      // },
     );
   }
 }

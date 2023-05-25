@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:hotel_booking/screens/hotels/getRoom.dart';
-// dio
+// import 'package:hotel_booking/screens/hotels/getRoom.dart';
+
 import 'package:dio/dio.dart';
 
 class UpdateRoom extends StatefulWidget {
@@ -40,8 +40,7 @@ class UpdateRoomState extends State<UpdateRoom> {
     final String capacity = capacityController.text;
     final String price = priceController.text;
 
-    final String url =
-        "http://192.168.31.116:3000/hotelRoom/updateRoom/$roomId";
+    final String url = "http://10.0.2.2:3000/hotelRoom/updateRoom/$roomId";
 
     final response = await _dio.patch(
       url,
@@ -213,30 +212,30 @@ class UpdateRoomState extends State<UpdateRoom> {
                             top: 10,
                             bottom: 20,
                           ),
-                          child: ElevatedButton(
-                            onPressed: () {
-                              updateRoom(roomId!);
-                              print(roomTypeController.text);
-                              print(capacityController.text);
-                              print(priceController.text);
+                          // child: ElevatedButton(
+                          //   onPressed: () {
+                          //     updateRoom(roomId!);
+                          //     print(roomTypeController.text);
+                          //     print(capacityController.text);
+                          //     print(priceController.text);
 
-                              // Navigator.pushNamed(context, 'mainPage');
-                            },
-                            child: Text(
-                              'Delete',
-                              style: TextStyle(
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Color.fromARGB(255, 179, 65, 65),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(17),
-                              ),
-                              minimumSize: Size(150, 50),
-                            ),
-                          ),
+                          //     // Navigator.pushNamed(context, 'mainPage');
+                          //   },
+                          //   child: Text(
+                          //     'Delete',
+                          //     style: TextStyle(
+                          //       fontSize: 20,
+                          //       fontWeight: FontWeight.bold,
+                          //     ),
+                          //   ),
+                          //   style: ElevatedButton.styleFrom(
+                          //     backgroundColor: Color.fromARGB(255, 179, 65, 65),
+                          //     shape: RoundedRectangleBorder(
+                          //       borderRadius: BorderRadius.circular(17),
+                          //     ),
+                          //     minimumSize: Size(150, 50),
+                          //   ),
+                          // ),
                         ),
                       ],
                     ),

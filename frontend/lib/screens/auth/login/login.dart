@@ -3,7 +3,7 @@ import 'package:dio/dio.dart';
 // import 'package:fluttertoast/fluttertoast.dart';
 // import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'dart:convert';
-import 'package:hotel_booking/mainPage.dart';
+// import 'package:hotel_booking/mainPage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 // import 'config.dart';
 
@@ -48,9 +48,9 @@ class _MyLoginState extends State<MyLogin> {
       String apiRole = '';
 
       if (selectedRole == 'User') {
-        apiRole = 'http://192.168.31.116:3000/users/login';
+        apiRole = 'http://10.0.2.2:3000/users/login';
       } else if (selectedRole == 'Hotel Owner') {
-        apiRole = 'http://192.168.31.116:3000/hotel/login';
+        apiRole = 'http://10.0.2.2:3000/hotel/login';
       } else {
         // Handle the case when no role is selected or handle other roles
         return;
@@ -94,13 +94,6 @@ class _MyLoginState extends State<MyLogin> {
               },
             );
 
-            // Navigator.push(
-            //   context,
-            //   MaterialPageRoute(
-            //     builder: (context) => MainPage(),
-            //   ),
-            // );
-
             // Navigator.of(context, rootNavigator: true).pushNamed(
             //   'mainPage',
             //   arguments: {
@@ -123,6 +116,15 @@ class _MyLoginState extends State<MyLogin> {
         // Handle DioError or network-related errors
         print('Error connecting to server: ${e.message}');
         // Show error message to the user or handle the error appropriately
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              'Invalid email or password',
+              style: TextStyle(color: Colors.white),
+            ),
+            backgroundColor: Colors.red,
+          ),
+        );
       }
     }
 
@@ -350,18 +352,6 @@ class _MyLoginState extends State<MyLogin> {
                                       onPressed: () {
                                         login();
                                         print(notValidate);
-                                        if (notValidate) {
-                                          SnackBar(
-                                            backgroundColor: Colors.red,
-                                            content: Text(
-                                              "Invalid email or password",
-                                              style: TextStyle(
-                                                color: Colors.white,
-                                                fontSize: 16,
-                                              ),
-                                            ),
-                                          );
-                                        }
                                       },
 
                                       icon: Icon(

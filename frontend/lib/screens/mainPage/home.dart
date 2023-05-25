@@ -3,7 +3,7 @@ import 'package:intl/intl.dart';
 import 'package:dio/dio.dart';
 // import 'package:hotel_booking/config.dart';
 import 'dart:convert';
-
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 int calculateNumberOfNights(DateTimeRange dateRange) {
@@ -38,7 +38,7 @@ class _HomePageState extends State<HomePage> {
 
   TextEditingController dateRangeInput = TextEditingController();
   TextEditingController searchInput = TextEditingController();
-  String numberOfNights = ''; // Declare numberOfNights as a member variable
+  String numberOfNights = '';
   String formattedStartDate = '';
   String formattedEndDate = '';
 
@@ -110,7 +110,6 @@ class _HomePageState extends State<HomePage> {
                 Navigator.pop(context);
               },
               icon: Icon(Icons.arrow_back_ios_new),
-              //replace with our own icon data.
             ),
             title: Text('yoHotel',
                 style: TextStyle(
@@ -140,8 +139,6 @@ class _HomePageState extends State<HomePage> {
                       ),
                     ),
                   ),
-                  //   ],
-                  // ),
                   Padding(padding: EdgeInsets.only(bottom: 3)),
                   Container(
                     child: Center(
@@ -218,27 +215,21 @@ class _HomePageState extends State<HomePage> {
                             } else {
                               var dio = Dio();
 
-                              // var response = await dio.get(
-                              //     'http://10.0.2.2:3000/hotel/search?query=Sunny%20hotel%20Bhaktapur');
                               var response = await dio.get(
-                                  'http://192.168.31.116:3000/hotel/search?query=Sunny%20hotel%20Bhaktapur');
+                                  'http://10.0.2.2:3000/hotel/search?query=Sunny%20hotel%20Bhaktapur');
                               if (response.statusCode == 200) {
                                 print(response.data);
                               } else {
                                 print(response.statusCode);
                               }
-                              //     'http://10.0.2.2:3000/hotel/getHotels');
-                              //     'http://192.168.101.6:3000/hotel/getHotels');
 
-                              // var response = await dio.get(
-
-                              // if (response.statusCode == 200) {
-                              //   print(response.data);
-                              //   Navigator.pushNamed(context, 'search',
-                              //       arguments: response.data);
-                              // } else {
-                              //   print(response.statusCode);
-                              // }
+                              if (response.statusCode == 200) {
+                                print(response.data);
+                                // Navigator.pushNamed(context, 'search',
+                                //     arguments: response.data);
+                              } else {
+                                print(response.statusCode);
+                              }
                             }
                             // Navigator.pushNamed(context, 'dashboard');
                           },
@@ -246,9 +237,7 @@ class _HomePageState extends State<HomePage> {
                       ),
                     ),
                   ),
-
                   SizedBox(height: 33),
-
                   Container(
                     child: Center(
                       child: SizedBox(
@@ -290,30 +279,46 @@ class _HomePageState extends State<HomePage> {
                                       child: GestureDetector(
                                         onTap: () {
                                           var ID = snapshot.data[index]._id;
-                                          Navigator.of(context,
-                                                  rootNavigator: true)
-                                              .pushNamed(
-                                            'hotelInfo',
-                                            arguments: {
-                                              'userId': userId, // 'userId
-                                              'id': ID,
-                                              'numberOfNights':
-                                                  numberOfNights.toString(),
-                                              'startDate':
-                                                  formattedStartDate.toString(),
-                                              'endDate':
-                                                  formattedEndDate.toString(),
-                                            },
-                                          );
+                                          if (formattedStartDate.isEmpty ||
+                                              formattedEndDate.isEmpty) {
+                                            print("Dates are not selected");
+                                            // use fluttertoast package
+                                            Fluttertoast.showToast(
+                                              msg:
+                                                  "Please select check-in and check-out dates",
+                                              toastLength: Toast.LENGTH_SHORT,
+                                              gravity: ToastGravity.BOTTOM,
+                                              timeInSecForIosWeb: 1,
+                                              backgroundColor: Colors.red[400],
+                                              textColor: Colors.white,
+                                              fontSize: 17,
+                                            );
+                                          } else {
+                                            Navigator.of(context,
+                                                    rootNavigator: true)
+                                                .pushNamed(
+                                              'hotelInfo',
+                                              arguments: {
+                                                'userId': userId, // 'userId
+                                                'id': ID,
+                                                'numberOfNights':
+                                                    numberOfNights.toString(),
+                                                'startDate': formattedStartDate
+                                                    .toString(),
+                                                'endDate':
+                                                    formattedEndDate.toString(),
+                                              },
+                                            );
 
-                                          print("Specific hotel id: $ID");
-                                          print(
-                                              "Check-in date: $formattedStartDate"); // Print the start date
-                                          print(
-                                              "Check-out date: $formattedEndDate"); // Print the end date
-                                          print(
-                                              "Number of nights: $numberOfNights"); // Print the number of nights
-                                          print('homePage');
+                                            print("Specific hotel id: $ID");
+                                            print(
+                                                "Check-in date: $formattedStartDate"); // Print the start date
+                                            print(
+                                                "Check-out date: $formattedEndDate"); // Print the end date
+                                            print(
+                                                "Number of nights: $numberOfNights"); // Print the number of nights
+                                            print('homePage');
+                                          }
                                           // Print the user ID
                                         },
                                         child: Row(
@@ -423,9 +428,6 @@ class _HomePageState extends State<HomePage> {
                       ),
                     ),
                   ),
-                  //
-                  //
-                  //
                 ],
               ),
             ],
@@ -439,11 +441,7 @@ class _HomePageState extends State<HomePage> {
 
   Future<List<Hotel>> getHotels() async {
     try {
-      // final response = await _dio.get('http://10.0.2.2:3000/hotel/getHotels');
-      final response =
-          await _dio.get('http://192.168.31.116:3000/hotel/getHotels');
-      // final response =
-      //     await _dio.get('http://192.168.31.116:3000/hotel/getHotels');
+      final response = await _dio.get('http://10.0.2.2:3000/hotel/getHotels');
 
       List<Hotel> hotels = [];
       var jsonData = response.data;

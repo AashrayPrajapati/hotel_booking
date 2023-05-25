@@ -274,11 +274,8 @@ class _RoomTypePageState extends State<RoomTypePage> {
 
   Future<Hotel> getHotel(String id) async {
     try {
-      // final response =
-      // await _dio.get('http://100.22.8.195:3000/users/'); //college
       final response =
-          // await _dio.get('http://10.0.2.2:3000/hotel/getHotels/$id');
-          await _dio.get('http://192.168.31.116:3000/hotel/getHotels/$id');
+          await _dio.get('http://10.0.2.2:3000/hotel/getHotels/$id');
 
       var jsonData = response.data;
 

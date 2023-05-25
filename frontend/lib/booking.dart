@@ -1,8 +1,7 @@
-import 'dart:convert';
-
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:dio/dio.dart';
 import 'package:hexcolor/hexcolor.dart';
+// import 'dart:convert';
 
 class BookingPage extends StatefulWidget {
   @override
@@ -49,10 +48,6 @@ class _BookingPageState extends State<BookingPage> {
     print('Total price: $totalprice');
     print('User id: $userId');
 
-    // final String? id = ModalRoute.of(context)?.settings.arguments as String?;
-
-    // Use the ID value here to fetch the booking details or do any other processing.
-
     void book() async {
       try {
         final Dio _dio = Dio();
@@ -70,7 +65,7 @@ class _BookingPageState extends State<BookingPage> {
         print(regBody);
 
         var response = await _dio.post(
-          'http://192.168.31.116:3000/bookRoom/book',
+          'http://10.0.2.2:3000/bookRoom/book',
           options: Options(headers: {"Content-Type": "application/json"}),
           data: regBody,
         );
@@ -90,7 +85,6 @@ class _BookingPageState extends State<BookingPage> {
 
     return MaterialApp(
       theme: ThemeData(
-        // fontFamily: 'OpenSans',
         scaffoldBackgroundColor: Colors.grey[200],
       ),
       debugShowCheckedModeBanner: false,
@@ -103,7 +97,6 @@ class _BookingPageState extends State<BookingPage> {
               Navigator.pop(context);
             },
             icon: Icon(Icons.arrow_back_ios_new),
-            //replace with our own icon data.
           ),
           title: Text(
             'Booking Details',
@@ -127,7 +120,6 @@ class _BookingPageState extends State<BookingPage> {
                     style: TextStyle(
                       fontSize: 21,
                       fontWeight: FontWeight.w700,
-                      // color: Color.fromRGBO(52, 92, 125, 1),
                       color: HexColor('#345c7d'),
                     ),
                   ),
@@ -182,7 +174,6 @@ class _BookingPageState extends State<BookingPage> {
                           ),
                         ],
                       ),
-                      // SizedBox(height: 10),
                       SizedBox(height: 7),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,

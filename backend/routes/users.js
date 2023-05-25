@@ -91,7 +91,7 @@ router.get("/:id", async (req, res) => {
 // DELETE a user by id
 router.delete("/:id", async (req, res) => {
   try {
-    const deleted = await Users.deleteOne({ _id: req.params.id }); //Delete the user
+    const deleted = await Users.deleteOne({ _id: req.params.id }); // Delete the user
     //  with the specified id
     res.json(deleted); //Send the result as a JSON object in the response
   } catch (err) {

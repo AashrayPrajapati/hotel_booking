@@ -1,11 +1,8 @@
-// ignore_for_file: unused_field
-
-import 'dart:convert';
-
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'dart:convert';
+import 'package:dio/dio.dart';
 import 'package:flutter/services.dart';
-import 'package:get/get.dart';
+// import 'package:get/get.dart';
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
@@ -115,8 +112,7 @@ class _RoomCreatePageState extends State<RoomCreatePage> {
           final Dio _dio = Dio();
 
           var response = await _dio.post(
-            // 'http://10.0.2.2:3000/hotelRoom/register',
-            'http://192.168.31.116:3000/hotelRoom/register',
+            'http://10.0.2.2:3000/hotelRoom/register',
             options: Options(headers: {"Content-Type": "application/json"}),
             data: jsonEncode(regBody),
           );

@@ -34,8 +34,7 @@ final Dio _dio = Dio();
 
 Future<Hotel> getHotel(String id) async {
   try {
-    final response =
-        await _dio.get('http://192.168.31.116:3000/hotel/getHotel/$id');
+    final response = await _dio.get('http://10.0.2.2:3000/hotel/getHotel/$id');
 
     var jsonData = response.data;
 
@@ -79,7 +78,7 @@ class _UpdateHotelState extends State<UpdateHotel> {
     String streetName,
     String password,
   ) async {
-    final String url = "http://192.168.31.116:3000/hotel/getHotel/$hotelId";
+    final String url = "http://10.0.2.2:3000/hotel/getHotel/$hotelId";
 
     final response = await _dio.patch(
       url,
