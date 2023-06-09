@@ -31,14 +31,42 @@ router.post("/register", async (req, res) => {
   }
 });
 
+// Configure Multer storage
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "uploads/"); // Specify the destination folder where the images will be saved
+  },
+  filename: (req, file, cb) => {
+    cb(null, file.originalname); // Use the original filename for the saved image
+  },
+});
+
+// Create a Multer instance with the configured storage
+const upload = multer({ storage: storage });
+
+// Define the endpoint for image upload
+router.post("/upload", upload.single("image"), (req, res) => {
+  if (!req.file) {
+    return res.status(400).json({ error: "No image file provided" });
+  }
+
+  // Access the uploaded file information
+  const file = req.file;
+  console.log("Uploaded file:", file);
+
+  // Save the relevant information to MongoDB or perform other operations
+
+  return res.status(200).json({ message: "Image uploaded successfully" });
+});
+
 //delete a room
 router.delete("/deleteRoom/:id", async (req, res) => {
-    try {
-        const removedRoom = await HotelRoom.remove({ _id: req.params.id });
-        res.json(removedRoom);
-    } catch (error) {
-        res.json(error);
-    }
+  try {
+    const removedRoom = await HotelRoom.remove({ _id: req.params.id });
+    res.json(removedRoom);
+  } catch (error) {
+    res.json(error);
+  }
 });
 
 //create a patch request to update the room
@@ -63,7 +91,8 @@ router.patch("/updateRoom/:id", async (req, res) => {
 
 router.get("/getRooms/:id", async (req, res) => {
   try {
-    res.json(await Admin.find());
+    const hotelRooms = await HotelRoom.find({ hotelId: req.params.id });
+    res.json(hotelRooms);
   } catch (error) {
     res.json(error);
   }

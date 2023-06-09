@@ -123,23 +123,23 @@ class _HomePageState extends State<HomePage> {
               Column(
                 children: [
                   SizedBox(height: 20),
-                  Container(
-                    child: SizedBox(
-                      width: MediaQuery.of(context).size.width * 0.83,
-                      child: TextField(
-                        controller: searchInput,
-                        decoration: InputDecoration(
-                          prefixIcon: Icon(Icons.search_outlined),
-                          contentPadding: EdgeInsets.symmetric(vertical: 10),
-                          hintText: "City or hotels' name",
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(7),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  Padding(padding: EdgeInsets.only(bottom: 3)),
+                  // Container(
+                  //   child: SizedBox(
+                  //     width: MediaQuery.of(context).size.width * 0.83,
+                  //     child: TextField(
+                  //       controller: searchInput,
+                  //       decoration: InputDecoration(
+                  //         prefixIcon: Icon(Icons.search_outlined),
+                  //         contentPadding: EdgeInsets.symmetric(vertical: 10),
+                  //         hintText: "City or hotels' name",
+                  //         border: OutlineInputBorder(
+                  //           borderRadius: BorderRadius.circular(7),
+                  //         ),
+                  //       ),
+                  //     ),
+                  //   ),
+                  // ),
+                  // Padding(padding: EdgeInsets.only(bottom: 3)),
                   Container(
                     child: Center(
                       child: SizedBox(
@@ -195,48 +195,48 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ),
                   Padding(padding: EdgeInsets.only(bottom: 3)),
-                  Container(
-                    child: Center(
-                      child: SizedBox(
-                        width: MediaQuery.of(context).size.width * 0.83,
-                        child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Color.fromARGB(255, 39, 92, 216),
-                          ),
-                          child: Text('Search'),
-                          onPressed: () async {
-                            if (searchInput.text == "") {
-                              ScaffoldMessenger.of(context)
-                                  .showSnackBar(SnackBar(
-                                content:
-                                    Text('Please enter city or hotel name'),
-                                duration: Duration(seconds: 2),
-                              ));
-                            } else {
-                              var dio = Dio();
+                  // Container(
+                  //   child: Center(
+                  //     child: SizedBox(
+                  //       width: MediaQuery.of(context).size.width * 0.83,
+                  //       child: ElevatedButton(
+                  //         style: ElevatedButton.styleFrom(
+                  //           backgroundColor: Color.fromARGB(255, 39, 92, 216),
+                  //         ),
+                  //         child: Text('Search'),
+                  //         onPressed: () async {
+                  //           if (searchInput.text == "") {
+                  //             ScaffoldMessenger.of(context)
+                  //                 .showSnackBar(SnackBar(
+                  //               content:
+                  //                   Text('Please enter city or hotel name'),
+                  //               duration: Duration(seconds: 2),
+                  //             ));
+                  //           } else {
+                  //             var dio = Dio();
 
-                              var response = await dio.get(
-                                  'http://10.0.2.2:3000/hotel/search?query=Sunny%20hotel%20Bhaktapur');
-                              if (response.statusCode == 200) {
-                                print(response.data);
-                              } else {
-                                print(response.statusCode);
-                              }
+                  //             var response = await dio.get(
+                  //                 'http://10.0.2.2:3000/hotel/search?query=Sunny%20hotel%20Bhaktapur');
+                  //             if (response.statusCode == 200) {
+                  //               print(response.data);
+                  //             } else {
+                  //               print(response.statusCode);
+                  //             }
 
-                              if (response.statusCode == 200) {
-                                print(response.data);
-                                // Navigator.pushNamed(context, 'search',
-                                //     arguments: response.data);
-                              } else {
-                                print(response.statusCode);
-                              }
-                            }
-                            // Navigator.pushNamed(context, 'dashboard');
-                          },
-                        ),
-                      ),
-                    ),
-                  ),
+                  //             if (response.statusCode == 200) {
+                  //               print(response.data);
+                  //               // Navigator.pushNamed(context, 'search',
+                  //               //     arguments: response.data);
+                  //             } else {
+                  //               print(response.statusCode);
+                  //             }
+                  //           }
+                  //           // Navigator.pushNamed(context, 'dashboard');
+                  //         },
+                  //       ),
+                  //     ),
+                  //   ),
+                  // ),
                   SizedBox(height: 33),
                   Container(
                     child: Center(
@@ -256,7 +256,7 @@ class _HomePageState extends State<HomePage> {
                   Padding(
                     padding: const EdgeInsets.only(left: 15, right: 15),
                     child: Container(
-                      height: MediaQuery.of(context).size.height * 0.5,
+                      height: MediaQuery.of(context).size.height * 0.66,
                       child: FutureBuilder(
                         future: getHotels(),
                         builder: (context, AsyncSnapshot snapshot) {
@@ -328,7 +328,7 @@ class _HomePageState extends State<HomePage> {
                                               child: Container(
                                                 height: 100,
                                                 child: Card(
-                                                  elevation: 3,
+                                                  elevation: 7,
                                                   child: Image.network(
                                                     'https://bit.ly/3KAjXJW',
                                                     fit: BoxFit.cover,
@@ -345,13 +345,22 @@ class _HomePageState extends State<HomePage> {
                                               child: Container(
                                                 height: 100,
                                                 child: Card(
-                                                  elevation: 3,
+                                                  shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            10),
+                                                  ),
+                                                  elevation: 7,
                                                   child: Container(
                                                     color: Colors.white,
                                                     child: Padding(
                                                       padding:
-                                                          const EdgeInsets.all(
-                                                              7),
+                                                          const EdgeInsets.only(
+                                                        top: 5,
+                                                        bottom: 5,
+                                                        left: 10,
+                                                        right: 10,
+                                                      ),
                                                       child: Column(
                                                         children: [
                                                           Expanded(

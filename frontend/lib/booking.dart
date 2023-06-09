@@ -318,29 +318,56 @@ class _BookingPageState extends State<BookingPage> {
                   ),
                 ),
                 SizedBox(height: 25),
-                Center(
-                  child: Container(
-                    height: 50,
-                    width: 200,
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(50),
-                        ),
-                        backgroundColor: HexColor('#FF265CD8'),
-                      ),
-                      onPressed: () {
-                        book();
-                      },
-                      child: Text(
-                        'Pay With Cash',
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.w600,
+                Column(
+                  children: [
+                    Center(
+                      child: Container(
+                        height: 50,
+                        width: 200,
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(50),
+                            ),
+                            backgroundColor: HexColor('#FF265CD8'),
+                          ),
+                          onPressed: () {
+                            book();
+                          },
+                          child: Text(
+                            'Pay With Cash',
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
                         ),
                       ),
                     ),
-                  ),
+                    SizedBox(height: 15),
+                    Container(
+                      height: 50,
+                      width: 200,
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(50),
+                          ),
+                          backgroundColor: Color.fromARGB(255, 87, 44, 138),
+                        ),
+                        onPressed: () {
+                          Navigator.pushNamed(context, 'khalti');
+                        },
+                        child: Text(
+                          'Pay With Khalti',
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ],
             ),

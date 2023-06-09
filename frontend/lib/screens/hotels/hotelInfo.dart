@@ -60,7 +60,7 @@ class _HotelInfoPageState extends State<HotelInfoPage> {
       print('check-in date: $startDate');
       print('check-out date: $endDate');
       print('user ID: $userId');
-      print('````````````````````````````````````````````');
+      // print('````````````````````````````````````````````');
 
       final response =
           await _dio.get('http://10.0.2.2:3000/hotel/getHotel/$id');

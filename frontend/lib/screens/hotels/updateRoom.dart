@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 // import 'package:hotel_booking/screens/hotels/getRoom.dart';
 
 import 'package:dio/dio.dart';
+import 'package:flutter/services.dart';
 
 class UpdateRoom extends StatefulWidget {
   const UpdateRoom({Key? key}) : super(key: key);
@@ -12,8 +13,6 @@ class UpdateRoom extends StatefulWidget {
 
 class UpdateRoomState extends State<UpdateRoom> {
   final Dio _dio = Dio();
-
-  // i want to retireve the data from the database and show it here in the text fields so that the user can update the data and save it.
 
   TextEditingController roomTypeController = TextEditingController();
   TextEditingController priceController = TextEditingController();
@@ -56,9 +55,158 @@ class UpdateRoomState extends State<UpdateRoom> {
 
     if (response.statusCode == 200) {
       print('Room Updated');
-      Navigator.pushNamed(context, 'getRooms');
+      //
+      showDialog(
+        context: context,
+        builder: (BuildContext context) => AlertDialog(
+          title: Text(
+            'Room Updated',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: 23,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          content: Text(
+            'Room Updated Successfully',
+            textAlign: TextAlign.center,
+            style: TextStyle(fontSize: 17),
+          ),
+          actions: [
+            Center(
+              child: TextButton(
+                onPressed: () {
+                  Navigator.pushNamed(context, 'getRooms');
+                },
+                child: Text(
+                  'OK',
+                ),
+              ),
+            ),
+          ],
+        ),
+      );
     } else {
       print('Room Not Updated');
+      //
+      showDialog(
+        context: context,
+        builder: (BuildContext context) => AlertDialog(
+          title: Text(
+            'Room Not Updated',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: 23,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          content: Text(
+            'The room was not updated',
+            textAlign: TextAlign.center,
+            style: TextStyle(fontSize: 17),
+          ),
+          actions: [
+            Center(
+              child: TextButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: Text(
+                  'OK',
+                ),
+              ),
+            ),
+          ],
+        ),
+      );
+    }
+  }
+
+  void deleteRoom(String roomId) async {
+    final String roomType = roomTypeController.text;
+    final String capacity = capacityController.text;
+    final String price = priceController.text;
+
+    final String url = "http://10.0.2.2:3000/hotelRoom/deleteRoom/$roomId";
+
+    final response = await _dio.delete(
+      url,
+      data: {
+        "roomType": roomType,
+        "maxCapacity": capacity,
+        "price": price,
+        // "description": description,
+      },
+    );
+
+    print(response.data);
+
+    if (response.statusCode == 200) {
+      print('Room Deleted');
+      //
+      showDialog(
+        context: context,
+        builder: (BuildContext context) => AlertDialog(
+          title: Text(
+            'Room Deleted',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: 23,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          content: Text(
+            'Room deleted successfully',
+            textAlign: TextAlign.center,
+            style: TextStyle(fontSize: 17),
+          ),
+          actions: [
+            Center(
+              child: TextButton(
+                onPressed: () {
+                  Navigator.pushNamed(context, 'getRooms');
+                },
+                child: Text(
+                  'OK',
+                ),
+              ),
+            ),
+          ],
+        ),
+      );
+    } else {
+      print('Room Not Deleted');
+      //
+      showDialog(
+        context: context,
+        builder: (BuildContext context) => AlertDialog(
+          title: Text(
+            'Room Not Deleted',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: 23,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          content: Text(
+            'The room was not deleted',
+            textAlign: TextAlign.center,
+            style: TextStyle(fontSize: 17),
+          ),
+          actions: [
+            Center(
+              child: TextButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: Text(
+                  'OK',
+                ),
+              ),
+            ),
+          ],
+        ),
+      );
     }
   }
 
@@ -81,6 +229,7 @@ class UpdateRoomState extends State<UpdateRoom> {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
+        backgroundColor: Color.fromARGB(255, 232, 232, 232),
         appBar: AppBar(
           elevation: 3,
           backgroundColor: Color.fromARGB(255, 39, 92, 216),
@@ -148,12 +297,21 @@ class UpdateRoomState extends State<UpdateRoom> {
                         right: 20,
                       ),
                       child: TextField(
+                        keyboardType: TextInputType.number,
+                        inputFormatters: [
+                          FilteringTextInputFormatter.digitsOnly,
+                          LengthLimitingTextInputFormatter(1),
+                          FilteringTextInputFormatter.allow(
+                            RegExp('[0-5]'),
+                          ),
+                        ],
                         controller: capacityController,
                         decoration: InputDecoration(
+                          labelText: 'Max. capacity',
+                          hintText: '5',
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(17),
                           ),
-                          labelText: 'Capacity',
                         ),
                       ),
                     ),
@@ -165,12 +323,18 @@ class UpdateRoomState extends State<UpdateRoom> {
                         right: 20,
                       ),
                       child: TextField(
+                        keyboardType:
+                            TextInputType.numberWithOptions(decimal: true),
+                        inputFormatters: [
+                          FilteringTextInputFormatter.allow(RegExp('[0-9.,]')),
+                        ],
+                        //
                         controller: priceController,
                         decoration: InputDecoration(
+                          labelText: 'Price',
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(17),
                           ),
-                          labelText: 'Price',
                         ),
                       ),
                     ),
@@ -212,30 +376,30 @@ class UpdateRoomState extends State<UpdateRoom> {
                             top: 10,
                             bottom: 20,
                           ),
-                          // child: ElevatedButton(
-                          //   onPressed: () {
-                          //     updateRoom(roomId!);
-                          //     print(roomTypeController.text);
-                          //     print(capacityController.text);
-                          //     print(priceController.text);
+                          child: ElevatedButton(
+                            onPressed: () {
+                              deleteRoom(roomId!);
+                              // print(roomTypeController.text);
+                              // print(capacityController.text);
+                              // print(priceController.text);
 
-                          //     // Navigator.pushNamed(context, 'mainPage');
-                          //   },
-                          //   child: Text(
-                          //     'Delete',
-                          //     style: TextStyle(
-                          //       fontSize: 20,
-                          //       fontWeight: FontWeight.bold,
-                          //     ),
-                          //   ),
-                          //   style: ElevatedButton.styleFrom(
-                          //     backgroundColor: Color.fromARGB(255, 179, 65, 65),
-                          //     shape: RoundedRectangleBorder(
-                          //       borderRadius: BorderRadius.circular(17),
-                          //     ),
-                          //     minimumSize: Size(150, 50),
-                          //   ),
-                          // ),
+                              // Navigator.pushNamed(context, 'mainPage');
+                            },
+                            child: Text(
+                              'Delete',
+                              style: TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Color.fromARGB(255, 179, 65, 65),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(17),
+                              ),
+                              minimumSize: Size(150, 50),
+                            ),
+                          ),
                         ),
                       ],
                     ),

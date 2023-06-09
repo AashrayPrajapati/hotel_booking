@@ -250,7 +250,7 @@ router.patch("/getHotel/:id", async (req, res) => {
 });
 
 // delete hotel by id
-router.delete("/getHotel/:id", async (req, res) => {
+router.delete("/deleteHotel/:id", async (req, res) => {
   try {
     const deleted = await Admin.deleteOne({ _id: req.params.id }); //Delete the admin
     //  with the specified id

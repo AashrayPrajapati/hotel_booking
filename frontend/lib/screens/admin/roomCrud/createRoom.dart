@@ -5,8 +5,8 @@ import 'package:flutter/services.dart';
 // import 'package:get/get.dart';
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:path/path.dart';
+// import 'package:path_provider/path_provider.dart';
+// import 'package:path/path.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class RoomCreate extends StatelessWidget {
@@ -26,24 +26,7 @@ class RoomCreatePage extends StatefulWidget {
 }
 
 class _RoomCreatePageState extends State<RoomCreatePage> {
-  File? _image;
   String ownerId = '';
-
-  Future getImage(ImageSource source) async {
-    try {
-      final image = await ImagePicker().pickImage(source: source);
-      if (image == null) return;
-
-      // final imageTemporary = File(image.path);
-      final imagePermanent = await saveFilePermanently(image.path);
-
-      setState(() {
-        this._image = imagePermanent;
-      });
-    } on PlatformException catch (e) {
-      print('Failed to pick image: $e');
-    }
-  }
 
   void jwtDecode() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -65,14 +48,6 @@ class _RoomCreatePageState extends State<RoomCreatePage> {
     print('USER ID: $ownerId');
   }
 
-  Future<File> saveFilePermanently(String imagePath) async {
-    final directory = await getApplicationDocumentsDirectory();
-    final name = basename(imagePath);
-    final image = File('${directory.path}/$name');
-
-    return File(imagePath).copy(image.path);
-  }
-
   String roomTypeValue = 'Single Bed';
 
   var number = ['Single Bed', 'Double Bed'];
@@ -80,6 +55,46 @@ class _RoomCreatePageState extends State<RoomCreatePage> {
   TextEditingController priceController = TextEditingController();
   TextEditingController maxGuestCapacityController = TextEditingController();
   bool _isNotValidate = false;
+
+  //
+  File? _selectedImage = null;
+  Dio _dio = Dio();
+
+  Future<void> _uploadImage() async {
+    if (_selectedImage == null) {
+      return;
+    }
+
+    try {
+      FormData formData = FormData.fromMap({
+        'image': await MultipartFile.fromFile(_selectedImage?.path ?? ''),
+      });
+
+      var response = await _dio.post(
+        'http://10.0.2.2:3000/hotelRoom/upload',
+        data: formData,
+      );
+
+      if (response.statusCode == 200) {
+        print('Image uploaded successfully');
+        // Perform any additional actions after successful upload
+      } else {
+        print('Failed to upload image. Error code: ${response.statusCode}');
+      }
+    } catch (error) {
+      print('Error occurred during image upload: $error');
+    }
+  }
+
+  Future<void> _pickImage() async {
+    final pickedImage =
+        await ImagePicker().pickImage(source: ImageSource.gallery);
+    if (pickedImage != null) {
+      setState(() {
+        _selectedImage = File(pickedImage.path);
+      });
+    }
+  }
 
   @override
   void dispose() {
@@ -166,7 +181,7 @@ class _RoomCreatePageState extends State<RoomCreatePage> {
                 children: [
                   Text(
                     'Add new room',
-                    style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+                    style: TextStyle(fontSize: 23, fontWeight: FontWeight.bold),
                   ),
                   SizedBox(height: 10),
                   Container(
@@ -175,23 +190,18 @@ class _RoomCreatePageState extends State<RoomCreatePage> {
                       color: Colors.white,
                     ),
                     child: Padding(
-                      padding: const EdgeInsets.only(
-                        top: 25,
-                        bottom: 15,
-                        left: 20,
-                        right: 20,
-                      ),
+                      padding: const EdgeInsets.all(20),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
                             'What type of room would you like to add?',
                             style: TextStyle(
-                              fontSize: 15,
+                              fontSize: 17,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                          SizedBox(height: 10),
+                          SizedBox(height: 11),
                           Center(
                             child: Container(
                               color: Colors.white,
@@ -216,6 +226,7 @@ class _RoomCreatePageState extends State<RoomCreatePage> {
                                     value: items,
                                     child: Text(
                                       items,
+                                      style: TextStyle(fontSize: 17),
                                     ),
                                   );
                                 }).toList(),
@@ -229,24 +240,26 @@ class _RoomCreatePageState extends State<RoomCreatePage> {
                               ),
                             ),
                           ),
-                          SizedBox(height: 9),
+                          SizedBox(height: 13),
                           Text(
                             'What is the price per Night for this room?',
                             style: TextStyle(
-                              fontSize: 15,
+                              fontSize: 17,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                          SizedBox(height: 10),
+                          SizedBox(height: 11),
                           Center(
                             child: SizedBox(
                               width: 150,
                               height: 50,
                               child: TextField(
                                 controller: priceController,
-                                keyboardType: TextInputType.number,
-                                inputFormatters: <TextInputFormatter>[
-                                  FilteringTextInputFormatter.digitsOnly
+                                keyboardType: TextInputType.numberWithOptions(
+                                    decimal: true),
+                                inputFormatters: [
+                                  FilteringTextInputFormatter.allow(
+                                      RegExp('[0-9.,]')),
                                 ],
                                 decoration: InputDecoration(
                                   filled: true,
@@ -257,11 +270,11 @@ class _RoomCreatePageState extends State<RoomCreatePage> {
                               ),
                             ),
                           ),
-                          SizedBox(height: 20),
+                          SizedBox(height: 13),
                           Text(
                             'What is the maximum number of guests allowed in the room?',
                             style: TextStyle(
-                              fontSize: 15,
+                              fontSize: 17,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
@@ -273,8 +286,12 @@ class _RoomCreatePageState extends State<RoomCreatePage> {
                               child: TextField(
                                 controller: maxGuestCapacityController,
                                 keyboardType: TextInputType.number,
-                                inputFormatters: <TextInputFormatter>[
-                                  FilteringTextInputFormatter.digitsOnly
+                                inputFormatters: [
+                                  FilteringTextInputFormatter.digitsOnly,
+                                  LengthLimitingTextInputFormatter(1),
+                                  FilteringTextInputFormatter.allow(
+                                    RegExp('[0-5]'),
+                                  ),
                                 ],
                                 decoration: InputDecoration(
                                   filled: true,
@@ -286,33 +303,49 @@ class _RoomCreatePageState extends State<RoomCreatePage> {
                             ),
                           ),
                           SizedBox(height: 20),
+                          // for image
                           Text(
                             'Upload a photo of the room:',
                             style: TextStyle(
-                              fontSize: 15,
+                              fontSize: 17,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                          Padding(
-                            padding: const EdgeInsets.all(15),
-                            child: _image != null
-                                ? Image.file(
-                                    _image!,
-                                    width: 250,
-                                    height: 250,
-                                    fit: BoxFit.cover,
-                                  )
-                                : Placeholder(
-                                    color: Colors.grey,
-                                    fallbackHeight: 180,
+                          SizedBox(height: 11),
+                          _selectedImage != null
+                              ? Image.file(
+                                  _selectedImage!,
+                                  height: 200,
+                                  // width: 200,
+                                )
+                              : Placeholder(fallbackHeight: 200),
+                          SizedBox(height: 20),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              ElevatedButton(
+                                onPressed: _pickImage,
+                                child: Text('Select Image'),
+                                style: ElevatedButton.styleFrom(
+                                  minimumSize: Size(123, 37),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(13),
                                   ),
+                                ),
+                              ),
+                              ElevatedButton(
+                                onPressed: _uploadImage,
+                                child: Text('Upload Image'),
+                                style: ElevatedButton.styleFrom(
+                                  minimumSize: Size(123, 37),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(13),
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
-                          CustomButton(
-                            title: 'Pick from Gallery',
-                            icon: Icons.image,
-                            onClick: () => getImage(ImageSource.gallery),
-                          ),
-                          SizedBox(height: 15),
+                          SizedBox(height: 23),
                           Center(
                             child: ElevatedButton(
                               onPressed: () {
@@ -321,7 +354,19 @@ class _RoomCreatePageState extends State<RoomCreatePage> {
                                 //   Navigator.pushNamed(context, 'mainPage');
                                 // }
                               },
-                              child: Text('Submit'),
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor:
+                                    Color.fromARGB(255, 39, 92, 216),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(20),
+                                ),
+                                minimumSize: Size(100, 50),
+                              ),
+                              child: Text('Submit',
+                                  style: TextStyle(
+                                    fontSize: 19,
+                                    fontWeight: FontWeight.w600,
+                                  )),
                             ),
                           )
                         ],

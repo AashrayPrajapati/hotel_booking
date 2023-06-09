@@ -133,9 +133,9 @@ class _GetRoomsState extends State<GetRooms> {
                     children: [
                       Padding(
                         padding: const EdgeInsets.only(
-                          left: 10,
-                          right: 10,
-                          bottom: 5,
+                          left: 20,
+                          right: 20,
+                          top: 15,
                         ),
                         child: GestureDetector(
                           onTap: () {
@@ -151,24 +151,40 @@ class _GetRoomsState extends State<GetRooms> {
                             );
                           },
                           child: Card(
-                            elevation: 5,
-                            child: ListTile(
-                              title: Text(
-                                room.roomType,
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 18,
+                            color: Color.fromARGB(255, 71, 116, 222),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(22),
+                            ),
+                            elevation: 7,
+                            child: Padding(
+                              padding: const EdgeInsets.only(
+                                left: 13,
+                                right: 13,
+                                top: 7,
+                                bottom: 7,
+                              ),
+                              child: ListTile(
+                                title: Text(
+                                  room.roomType,
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w700,
+                                    fontSize: 20,
+                                    color: Colors.white.withOpacity(0.9),
+                                  ),
+                                ),
+                                subtitle: Text(
+                                  room.price,
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w500,
+                                    fontSize: 15,
+                                    color: Colors.white.withOpacity(0.9),
+                                  ),
+                                ),
+                                trailing: Icon(
+                                  Icons.edit,
+                                  color: Colors.white.withOpacity(0.9),
                                 ),
                               ),
-                              subtitle: Text(
-                                room.price,
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 15,
-                                ),
-                              ),
-                              trailing: Icon(Icons.edit),
                             ),
                           ),
                         ),
@@ -180,19 +196,36 @@ class _GetRoomsState extends State<GetRooms> {
             }
           },
         ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            // Add your desired functionality here
-            print('Floating action button pressed');
-            Navigator.of(context, rootNavigator: true).pushNamed(
-              'viewBooking',
-              arguments: {
-                'id': ownerId,
-              },
-            );
-          },
-          child: Icon(Icons.bookmark_border_outlined),
-          backgroundColor: Color.fromARGB(255, 39, 92, 216),
+        floatingActionButton: Padding(
+          padding: const EdgeInsets.all(17),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              FloatingActionButton(
+                onPressed: () {
+                  // Add your desired functionality here
+                  print('Floating action button pressed');
+                  Navigator.of(context, rootNavigator: true).pushNamed(
+                    'viewBooking',
+                    arguments: {
+                      'id': ownerId,
+                    },
+                  );
+                },
+                child: Icon(Icons.edit_calendar_outlined, size: 27),
+                backgroundColor: Color.fromARGB(255, 39, 92, 216),
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              Text('View Bookings',
+                  style: TextStyle(
+                    fontSize: 17,
+                    fontWeight: FontWeight.w600,
+                  )),
+            ],
+          ),
         ),
       ),
     );

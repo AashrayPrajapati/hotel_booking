@@ -67,17 +67,16 @@ class _UpdateHotelState extends State<UpdateHotel> {
   TextEditingController passwordController = TextEditingController();
   TextEditingController confirmPasswordController = TextEditingController();
 
-  Future<void> updateHotel(
-    String hotelId,
-    String ownerName,
-    String email,
-    String description,
-    String propertyName,
-    String country,
-    String city,
-    String streetName,
-    String password,
-  ) async {
+  void updateHotel(
+      String hotelId,
+      String ownerName,
+      String email,
+      String description,
+      String propertyName,
+      String country,
+      String city,
+      String streetName,
+      String password) async {
     final String url = "http://10.0.2.2:3000/hotel/getHotel/$hotelId";
 
     final response = await _dio.patch(
@@ -102,9 +101,164 @@ class _UpdateHotelState extends State<UpdateHotel> {
     print(response.data);
     if (response.statusCode == 200) {
       print('Hotel Updated');
-      Navigator.pushNamed(context, 'user');
+      // Navigator.pushNamed(context, 'user');
+      showDialog(
+        context: context,
+        builder: (BuildContext context) => AlertDialog(
+          title: Text(
+            'Hotel Updated',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: 23,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          content: Text(
+            'Hotel Updated Successfully',
+            textAlign: TextAlign.center,
+            style: TextStyle(fontSize: 17),
+          ),
+          actions: [
+            Center(
+              child: TextButton(
+                onPressed: () {
+                  Navigator.pushNamed(context, 'user');
+                },
+                child: Text(
+                  'OK',
+                ),
+              ),
+            ),
+          ],
+        ),
+      );
     } else {
       print('Error updating hotel');
+      showDialog(
+        context: context,
+        builder: (BuildContext context) => AlertDialog(
+          title: Text(
+            'Hotel Not Updated',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: 23,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          content: Text(
+            'Hotel is not updated',
+            textAlign: TextAlign.center,
+            style: TextStyle(fontSize: 17),
+          ),
+          actions: [
+            Center(
+              child: TextButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: Text(
+                  'OK',
+                ),
+              ),
+            ),
+          ],
+        ),
+      );
+    }
+  }
+
+  void deleteHotel(
+      String hotelId,
+      String ownerName,
+      String email,
+      String description,
+      String propertyName,
+      String country,
+      String city,
+      String streetName,
+      String password) async {
+    final String url = "http://10.0.2.2:3000/hotel/deleteHotel/$hotelId";
+
+    final response = await _dio.delete(
+      url,
+      data: {
+        "ownerName": ownerName,
+        "email": email,
+        "password": password,
+        "propertyName": propertyName,
+        "country": country,
+        "city": city,
+        "postalCode": "44800",
+        "streetName": streetName,
+        "description": description,
+      },
+    );
+
+    print(response.data);
+    if (response.statusCode == 200) {
+      print('Hotel Deleted');
+      showDialog(
+        context: context,
+        builder: (BuildContext context) => AlertDialog(
+          title: Text(
+            'Hotel Deleted',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: 23,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          content: Text(
+            'Hotel Deleted Successfully',
+            textAlign: TextAlign.center,
+            style: TextStyle(fontSize: 17),
+          ),
+          actions: [
+            Center(
+              child: TextButton(
+                onPressed: () {
+                  Navigator.pushNamed(context, 'user');
+                },
+                child: Text(
+                  'OK',
+                ),
+              ),
+            ),
+          ],
+        ),
+      );
+    } else {
+      print('Error deleting hotel');
+      showDialog(
+        context: context,
+        builder: (BuildContext context) => AlertDialog(
+          title: Text(
+            'Hotel Not Deleted',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: 23,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          content: Text(
+            'Hotel is not deleted',
+            textAlign: TextAlign.center,
+            style: TextStyle(fontSize: 17),
+          ),
+          actions: [
+            Center(
+              child: TextButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: Text(
+                  'OK',
+                ),
+              ),
+            ),
+          ],
+        ),
+      );
     }
   }
 
@@ -197,31 +351,28 @@ class _UpdateHotelState extends State<UpdateHotel> {
                     body: Center(
                       child: SingleChildScrollView(
                         child: Padding(
-                          padding: const EdgeInsets.all(8.0),
+                          padding: const EdgeInsets.all(13),
                           child: Card(
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(25),
                             ),
                             elevation: 7,
                             child: Column(
+                              mainAxisSize: MainAxisSize.min,
                               children: [
+                                // Padding(
+                                //   padding: const EdgeInsets.only(
+                                //     top: 10,
+                                //     bottom: 10,
+                                //   ),
+                                //   child: Center(
+                                //     child: CircleAvatar(
+                                //       radius: 50,
+                                //     ),
+                                //   ),
+                                // ),
                                 Padding(
-                                  padding: const EdgeInsets.only(
-                                    top: 10,
-                                    bottom: 10,
-                                  ),
-                                  child: Center(
-                                    child: CircleAvatar(
-                                      radius: 50,
-                                    ),
-                                  ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(
-                                    left: 20,
-                                    right: 20,
-                                    bottom: 20,
-                                  ),
+                                  padding: const EdgeInsets.all(20),
                                   child: TextField(
                                     controller: emailController,
                                     decoration: InputDecoration(
@@ -232,22 +383,7 @@ class _UpdateHotelState extends State<UpdateHotel> {
                                     ),
                                   ),
                                 ),
-                                Padding(
-                                  padding: const EdgeInsets.only(
-                                    left: 20,
-                                    right: 20,
-                                    bottom: 20,
-                                  ),
-                                  child: TextField(
-                                    controller: descriptionController,
-                                    decoration: InputDecoration(
-                                      border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(17),
-                                      ),
-                                      labelText: 'Description',
-                                    ),
-                                  ),
-                                ),
+
                                 Padding(
                                   padding: const EdgeInsets.only(
                                     left: 20,
@@ -386,38 +522,98 @@ class _UpdateHotelState extends State<UpdateHotel> {
                                     ),
                                   ),
                                 ),
-                                ElevatedButton(
-                                  onPressed: () {
-                                    print('Update button pressed');
-                                    print(ownerNameController.text);
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                    left: 20,
+                                    right: 20,
+                                    bottom: 20,
+                                  ),
+                                  child: TextField(
+                                    controller: descriptionController,
+                                    decoration: InputDecoration(
+                                      border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(17),
+                                      ),
+                                      labelText: 'Description',
+                                    ),
+                                    keyboardType: TextInputType.multiline,
+                                    maxLines: null,
+                                  ),
+                                ),
+                                Column(
+                                  children: [
+                                    ElevatedButton(
+                                      onPressed: () {
+                                        print('Update button pressed');
+                                        print(ownerNameController.text);
 
-                                    updateHotel(
-                                      hotelId,
-                                      ownerNameController.text,
-                                      emailController.text,
-                                      descriptionController.text,
-                                      propertyNameController.text,
-                                      countryController.text,
-                                      cityController.text,
-                                      streetNameController.text,
-                                      passwordController.text,
-                                    );
-                                  },
-                                  child: Text(
-                                    'Update',
-                                    style: TextStyle(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.bold,
+                                        updateHotel(
+                                          hotelId,
+                                          ownerNameController.text,
+                                          emailController.text,
+                                          descriptionController.text,
+                                          propertyNameController.text,
+                                          countryController.text,
+                                          cityController.text,
+                                          streetNameController.text,
+                                          passwordController.text,
+                                        );
+                                      },
+                                      child: Text(
+                                        'Update',
+                                        style: TextStyle(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                      style: ElevatedButton.styleFrom(
+                                        backgroundColor:
+                                            Color.fromARGB(255, 39, 92, 216),
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(17),
+                                        ),
+                                        minimumSize: Size(130, 50),
+                                      ),
                                     ),
-                                  ),
-                                  style: ElevatedButton.styleFrom(
-                                    backgroundColor:
-                                        Color.fromARGB(255, 39, 92, 216),
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(17),
+                                    SizedBox(
+                                      height: 20,
                                     ),
-                                    minimumSize: Size(130, 50),
-                                  ),
+                                    ElevatedButton(
+                                      onPressed: () {
+                                        print('Delete button pressed');
+                                        print(ownerNameController.text);
+
+                                        deleteHotel(
+                                          hotelId,
+                                          ownerNameController.text,
+                                          emailController.text,
+                                          descriptionController.text,
+                                          propertyNameController.text,
+                                          countryController.text,
+                                          cityController.text,
+                                          streetNameController.text,
+                                          passwordController.text,
+                                        );
+                                      },
+                                      child: Text(
+                                        'Delete',
+                                        style: TextStyle(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                      style: ElevatedButton.styleFrom(
+                                        backgroundColor:
+                                            Color.fromARGB(255, 200, 62, 57),
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(17),
+                                        ),
+                                        minimumSize: Size(130, 50),
+                                      ),
+                                    ),
+                                  ],
                                 ),
                                 SizedBox(
                                   height: 20,

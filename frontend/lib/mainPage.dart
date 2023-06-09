@@ -21,7 +21,7 @@ class _MainPageState extends State<MainPage> {
     else if (selectedRole == "User")
       userSettings(),
     if (selectedRole == "Hotel Owner") GetRooms(),
-    User(),
+    Profile(),
   ];
   int thisIndex = 0;
   void thisTap(int index) {

@@ -1,61 +1,51 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:hexcolor/hexcolor.dart';
+// import 'package:hexcolor/hexcolor.dart';
 import 'package:hotel_booking/screens/auth/login/login.dart';
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class User extends StatefulWidget {
-  const User({super.key});
+class Profile extends StatefulWidget {
+  const Profile({super.key});
 
   @override
-  State<User> createState() => _UserState();
+  State<Profile> createState() => _ProfileState();
 }
 
-class Hotel {
-  final String propertyName;
-  final String streetName;
-  final String city;
-  final String description;
-  final String password;
+// class UserInfo {
+//   final String name;
+//   final String email;
 
-  Hotel(
-    this.propertyName,
-    this.streetName,
-    this.city,
-    this.description,
-    this.password,
-  );
-}
+//   UserInfo(
+//     this.name,
+//     this.email,
+//   );
+// }
 
-class _UserState extends State<User> {
-  final Dio _dio = Dio();
+// final Dio _dio = Dio();
 
+// Future<User> getUser(String id) async {
+//   try {
+//     final response = await _dio.get('http://10.0.2.2:3000/users/$id');
+
+//     var jsonData = response.data;
+
+//     UserInfo userInfo = UserInfo(
+//       jsonData['name'] ?? '',
+//       jsonData['email'] ?? '',
+//     );
+
+//     return userInfo;
+//   } on DioError catch (e) {
+//     print(e);
+
+//     throw Exception("Error retrieving posts: ${e}");
+//   }
+// }
+
+class _ProfileState extends State<Profile> {
   // double _initialRating = 4.5;
   // IconData? _selectedIcon;
-
-  Future<Hotel> getHotel(String id) async {
-    try {
-      final response =
-          await _dio.get('http://10.0.2.2:3000/hotel/getHotel/$id');
-
-      var jsonData = response.data;
-
-      Hotel hotel = Hotel(
-        jsonData['propertyName'] ?? '',
-        jsonData['streetName'] ?? '',
-        jsonData['city'] ?? '',
-        jsonData['description'] ?? '',
-        jsonData['password'] ?? '',
-      );
-
-      return hotel;
-    } on DioError catch (e) {
-      print(e);
-
-      throw Exception("Error retrieving posts: ${e}");
-    }
-  }
 
   String userId = '';
   bool isLoggedIn = false;
@@ -125,7 +115,7 @@ class _UserState extends State<User> {
       debugShowCheckedModeBanner: false,
       // theme: ThemeData(fontFamily: 'OpenSans'),
       home: Scaffold(
-        backgroundColor: HexColor('#fafafa'),
+        backgroundColor: Color.fromARGB(255, 250, 250, 250),
         appBar: AppBar(
           leading: IconButton(
             icon: Icon(Icons.arrow_back_ios_new, color: Colors.white),
@@ -149,117 +139,131 @@ class _UserState extends State<User> {
   }
 
   Widget buildLoggedInUI() {
-    return Center(
-      child: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Card(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(25),
-            ),
-            elevation: 7,
-            child: Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(
-                    top: 20,
-                    bottom: 20,
-                  ),
-                  child: Center(
-                    child: CircleAvatar(
-                      // backgroundImage: AssetImage('assets/images/user.png'),
-                      radius: 50,
-                    ),
-                  ),
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: Scaffold(
+        body: Center(
+          child: SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.all(17),
+              child: Card(
+                color: Color.fromARGB(255, 232, 232, 232),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(25),
                 ),
-                if (selectedRole == "Hotel Owner")
-                  Text(
-                    'Hotel Owner',
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
+                elevation: 7,
+                child: Column(
+                  children: [
+                    // Padding(
+                    //   padding: const EdgeInsets.only(
+                    //     top: 20,
+                    //     bottom: 20,
+                    //   ),
+                    //   child: Center(
+                    //     child: CircleAvatar(
+                    //       // backgroundImage: AssetImage('assets/images/user.png'),
+                    //       radius: 50,
+                    //     ),
+                    //   ),
+                    // ),
+                    SizedBox(
+                      height: 23,
                     ),
-                  ),
-                if (selectedRole == "User")
-                  Text(
-                    'User',
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                SizedBox(
-                  height: 30,
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(
-                    left: 15,
-                    right: 15,
-                  ),
-                  child: Card(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(17),
-                    ),
-                    // color: Color(0xf5f6fa),
-                    child: ListTile(
-                      leading: Icon(
-                        Icons.menu_outlined,
-                        color: Color.fromARGB(255, 39, 92, 216),
+                    if (selectedRole == "Hotel Owner")
+                      Text(
+                        'Hotel Owner',
+                        style: TextStyle(
+                          fontSize: 27,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
-                      title: Text('Edit Info'),
-                      trailing: Icon(
-                        Icons.arrow_forward_ios,
-                        color: Color.fromARGB(255, 39, 92, 216),
+                    if (selectedRole == "User")
+                      Text(
+                        'User',
+                        style: TextStyle(
+                          fontSize: 27,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
-                      onTap: () {
-                        if (selectedRole == "Hotel Owner")
-                          Navigator.pushNamed(context, 'updateHotel',
-                              arguments: {
-                                'id': userId,
-                              });
-                        else
-                          Navigator.pushNamed(context, 'editUser');
-                      },
+                    SizedBox(
+                      height: 30,
                     ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(
-                    left: 15,
-                    right: 15,
-                  ),
-                  child: Card(
-                    elevation: 3,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(17),
-                    ),
-                    child: ListTile(
-                      leading: Icon(
-                        Icons.logout_outlined,
-                        color: Color.fromARGB(255, 39, 92, 216),
+                    Padding(
+                      padding: const EdgeInsets.only(
+                        left: 15,
+                        right: 15,
+                        bottom: 7,
                       ),
-                      title: Text('Log Out'),
-                      trailing: Icon(
-                        Icons.arrow_forward_ios,
-                        color: Color.fromARGB(255, 39, 92, 216),
+                      child: Card(
+                        elevation: 3,
+                        color: Color.fromARGB(255, 250, 250, 250),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(17),
+                        ),
+                        // color: Color(0xf5f6fa),
+                        child: ListTile(
+                          leading: Icon(
+                            Icons.menu_outlined,
+                            color: Color.fromARGB(255, 39, 92, 216),
+                          ),
+                          title: Text('Edit Info'),
+                          trailing: Icon(
+                            Icons.arrow_forward_ios,
+                            color: Color.fromARGB(255, 39, 92, 216),
+                          ),
+                          onTap: () {
+                            if (selectedRole == "Hotel Owner")
+                              Navigator.pushNamed(context, 'updateHotel',
+                                  arguments: {
+                                    'id': userId,
+                                  });
+                            else
+                              Navigator.pushNamed(context, 'editUser');
+                          },
+                        ),
                       ),
-                      onTap: () async {
-                        Navigator.pushNamed(context, 'mainPage');
-                        SharedPreferences prefs =
-                            await SharedPreferences.getInstance();
-                        prefs.remove('jwtToken');
-                        prefs.remove('role');
-                        setState(() {
-                          isLoggedIn = false;
-                        });
-                      },
                     ),
-                  ),
+                    Padding(
+                      padding: const EdgeInsets.only(
+                        left: 15,
+                        right: 15,
+                        bottom: 7,
+                      ),
+                      child: Card(
+                        color: Color.fromARGB(255, 250, 250, 250),
+                        elevation: 3,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(17),
+                        ),
+                        child: ListTile(
+                          leading: Icon(
+                            Icons.logout_outlined,
+                            color: Color.fromARGB(255, 39, 92, 216),
+                          ),
+                          title: Text('Log Out'),
+                          trailing: Icon(
+                            Icons.arrow_forward_ios,
+                            color: Color.fromARGB(255, 39, 92, 216),
+                          ),
+                          onTap: () async {
+                            Navigator.pushNamed(context, 'mainPage');
+                            SharedPreferences prefs =
+                                await SharedPreferences.getInstance();
+                            prefs.remove('jwtToken');
+                            prefs.remove('role');
+                            setState(() {
+                              isLoggedIn = false;
+                            });
+                          },
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 27,
+                    ),
+                  ],
                 ),
-                SizedBox(
-                  height: 25,
-                ),
-              ],
+              ),
             ),
           ),
         ),
@@ -268,107 +272,92 @@ class _UserState extends State<User> {
   }
 
   Widget buildOriginalUI() {
-    return Center(
-      child: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(15),
-          child: Card(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(30),
-            ),
-            elevation: 7,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                SizedBox(
-                  height: 15,
-                ),
-                Column(
-                  children: [
-                    Container(
-                      width: 250,
-                      child: TextButton(
+    return Scaffold(
+      body: Center(
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(15),
+            child: Card(
+              color: Color.fromARGB(255, 232, 232, 232),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(30),
+              ),
+              elevation: 7,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  SizedBox(
+                    height: 23,
+                  ),
+                  Column(
+                    children: [
+                      ElevatedButton(
                         onPressed: () {
                           Navigator.pushNamed(context, 'hotelCrud');
                         },
-                        child: RichText(
-                          text: TextSpan(
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 20,
-                            ),
-                            children: [
-                              TextSpan(
-                                text: "List your property",
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.white,
-                                ),
-                              ),
-                            ],
+                        child: Text(
+                          "List your property?",
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                            fontSize: 20,
                           ),
                         ),
-                        style: TextButton.styleFrom(
+                        style: ElevatedButton.styleFrom(
                           backgroundColor: Color.fromARGB(255, 39, 92, 216),
+                          minimumSize: Size(277, 53),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(23),
                           ),
                         ),
                       ),
-                    ),
-                  ],
-                ),
-                Column(
-                  children: [
-                    Text(
+                    ],
+                  ),
+                  SizedBox(
+                    height: 13,
+                  ),
+                  Center(
+                    child: Text(
                       'OR',
                       style: TextStyle(
-                        fontSize: 16,
+                        fontSize: 20,
                         fontWeight: FontWeight.bold,
+                        color: Colors.black54,
                       ),
                     ),
-                  ],
-                ),
-                Column(
-                  children: [
-                    Container(
-                      width: 250,
-                      child: TextButton(
+                  ),
+                  SizedBox(
+                    height: 13,
+                  ),
+                  Column(
+                    children: [
+                      ElevatedButton(
                         onPressed: () {
                           Navigator.pushNamed(context, 'login');
                         },
-                        child: RichText(
-                          text: TextSpan(
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 19,
-                            ),
-                            children: [
-                              TextSpan(
-                                text: "Already have an account?",
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.white,
-                                ),
-                              ),
-                            ],
+                        child: Text(
+                          "Already have an account?",
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                            fontSize: 20,
                           ),
                         ),
-                        style: TextButton.styleFrom(
+                        style: ElevatedButton.styleFrom(
+                          minimumSize: Size(277, 53),
                           backgroundColor: Color.fromARGB(255, 39, 92, 216),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(23),
                           ),
                         ),
                       ),
-                    ),
-                  ],
-                ),
-                SizedBox(
-                  height: 15,
-                ),
-              ],
+                    ],
+                  ),
+                  SizedBox(
+                    height: 23,
+                  ),
+                ],
+              ),
             ),
           ),
         ),

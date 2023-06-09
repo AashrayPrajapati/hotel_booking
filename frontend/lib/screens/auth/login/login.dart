@@ -107,6 +107,23 @@ class _MyLoginState extends State<MyLogin> {
             // Handle case when token extraction fails
 
             print('Token extraction failed');
+            showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return AlertDialog(
+                  title: Text('Invalid email or password'),
+                  content: Text('Please enter correct email or password'),
+                  actions: [
+                    TextButton(
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                      child: Text('OK'),
+                    ),
+                  ],
+                );
+              },
+            );
           }
         } else {
           // Handle case when response data is null

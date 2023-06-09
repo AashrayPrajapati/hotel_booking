@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
-import 'package:hotel_booking/khalti2.dart';
 import 'package:hotel_booking/screens/hotels/getRoom.dart';
 // import 'package:khalti_flutter/khalti_flutter.dart';
 // import 'package:flutter/services.dart';
@@ -14,7 +13,8 @@ import 'mainPage.dart';
 import 'screens/hotels/updateHotel.dart';
 import 'screens/hotels/updateRoom.dart';
 import 'screens/hotels/viewBooking.dart';
-import 'screens/super admin/registeredUsers.dart';
+import 'screens/admin/roomCrud/createRoom.dart';
+
 import 'screens/user/editUser.dart';
 import 'screens/user/user.dart';
 
@@ -23,8 +23,8 @@ import 'screens/admin/hotelDashboard/dashboard.dart';
 import 'screens/hotels/hotelInfo.dart';
 import 'screens/hotels/roomType.dart';
 
+import 'screens/super admin/registeredUsers.dart';
 import 'screens/super admin/registeredHotels.dart';
-import 'screens/admin/roomCrud/createRoom.dart';
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -52,7 +52,7 @@ class _MainState extends State<Main> {
         'login': (context) => MyLogin(),
         //
         'mainPage': (context) => MainPage(),
-        'user': (context) => User(),
+        'user': (context) => Profile(),
         //
         'booking': (context) => BookingPage(),
         'dashboard': (context) => Dashboard(),
@@ -67,7 +67,6 @@ class _MainState extends State<Main> {
         'editUser': (context) => EditUser(),
         'updateHotel': (context) => UpdateHotel(),
         'khalti': (context) => Khalti(),
-        'khalti2': (context) => Khalti2(),
         'updateRoom': (context) => UpdateRoom(),
         'getRooms': (context) => GetRooms(),
         'viewBooking': (context) => ViewBooking(),
