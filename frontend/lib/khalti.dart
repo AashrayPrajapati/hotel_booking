@@ -74,11 +74,14 @@ class _KhaltiPageState extends State<KhaltiPage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              'Are you sure you want to pay?',
+              'Confirm! you want to pay?',
               style: TextStyle(
                 fontSize: 22,
-                fontWeight: FontWeight.w400,
+                fontWeight: FontWeight.w700,
               ),
+            ),
+            SizedBox(
+              height: 23,
             ),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
@@ -109,7 +112,7 @@ class _KhaltiPageState extends State<KhaltiPage> {
   payWithKhaltiInApp() {
     KhaltiScope.of(context).pay(
       config: PaymentConfig(
-        amount: 10000, //in paisa
+        amount: 100000, //in paisa
         productIdentity: 'Product Id',
         productName: 'Product Name',
         mobileReadOnly: false,

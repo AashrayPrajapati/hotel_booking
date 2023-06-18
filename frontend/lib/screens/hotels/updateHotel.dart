@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:hotel_booking/config.dart';
 
 class UpdateHotel extends StatefulWidget {
   const UpdateHotel({Key? key});
@@ -34,7 +35,7 @@ final Dio _dio = Dio();
 
 Future<Hotel> getHotel(String id) async {
   try {
-    final response = await _dio.get('http://10.0.2.2:3000/hotel/getHotel/$id');
+    final response = await _dio.get('$apiUrl/hotel/getHotel/$id');
 
     var jsonData = response.data;
 
@@ -68,16 +69,17 @@ class _UpdateHotelState extends State<UpdateHotel> {
   TextEditingController confirmPasswordController = TextEditingController();
 
   void updateHotel(
-      String hotelId,
-      String ownerName,
-      String email,
-      String description,
-      String propertyName,
-      String country,
-      String city,
-      String streetName,
-      String password) async {
-    final String url = "http://10.0.2.2:3000/hotel/getHotel/$hotelId";
+    String hotelId,
+    String ownerName,
+    String email,
+    String description,
+    String propertyName,
+    String country,
+    String city,
+    String streetName,
+    String password,
+  ) async {
+    final String url = "$apiUrl/hotel/getHotel/$hotelId";
 
     final response = await _dio.patch(
       url,
@@ -177,7 +179,7 @@ class _UpdateHotelState extends State<UpdateHotel> {
       String city,
       String streetName,
       String password) async {
-    final String url = "http://10.0.2.2:3000/hotel/deleteHotel/$hotelId";
+    final String url = "$apiUrl/hotel/deleteHotel/$hotelId";
 
     final response = await _dio.delete(
       url,

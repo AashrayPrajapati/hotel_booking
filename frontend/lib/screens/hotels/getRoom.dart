@@ -1,5 +1,7 @@
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+
+import 'package:dio/dio.dart';
+import 'package:hotel_booking/config.dart';
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -62,8 +64,7 @@ class _GetRoomsState extends State<GetRooms> {
   Future<List<Room>> getRooms(String hotelId) async {
     try {
       List<Room> rooms = [];
-      final roomResponse =
-          await _dio.get('http://10.0.2.2:3000/hotel/rooms/$hotelId');
+      final roomResponse = await _dio.get('$apiUrl/hotel/rooms/$hotelId');
 
       var roomData = roomResponse.data;
 

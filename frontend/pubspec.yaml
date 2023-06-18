@@ -11,8 +11,11 @@ dependencies:
   flutter:
     sdk: flutter
   cupertino_icons: ^1.0.2
+
+  flutter_localizations:
+    sdk: flutter
+
   figma_squircle: ^0.5.3
-  
   get: ^4.6.1
   intl: ^0.17.0
   flutter_rating_bar: ^4.0.1
@@ -35,9 +38,7 @@ dependencies:
   khalti_flutter: ^2.1.0
   email_validator: ^2.1.17
   khalti: ^1.0.2
-  
-  flutter_localizations:
-    sdk: flutter
+
 
 
 dev_dependencies:

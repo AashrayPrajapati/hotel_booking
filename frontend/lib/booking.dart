@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter/services.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:hotel_booking/config.dart';
 // import 'dart:convert';
 
 class BookingPage extends StatefulWidget {
@@ -65,7 +67,7 @@ class _BookingPageState extends State<BookingPage> {
         print(regBody);
 
         var response = await _dio.post(
-          'http://10.0.2.2:3000/bookRoom/book',
+          '$apiUrl/bookRoom/book',
           options: Options(headers: {"Content-Type": "application/json"}),
           data: regBody,
         );
@@ -301,6 +303,14 @@ class _BookingPageState extends State<BookingPage> {
                         child: Container(
                           width: 120,
                           child: TextField(
+                            keyboardType: TextInputType.number,
+                            inputFormatters: [
+                              FilteringTextInputFormatter.digitsOnly,
+                              LengthLimitingTextInputFormatter(1),
+                              FilteringTextInputFormatter.allow(
+                                RegExp('[0-5]'),
+                              ),
+                            ],
                             style: TextStyle(
                               height: 1.0,
                             ),

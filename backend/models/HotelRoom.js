@@ -24,7 +24,7 @@ const HotelRoom = mongoose.Schema({
         default: true
     },
     image: {
-        type: String,
+        type: String
     }
 });
 

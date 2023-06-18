@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+
 import 'package:dio/dio.dart';
 import 'dart:convert';
-// import 'config.dart';
+import 'package:hotel_booking/config.dart';
 
 class MyRegister extends StatefulWidget {
   const MyRegister({Key? key}) : super(key: key);
@@ -41,7 +42,7 @@ class _MyRegisterState extends State<MyRegister> {
       print(regBody);
       try {
         var response = await _dio.post(
-          'http://10.0.2.2:3000/users/register',
+          '$apiUrl/users/register',
           options: Options(headers: {"Content-Type": "application/json"}),
           data: jsonEncode(regBody),
         );

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:flutter/services.dart';
+import 'package:hotel_booking/config.dart';
 // import 'package:get/get.dart';
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
@@ -54,6 +55,7 @@ class _RoomCreatePageState extends State<RoomCreatePage> {
 
   TextEditingController priceController = TextEditingController();
   TextEditingController maxGuestCapacityController = TextEditingController();
+  // ignore: unused_field
   bool _isNotValidate = false;
 
   //
@@ -71,7 +73,7 @@ class _RoomCreatePageState extends State<RoomCreatePage> {
       });
 
       var response = await _dio.post(
-        'http://10.0.2.2:3000/hotelRoom/upload',
+        '$apiUrl/hotelRoom/upload',
         data: formData,
       );
 
@@ -93,6 +95,7 @@ class _RoomCreatePageState extends State<RoomCreatePage> {
       setState(() {
         _selectedImage = File(pickedImage.path);
       });
+      await _uploadImage(); // Call the upload function after image selection
     }
   }
 
@@ -127,7 +130,7 @@ class _RoomCreatePageState extends State<RoomCreatePage> {
           final Dio _dio = Dio();
 
           var response = await _dio.post(
-            'http://10.0.2.2:3000/hotelRoom/register',
+            '$apiUrl/hotelRoom/register',
             options: Options(headers: {"Content-Type": "application/json"}),
             data: jsonEncode(regBody),
           );
@@ -315,35 +318,23 @@ class _RoomCreatePageState extends State<RoomCreatePage> {
                           _selectedImage != null
                               ? Image.file(
                                   _selectedImage!,
-                                  height: 200,
-                                  // width: 200,
+                                  height: 170,
                                 )
-                              : Placeholder(fallbackHeight: 200),
+                              : Placeholder(
+                                  fallbackHeight: 170,
+                                ),
                           SizedBox(height: 20),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: [
-                              ElevatedButton(
-                                onPressed: _pickImage,
-                                child: Text('Select Image'),
-                                style: ElevatedButton.styleFrom(
-                                  minimumSize: Size(123, 37),
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(13),
-                                  ),
+                          Center(
+                            child: ElevatedButton(
+                              onPressed: _pickImage,
+                              child: Text('Pick an desired image'),
+                              style: ElevatedButton.styleFrom(
+                                minimumSize: Size(123, 37),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(13),
                                 ),
                               ),
-                              ElevatedButton(
-                                onPressed: _uploadImage,
-                                child: Text('Upload Image'),
-                                style: ElevatedButton.styleFrom(
-                                  minimumSize: Size(123, 37),
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(13),
-                                  ),
-                                ),
-                              ),
-                            ],
+                            ),
                           ),
                           SizedBox(height: 23),
                           Center(

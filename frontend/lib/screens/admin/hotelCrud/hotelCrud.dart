@@ -1,6 +1,7 @@
 import 'package:cloudinary_public/cloudinary_public.dart';
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
+import 'package:hotel_booking/config.dart';
 import 'dart:convert';
 
 import 'package:shared_preferences/shared_preferences.dart';
@@ -55,15 +56,10 @@ class HotelCrudState extends State<HotelCrud> {
       print(regBody);
       try {
         var response = await _dio.post(
-          'http://10.0.2.2:3000/hotel/register',
-          // 'http://192.168.31.116:3000/hotel/register',
+          '$apiUrl/hotel/register',
           options: Options(headers: {"Content-Type": "application/json"}),
           data: jsonEncode(regBody),
         );
-        // var response = await _dio.post(
-        //   options: Options(headers: {"Content-Type": "application/json"}),
-        //   data: jsonEncode(regBody),
-        // );
 
         print('Response status code: ${response.statusCode}');
         print('Response body: ${response.data}');

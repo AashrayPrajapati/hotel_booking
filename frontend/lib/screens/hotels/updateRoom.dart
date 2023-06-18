@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-// import 'package:hotel_booking/screens/hotels/getRoom.dart';
 
+// import 'package:hotel_booking/screens/hotels/getRoom.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/services.dart';
+import 'package:hotel_booking/config.dart';
 
 class UpdateRoom extends StatefulWidget {
   const UpdateRoom({Key? key}) : super(key: key);
@@ -39,7 +40,7 @@ class UpdateRoomState extends State<UpdateRoom> {
     final String capacity = capacityController.text;
     final String price = priceController.text;
 
-    final String url = "http://10.0.2.2:3000/hotelRoom/updateRoom/$roomId";
+    final String url = "$apiUrl/hotelRoom/updateRoom/$roomId";
 
     final response = await _dio.patch(
       url,
@@ -127,7 +128,7 @@ class UpdateRoomState extends State<UpdateRoom> {
     final String capacity = capacityController.text;
     final String price = priceController.text;
 
-    final String url = "http://10.0.2.2:3000/hotelRoom/deleteRoom/$roomId";
+    final String url = "$apiUrl/hotelRoom/deleteRoom/$roomId";
 
     final response = await _dio.delete(
       url,

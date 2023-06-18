@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:hotel_booking/config.dart';
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:intl/intl.dart';
@@ -70,7 +71,7 @@ class _ViewBookingState extends State<ViewBooking> {
     try {
       List<Bookings> bookings = [];
       final bookingResponse =
-          await _dio.get('http://10.0.2.2:3000/bookRoom/getBookings/$hotelId');
+          await _dio.get('$apiUrl/bookRoom/getBookings/$hotelId');
 
       var bookingData = bookingResponse.data;
 

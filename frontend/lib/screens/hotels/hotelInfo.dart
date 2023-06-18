@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
+import 'package:hotel_booking/config.dart';
 // import 'package:get/get.dart';
 // import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:readmore/readmore.dart';
@@ -62,8 +63,7 @@ class _HotelInfoPageState extends State<HotelInfoPage> {
       print('user ID: $userId');
       // print('````````````````````````````````````````````');
 
-      final response =
-          await _dio.get('http://10.0.2.2:3000/hotel/getHotel/$id');
+      final response = await _dio.get('$apiUrl/hotel/getHotel/$id');
 
       var jsonData = response.data;
 
@@ -85,8 +85,7 @@ class _HotelInfoPageState extends State<HotelInfoPage> {
   Future<List<Room>> getRoom(String roomID) async {
     try {
       List<Room> rooms = [];
-      final roomResponse =
-          await _dio.get('http://10.0.2.2:3000/hotel/rooms/$roomID');
+      final roomResponse = await _dio.get('$apiUrl/hotel/rooms/$roomID');
 
       var roomData = roomResponse.data;
 

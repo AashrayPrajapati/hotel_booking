@@ -1,7 +1,8 @@
-// import 'dart:convert';
-
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+
+// import 'dart:convert';
+import 'package:dio/dio.dart';
+import 'package:hotel_booking/config.dart';
 
 class RegisteredUsers extends StatefulWidget {
   const RegisteredUsers({Key? key}) : super(key: key);
@@ -54,7 +55,7 @@ class registerednUsersState extends State<RegisteredUsers> {
 
   Future<List<Post>> getPosts() async {
     try {
-      final response = await _dio.get('http://10.0.2.2:3000/users/');
+      final response = await _dio.get('$apiUrl/users/');
 
       List<Post> posts = [];
       var jsonData = response.data;

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:hotel_booking/config.dart';
 import 'package:readmore/readmore.dart';
 
 class RoomType extends StatelessWidget {
@@ -274,8 +275,7 @@ class _RoomTypePageState extends State<RoomTypePage> {
 
   Future<Hotel> getHotel(String id) async {
     try {
-      final response =
-          await _dio.get('http://10.0.2.2:3000/hotel/getHotels/$id');
+      final response = await _dio.get('$apiUrl/hotel/getHotels/$id');
 
       var jsonData = response.data;
 

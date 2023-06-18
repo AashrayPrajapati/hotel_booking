@@ -1,5 +1,6 @@
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+
+// import 'package:dio/dio.dart';
 // import 'package:hexcolor/hexcolor.dart';
 import 'package:hotel_booking/screens/auth/login/login.dart';
 import 'dart:convert';
@@ -26,7 +27,7 @@ class Profile extends StatefulWidget {
 
 // Future<User> getUser(String id) async {
 //   try {
-//     final response = await _dio.get('http://10.0.2.2:3000/users/$id');
+//     final response = await _dio.get('$apiUrl/users/$id');
 
 //     var jsonData = response.data;
 

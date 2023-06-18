@@ -4,6 +4,8 @@ import 'package:hotel_booking/screens/hotels/getRoom.dart';
 // import 'package:khalti_flutter/khalti_flutter.dart';
 // import 'package:flutter/services.dart';
 
+import 'package:hotel_booking/getImage.dart';
+
 import 'khalti.dart';
 import 'screens/admin/hotelCrud/hotelCrud.dart';
 import 'screens/auth/register/register.dart';
@@ -70,6 +72,7 @@ class _MainState extends State<Main> {
         'updateRoom': (context) => UpdateRoom(),
         'getRooms': (context) => GetRooms(),
         'viewBooking': (context) => ViewBooking(),
+        'getImage': (context) => ImageReceiver(),
       },
     );
   }

@@ -105,7 +105,7 @@ router.patch("/:id", async (req, res) => {
       { _id: req.params.id },
       {
         $set: {
-          name: { firstName: req.body.firstName, lastName: req.body.lastName },
+          name: req.body.name,
           email: req.body.email,
           password: req.body.password,
         },
@@ -113,7 +113,7 @@ router.patch("/:id", async (req, res) => {
     );
     res.json(updated);
   } catch (err) {
-    res.json("ERROR");
+    res.json(err);
   }
 });
 

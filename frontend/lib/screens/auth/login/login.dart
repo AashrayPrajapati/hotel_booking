@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
+import 'package:hotel_booking/config.dart';
 // import 'package:fluttertoast/fluttertoast.dart';
 // import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'dart:convert';
@@ -48,9 +49,9 @@ class _MyLoginState extends State<MyLogin> {
       String apiRole = '';
 
       if (selectedRole == 'User') {
-        apiRole = 'http://10.0.2.2:3000/users/login';
+        apiRole = '$apiUrl/users/login';
       } else if (selectedRole == 'Hotel Owner') {
-        apiRole = 'http://10.0.2.2:3000/hotel/login';
+        apiRole = '$apiUrl/hotel/login';
       } else {
         // Handle the case when no role is selected or handle other roles
         return;

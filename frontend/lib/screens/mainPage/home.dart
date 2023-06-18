@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+
 import 'package:intl/intl.dart';
 import 'package:dio/dio.dart';
-// import 'package:hotel_booking/config.dart';
+import 'package:hotel_booking/config.dart';
 import 'dart:convert';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -216,7 +217,7 @@ class _HomePageState extends State<HomePage> {
                   //             var dio = Dio();
 
                   //             var response = await dio.get(
-                  //                 'http://10.0.2.2:3000/hotel/search?query=Sunny%20hotel%20Bhaktapur');
+                  //                 '$apiUrl/hotel/search?query=Sunny%20hotel%20Bhaktapur');
                   //             if (response.statusCode == 200) {
                   //               print(response.data);
                   //             } else {
@@ -450,7 +451,7 @@ class _HomePageState extends State<HomePage> {
 
   Future<List<Hotel>> getHotels() async {
     try {
-      final response = await _dio.get('http://10.0.2.2:3000/hotel/getHotels');
+      final response = await _dio.get('$apiUrl/hotel/getHotels');
 
       List<Hotel> hotels = [];
       var jsonData = response.data;
