@@ -4,7 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:hotel_booking/config.dart';
 import 'package:hotel_booking/utils.dart';
 
-final Dio _dio = Dio();
+// final Dio _dio = Dio();
 
 class User {
   final String name;
@@ -215,6 +215,91 @@ class _EditUserState extends State<EditUser> {
     }
   }
 
+  void updatePassword(
+    String oldPassword,
+    String newPassword,
+    String confirmPassword,
+  ) async {
+    final String url = '$apiUrl/users/updatePassword/$ownerId';
+
+    final response = await _dio.patch(
+      url,
+      data: {
+        'oldPassword': oldPassword,
+        'newPassword': newPassword,
+        'confirmPassword': confirmPassword,
+      },
+    );
+
+    print(response.data);
+    if (response.statusCode == 200) {
+      print('Password Updated');
+      // Navigator.pushNamed(context, 'user');
+      showDialog(
+        context: context,
+        builder: (BuildContext context) => AlertDialog(
+          title: Text(
+            'Password Updated',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: 23,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          content: Text(
+            'Password Updated Successfully',
+            textAlign: TextAlign.center,
+            style: TextStyle(fontSize: 17),
+          ),
+          actions: [
+            Center(
+              child: TextButton(
+                onPressed: () {
+                  Navigator.pushNamed(context, 'user');
+                },
+                child: Text(
+                  'OK',
+                ),
+              ),
+            ),
+          ],
+        ),
+      );
+    } else {
+      print('Error updating password');
+      showDialog(
+        context: context,
+        builder: (BuildContext context) => AlertDialog(
+          title: Text(
+            'Password Not Updated',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: 23,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          content: Text(
+            'Password is not updated',
+            textAlign: TextAlign.center,
+            style: TextStyle(fontSize: 17),
+          ),
+          actions: [
+            Center(
+              child: TextButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: Text(
+                  'OK',
+                ),
+              ),
+            ),
+          ],
+        ),
+      );
+    }
+  }
+
   @override
   void initState() {
     decodeUser();
@@ -224,11 +309,15 @@ class _EditUserState extends State<EditUser> {
 
   TextEditingController nameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
+
+  TextEditingController oldPasswordController = TextEditingController();
+  TextEditingController newPasswordController = TextEditingController();
   TextEditingController confirmPasswordController = TextEditingController();
 
-  bool _obscureText = true;
-  bool _obscureText2 = true;
+  // bool _obscureText = true;
+  // bool _obscureText2 = true;
+
+  bool isPasswordMatching = true;
 
   @override
   Widget build(BuildContext context) {
@@ -342,54 +431,91 @@ class _EditUserState extends State<EditUser> {
                       //     ),
                       //   ),
                       // ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      Column(
                         children: [
-                          ElevatedButton(
-                            onPressed: () {
-                              print('ID: $ownerId');
-                              updateUser(
-                                nameController.text,
-                                emailController.text,
-                              );
-                            },
-                            child: Text(
-                              'Update',
-                              style: TextStyle(
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold,
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              ElevatedButton(
+                                onPressed: () {
+                                  print('ID: $ownerId');
+                                  updateUser(
+                                    nameController.text,
+                                    emailController.text,
+                                  );
+                                },
+                                child: Text(
+                                  'Update',
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor:
+                                      Color.fromARGB(255, 39, 92, 216),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(17),
+                                  ),
+                                  minimumSize: Size(130, 50),
+                                ),
                               ),
-                            ),
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Color.fromARGB(255, 39, 92, 216),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(17),
+                              ElevatedButton(
+                                onPressed: () {
+                                  print('ID: $ownerId');
+                                  deleteUser(
+                                    nameController.text,
+                                    emailController.text,
+                                  );
+                                },
+                                child: Text(
+                                  'Delete',
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor:
+                                      Color.fromARGB(255, 200, 62, 57),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(17),
+                                  ),
+                                  minimumSize: Size(130, 50),
+                                ),
                               ),
-                              minimumSize: Size(130, 50),
-                            ),
+                            ],
                           ),
-                          ElevatedButton(
-                            onPressed: () {
-                              print('ID: $ownerId');
-                              deleteUser(
-                                nameController.text,
-                                emailController.text,
-                              );
-                            },
-                            child: Text(
-                              'Delete',
-                              style: TextStyle(
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold,
+                          SizedBox(
+                            height: 20,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              ElevatedButton(
+                                onPressed: () {
+                                  Navigator.pushNamed(
+                                    context,
+                                    'changeUserPassword',
+                                  );
+                                },
+                                child: Text(
+                                  'Change Password',
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor:
+                                      Color.fromARGB(255, 39, 92, 216),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(17),
+                                  ),
+                                  minimumSize: Size(130, 50),
+                                ),
                               ),
-                            ),
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Color.fromARGB(255, 39, 92, 216),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(17),
-                              ),
-                              minimumSize: Size(130, 50),
-                            ),
+                            ],
                           ),
                         ],
                       ),
@@ -413,7 +539,11 @@ class _EditUserState extends State<EditUser> {
           leading: IconButton(
             icon: Icon(Icons.arrow_back_ios_new),
             onPressed: () {
-              Navigator.pop(context);
+              updatePassword(
+                oldPasswordController.text,
+                newPasswordController.text,
+                confirmPasswordController.text,
+              );
             },
           ),
           backgroundColor: Color.fromARGB(255, 39, 92, 216),
@@ -439,8 +569,8 @@ class _EditUserState extends State<EditUser> {
 
               nameController.text = userData.name;
               emailController.text = userData.email;
-              passwordController.text = userData.password;
-              confirmPasswordController.text = userData.password;
+              // passwordController.text = userData.password;
+              // confirmPasswordController.text = userData.password;
 
               return buildEditUserWidget(userData);
             }

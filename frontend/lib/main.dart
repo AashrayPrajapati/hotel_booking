@@ -8,17 +8,22 @@ import 'package:hotel_booking/getImage.dart';
 
 import 'khalti.dart';
 import 'screens/admin/hotelCrud/hotelCrud.dart';
+import 'screens/auth/changePassword.dart';
+import 'screens/auth/forgotPassword.dart';
+import 'screens/auth/otp.dart';
 import 'screens/auth/register/register.dart';
 import 'screens/auth/login/login.dart';
 
 import 'mainPage.dart';
 import 'screens/hotels/updateHotel.dart';
+import 'screens/hotels/updateHotelPassword.dart';
 import 'screens/hotels/updateRoom.dart';
 import 'screens/hotels/viewBooking.dart';
 import 'screens/admin/roomCrud/createRoom.dart';
 
 import 'screens/user/editUser.dart';
 import 'screens/user/user.dart';
+import 'screens/user/updateUserPassword.dart';
 
 import 'booking.dart';
 import 'screens/admin/hotelDashboard/dashboard.dart';
@@ -62,17 +67,24 @@ class _MainState extends State<Main> {
         'hotelInfo': (context) => HotelInfo(),
         'roomCrud': (context) => RoomCreate(),
         'roomType': (context) => RoomType(),
-        //
-        'registeredUsers': (context) => RegisteredUsers(),
-        'registeredHotels': (context) => RegisteredHotels(),
-        //
-        'editUser': (context) => EditUser(),
         'updateHotel': (context) => UpdateHotel(),
-        'khalti': (context) => Khalti(),
         'updateRoom': (context) => UpdateRoom(),
         'getRooms': (context) => GetRooms(),
         'viewBooking': (context) => ViewBooking(),
         'getImage': (context) => ImageReceiver(),
+        //
+        'registeredUsers': (context) => RegisteredUsers(),
+        'registeredHotels': (context) => RegisteredHotels(),
+
+        //
+        'editUser': (context) => EditUser(),
+        'changeUserPassword': (context) => UpdateUserPassword(),
+        'changeHotelPassword': (context) => UpdateManagerPassword(),
+        'forgotPassword': (context) => ForgotPassword(),
+        'otp': (context) => OTP(),
+        'changePassword': (context) => ChangePassword(),
+
+        'khalti': (context) => Khalti(),
       },
     );
   }

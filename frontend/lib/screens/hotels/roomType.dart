@@ -40,7 +40,7 @@ class _RoomTypePageState extends State<RoomTypePage> {
           centerTitle: true,
           backgroundColor: Colors.blue[500],
           leading: IconButton(
-            icon: Icon(Icons.arrow_back),
+            icon: Icon(Icons.arrow_back_ios_new),
             onPressed: () {
               Navigator.pushNamed(context, 'mainPage');
             },

@@ -56,18 +56,19 @@ router.post("/login", async (req, res) => {
     const token = jwt.sign({ _id: user._id }, "whatsup");
     // const token = null;
 
-    if (token)
+    if (token) {
       return res.status(200).json({
         token: token,
         message: "Login successful",
       });
-    else
-      return res.status(400).json({
+    } else {
+      return res.json({
         status: "Error",
         message: "Invalid credentials",
       });
+    }
   } else {
-    return res.status(400).json({
+    return res.json({
       status: "Error",
       message: "Invalid credentials",
     });
@@ -277,6 +278,38 @@ router.delete("/rooms/:id", async (req, res) => {
     res.json(deleted); //Send the result as a JSON object in the response
   } catch (err) {
     res.json("ERROR");
+  }
+});
+
+router.patch("/updatePassword/:id", async (req, res) => {
+  console.log("applebottom jeans boots with the fur");
+  try {
+    console.log(req.params.id);
+    console.log(req.body);
+    const hotel = await Admin.findById({ _id: req.params.id });
+
+    console.log(hotel);
+    // console.log(req.body);
+
+    // if false
+    if (hotel.password !== req.body.password) {
+      console.log("old pasword doesnt match");
+      return res.json("Old password doesn't match");
+    }
+
+    //if true
+    const updated = await Admin.updateMany(
+      { _id: req.params.id },
+      {
+        $set: {
+          password: req.body.newPassword,
+        },
+      }
+    );
+    console.log("success", updated);
+    res.json("Password changed successfully");
+  } catch (err) {
+    res.json(err);
   }
 });
 

@@ -3,7 +3,7 @@ import 'dart:convert';
 
 String ownerId = '';
 
-void decodeUser() async {
+decodeUser() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
 
   String storedToken = prefs.getString('jwtToken') ?? '';
@@ -21,4 +21,5 @@ void decodeUser() async {
   ownerId = payloadJson['_id'];
   print('Stored Role: $userRole');
   print('USER ID: $ownerId');
+  return [ownerId, userRole];
 }

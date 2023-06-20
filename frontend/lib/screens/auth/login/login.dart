@@ -1,16 +1,12 @@
 import 'package:flutter/material.dart';
+
 import 'package:dio/dio.dart';
-import 'package:hotel_booking/config.dart';
-// import 'package:fluttertoast/fluttertoast.dart';
-// import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'dart:convert';
-// import 'package:hotel_booking/mainPage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-// import 'config.dart';
+import 'package:hotel_booking/config.dart';
+// import 'package:hotel_booking/utils.dart';
 
 class MyLogin extends StatefulWidget {
-  // const MyLogin({Key? key}) : super(key: key);
-
   @override
   _MyLoginState createState() => _MyLoginState();
 }
@@ -52,9 +48,6 @@ class _MyLoginState extends State<MyLogin> {
         apiRole = '$apiUrl/users/login';
       } else if (selectedRole == 'Hotel Owner') {
         apiRole = '$apiUrl/hotel/login';
-      } else {
-        // Handle the case when no role is selected or handle other roles
-        return;
       }
 
       try {
@@ -95,19 +88,13 @@ class _MyLoginState extends State<MyLogin> {
               },
             );
 
-            // Navigator.of(context, rootNavigator: true).pushNamed(
-            //   'mainPage',
-            //   arguments: {
-            //     'userId': userId.toString(),
-            //   },
-            // );
-
             print('this is the user id: ');
             print(userId);
           } else {
             // Handle case when token extraction fails
 
-            print('Token extraction failed');
+            // print('Token extraction failed');
+
             showDialog(
               context: context,
               builder: (BuildContext context) {
@@ -134,15 +121,7 @@ class _MyLoginState extends State<MyLogin> {
         // Handle DioError or network-related errors
         print('Error connecting to server: ${e.message}');
         // Show error message to the user or handle the error appropriately
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(
-              'Invalid email or password',
-              style: TextStyle(color: Colors.white),
-            ),
-            backgroundColor: Colors.red,
-          ),
-        );
+
       }
     }
 
@@ -332,7 +311,10 @@ class _MyLoginState extends State<MyLogin> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               TextButton(
-                                onPressed: () {},
+                                onPressed: () {
+                                  Navigator.pushNamed(
+                                      context, 'forgotPassword');
+                                },
                                 child: Text(
                                   "Forgot Password",
                                   style: TextStyle(

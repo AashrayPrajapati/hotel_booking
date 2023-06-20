@@ -4,6 +4,7 @@ const Users = require("../models/User"); //Import User Schema
 const bcrypt = require("bcryptjs"); // Import bcryptjs for password hashing
 const { regValidation } = require("../validation/validation"); // Import validation function
 const jwt = require("jsonwebtoken");
+const { valid } = require("@hapi/joi");
 require("dotenv/config");
 
 // POST a new user
@@ -84,7 +85,7 @@ router.get("/:id", async (req, res) => {
     const user = await Users.findById({ _id: req.params.id });
     res.json(user);
   } catch (err) {
-    res.json("ERROR");
+    res.json(err);
   }
 });
 
@@ -95,7 +96,7 @@ router.delete("/:id", async (req, res) => {
     //  with the specified id
     res.json(deleted); //Send the result as a JSON object in the response
   } catch (err) {
-    res.json("ERROR");
+    res.json(err);
   }
 });
 
@@ -112,6 +113,44 @@ router.patch("/:id", async (req, res) => {
       }
     );
     res.json(updated);
+  } catch (err) {
+    res.json(err);
+  }
+});
+
+router.patch("/updatePassword/:id", async (req, res) => {
+  console.log('applebottom jeans boots with the fur');
+  try {
+    const user = await Users.findById({ _id: req.params.id });
+    console.log("ksjdhfksfdhakdfjh");
+
+    console.log(user);
+    console.log("ksjdhfksfdhakdfjh");
+
+    const salt = await bcrypt.genSalt(10);
+    const validPwd = await bcrypt.compare(req.body.password, user.password);
+    if (!validPwd) return res.send("Old password is wrong");
+    if (req.body.newPassword === req.body.password)
+      return res.send("New password cannot be same as old password");
+
+    const newHashedPassword = await bcrypt.hash(req.body.newPassword, salt);
+    console.log("2");
+
+    if (validPwd) {
+      const updated = await Users.updateMany(
+        { _id: req.params.id },
+        {
+          $set: {
+            password: newHashedPassword,
+          },
+        }
+      );
+      console.log("success",updated);
+      res.status(200).json("Password changed successfully");
+      
+    }else{
+      res.json("failed")
+    }
   } catch (err) {
     res.json(err);
   }

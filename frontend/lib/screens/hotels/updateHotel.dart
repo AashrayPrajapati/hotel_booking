@@ -466,64 +466,64 @@ class _UpdateHotelState extends State<UpdateHotel> {
                                     ),
                                   ),
                                 ),
-                                Padding(
-                                  padding: const EdgeInsets.only(
-                                    left: 20,
-                                    right: 20,
-                                    bottom: 20,
-                                  ),
-                                  child: TextField(
-                                    controller: passwordController,
-                                    obscureText: _obscureText,
-                                    decoration: InputDecoration(
-                                      border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(17),
-                                      ),
-                                      labelText: 'Password',
-                                      suffixIcon: IconButton(
-                                        icon: Icon(
-                                          _obscureText
-                                              ? Icons.visibility
-                                              : Icons.visibility_off,
-                                        ),
-                                        onPressed: () {
-                                          setState(() {
-                                            _obscureText = !_obscureText;
-                                          });
-                                        },
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(
-                                    left: 20,
-                                    right: 20,
-                                    bottom: 20,
-                                  ),
-                                  child: TextField(
-                                    controller: confirmPasswordController,
-                                    obscureText: _obscureText2,
-                                    decoration: InputDecoration(
-                                      border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(17),
-                                      ),
-                                      labelText: 'Confirm Password',
-                                      suffixIcon: IconButton(
-                                        icon: Icon(
-                                          _obscureText2
-                                              ? Icons.visibility
-                                              : Icons.visibility_off,
-                                        ),
-                                        onPressed: () {
-                                          setState(() {
-                                            _obscureText2 = !_obscureText2;
-                                          });
-                                        },
-                                      ),
-                                    ),
-                                  ),
-                                ),
+                                // Padding(
+                                //   padding: const EdgeInsets.only(
+                                //     left: 20,
+                                //     right: 20,
+                                //     bottom: 20,
+                                //   ),
+                                //   child: TextField(
+                                //     controller: passwordController,
+                                //     obscureText: _obscureText,
+                                //     decoration: InputDecoration(
+                                //       border: OutlineInputBorder(
+                                //         borderRadius: BorderRadius.circular(17),
+                                //       ),
+                                //       labelText: 'Password',
+                                //       suffixIcon: IconButton(
+                                //         icon: Icon(
+                                //           _obscureText
+                                //               ? Icons.visibility
+                                //               : Icons.visibility_off,
+                                //         ),
+                                //         onPressed: () {
+                                //           setState(() {
+                                //             _obscureText = !_obscureText;
+                                //           });
+                                //         },
+                                //       ),
+                                //     ),
+                                //   ),
+                                // ),
+                                // Padding(
+                                //   padding: const EdgeInsets.only(
+                                //     left: 20,
+                                //     right: 20,
+                                //     bottom: 20,
+                                //   ),
+                                //   child: TextField(
+                                //     controller: confirmPasswordController,
+                                //     obscureText: _obscureText2,
+                                //     decoration: InputDecoration(
+                                //       border: OutlineInputBorder(
+                                //         borderRadius: BorderRadius.circular(17),
+                                //       ),
+                                //       labelText: 'Confirm Password',
+                                //       suffixIcon: IconButton(
+                                //         icon: Icon(
+                                //           _obscureText2
+                                //               ? Icons.visibility
+                                //               : Icons.visibility_off,
+                                //         ),
+                                //         onPressed: () {
+                                //           setState(() {
+                                //             _obscureText2 = !_obscureText2;
+                                //           });
+                                //         },
+                                //       ),
+                                //     ),
+                                //   ),
+                                // ),
                                 Padding(
                                   padding: const EdgeInsets.only(
                                     left: 20,
@@ -544,25 +544,90 @@ class _UpdateHotelState extends State<UpdateHotel> {
                                 ),
                                 Column(
                                   children: [
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceEvenly,
+                                      children: [
+                                        ElevatedButton(
+                                          onPressed: () {
+                                            print('Update button pressed');
+                                            print(ownerNameController.text);
+
+                                            updateHotel(
+                                              hotelId,
+                                              ownerNameController.text,
+                                              emailController.text,
+                                              descriptionController.text,
+                                              propertyNameController.text,
+                                              countryController.text,
+                                              cityController.text,
+                                              streetNameController.text,
+                                              passwordController.text,
+                                            );
+                                          },
+                                          child: Text(
+                                            'Update',
+                                            style: TextStyle(
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                          style: ElevatedButton.styleFrom(
+                                            backgroundColor: Color.fromARGB(
+                                                255, 39, 92, 216),
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(17),
+                                            ),
+                                            minimumSize: Size(130, 50),
+                                          ),
+                                        ),
+                                        ElevatedButton(
+                                          onPressed: () {
+                                            print('Delete button pressed');
+                                            print(ownerNameController.text);
+
+                                            deleteHotel(
+                                              hotelId,
+                                              ownerNameController.text,
+                                              emailController.text,
+                                              descriptionController.text,
+                                              propertyNameController.text,
+                                              countryController.text,
+                                              cityController.text,
+                                              streetNameController.text,
+                                              passwordController.text,
+                                            );
+                                          },
+                                          child: Text(
+                                            'Delete',
+                                            style: TextStyle(
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                          style: ElevatedButton.styleFrom(
+                                            backgroundColor: Color.fromARGB(
+                                                255, 200, 62, 57),
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(17),
+                                            ),
+                                            minimumSize: Size(130, 50),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(
+                                      height: 20,
+                                    ),
                                     ElevatedButton(
                                       onPressed: () {
-                                        print('Update button pressed');
-                                        print(ownerNameController.text);
-
-                                        updateHotel(
-                                          hotelId,
-                                          ownerNameController.text,
-                                          emailController.text,
-                                          descriptionController.text,
-                                          propertyNameController.text,
-                                          countryController.text,
-                                          cityController.text,
-                                          streetNameController.text,
-                                          passwordController.text,
-                                        );
+                                        Navigator.pushNamed(
+                                            context, 'changeHotelPassword');
                                       },
                                       child: Text(
-                                        'Update',
+                                        'Change password',
                                         style: TextStyle(
                                           fontSize: 20,
                                           fontWeight: FontWeight.bold,
@@ -571,43 +636,6 @@ class _UpdateHotelState extends State<UpdateHotel> {
                                       style: ElevatedButton.styleFrom(
                                         backgroundColor:
                                             Color.fromARGB(255, 39, 92, 216),
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(17),
-                                        ),
-                                        minimumSize: Size(130, 50),
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      height: 20,
-                                    ),
-                                    ElevatedButton(
-                                      onPressed: () {
-                                        print('Delete button pressed');
-                                        print(ownerNameController.text);
-
-                                        deleteHotel(
-                                          hotelId,
-                                          ownerNameController.text,
-                                          emailController.text,
-                                          descriptionController.text,
-                                          propertyNameController.text,
-                                          countryController.text,
-                                          cityController.text,
-                                          streetNameController.text,
-                                          passwordController.text,
-                                        );
-                                      },
-                                      child: Text(
-                                        'Delete',
-                                        style: TextStyle(
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                      style: ElevatedButton.styleFrom(
-                                        backgroundColor:
-                                            Color.fromARGB(255, 200, 62, 57),
                                         shape: RoundedRectangleBorder(
                                           borderRadius:
                                               BorderRadius.circular(17),
