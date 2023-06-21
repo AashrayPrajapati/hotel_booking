@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 
+import 'dart:convert';
+import 'package:dio/dio.dart';
+import 'package:hotel_booking/config.dart';
+
 class ForgotPassword extends StatefulWidget {
   const ForgotPassword({super.key});
 
@@ -7,7 +11,45 @@ class ForgotPassword extends StatefulWidget {
   State<ForgotPassword> createState() => _ForgotPasswordState();
 }
 
+final Dio _dio = Dio();
+
 class _ForgotPasswordState extends State<ForgotPassword> {
+  TextEditingController emailController = TextEditingController();
+
+  @override
+  void dispose() {
+    emailController.dispose();
+    super.dispose();
+  }
+
+  sendOTP() async {
+    if (emailController.text.isNotEmpty) {
+      try {
+        var regBody = {
+          'email': emailController.text,
+        };
+        print(regBody);
+        var response = await _dio.post(
+          '$apiUrl/auth/forgotpassword',
+          options: Options(headers: {'Content-Type': 'application/json'}),
+          data: jsonEncode(regBody),
+        );
+        print('Response status code: ${response.statusCode}');
+        print('Response body: ${response.data}');
+        Navigator.pushNamed(context, 'otp');
+
+        // navigation logic
+        // if (response.statusCode == 200) {
+        //   Navigator.pushNamed(context, 'otp');
+        // }
+      } on DioError catch (e) {
+        print('Error connecting to server: ${e.message}');
+      }
+    } else {
+      setState(() {});
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -56,6 +98,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                     padding: const EdgeInsets.only(
                         top: 10, bottom: 10, left: 17, right: 17),
                     child: TextField(
+                      controller: emailController,
                       decoration: InputDecoration(
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(17),
@@ -66,7 +109,8 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                   ),
                   ElevatedButton(
                     onPressed: () {
-                      Navigator.pushNamed(context, 'otp');
+                      sendOTP();
+                      print(emailController.text);
                     },
                     child: Text('Submit',
                         style: TextStyle(

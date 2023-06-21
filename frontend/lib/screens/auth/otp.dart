@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+
 import 'package:flutter/services.dart';
+import 'package:hotel_booking/config.dart';
+import 'package:dio/dio.dart';
+import 'dart:convert';
 
 class OTP extends StatefulWidget {
   const OTP({super.key});
@@ -8,7 +12,103 @@ class OTP extends StatefulWidget {
   State<OTP> createState() => _OTPState();
 }
 
+final Dio _dio = Dio();
+
 class _OTPState extends State<OTP> {
+  TextEditingController otpController = TextEditingController();
+
+  @override
+  void dispose() {
+    otpController.dispose();
+    super.dispose();
+  }
+
+  verifyOTP() async {
+    if (otpController.text.isNotEmpty) {
+      try {
+        var regBody = {
+          'otp': otpController.text,
+        };
+        print(regBody);
+        var response = await _dio.post(
+          '$apiUrl/auth/verify-otp',
+          options: Options(headers: {'Content-Type': 'application/json'}),
+          data: jsonEncode(regBody),
+        );
+        print('Response status code: ${response.statusCode}');
+        print('Response body: ${response.data}');
+
+        if (response.statusCode == 200) {
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: Text('OTP Verified'),
+                content: Text('OTP has been verified successfully'),
+                actions: [
+                  TextButton(
+                    onPressed: () {
+                      Navigator.pushNamed(context, 'changePassword');
+                    },
+                    child: Text('OK'),
+                  ),
+                ],
+              );
+            },
+          );
+        }
+        // else {
+        //   showDialog(
+        //     context: context,
+        //     builder: (BuildContext context) {
+        //       return AlertDialog(
+        //         title: Text('OTP Verification Failed'),
+        //         content: Text('OTP verification failed. Please try again.'),
+        //         actions: [
+        //           TextButton(
+        //             onPressed: () {
+        //               Navigator.pop(context);
+        //             },
+        //             child: Text('OK'),
+        //           ),
+        //         ],
+        //       );
+        //     },
+        //   );
+        // }
+
+        // Navigator.pushNamed(context, 'otp');
+
+        // navigation logic
+        // if (response.statusCode == 200) {
+        //   Navigator.pushNamed(context, 'otp');
+        // }
+      } on DioError catch (e) {
+        print('Error connecting to server: ${e.message}');
+
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text('OTP Verification Failed'),
+              content: Text('OTP verification failed. Please try again.'),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: Text('OK'),
+                ),
+              ],
+            );
+          },
+        );
+      }
+    } else {
+      setState(() {});
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -57,6 +157,7 @@ class _OTPState extends State<OTP> {
                     padding: const EdgeInsets.only(
                         top: 10, bottom: 10, left: 17, right: 17),
                     child: TextField(
+                      controller: otpController,
                       keyboardType:
                           TextInputType.numberWithOptions(decimal: true),
                       inputFormatters: [
@@ -77,7 +178,9 @@ class _OTPState extends State<OTP> {
                   ),
                   ElevatedButton(
                     onPressed: () {
-                      Navigator.pushNamed(context, 'changePassword');
+                      verifyOTP();
+                      print('OTP: $otpController.text');
+                      // Navigator.pushNamed(context, 'changePassword');
                     },
                     child: Text('Submit',
                         style: TextStyle(

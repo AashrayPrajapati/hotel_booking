@@ -39,6 +39,8 @@ class _HomePageState extends State<HomePage> {
 
   TextEditingController dateRangeInput = TextEditingController();
   TextEditingController searchInput = TextEditingController();
+  String selectedValue = 'home'; // Variable to store the selected value
+
   String numberOfNights = '';
   String formattedStartDate = '';
   String formattedEndDate = '';
@@ -89,12 +91,6 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      // decoration: BoxDecoration(
-      //   image: DecorationImage(
-      //     image: AssetImage('assets/check.png'),
-      //     fit: BoxFit.cover,
-      //   ),
-      // ),
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
@@ -106,12 +102,6 @@ class _HomePageState extends State<HomePage> {
           appBar: AppBar(
             elevation: 3,
             backgroundColor: Color.fromARGB(255, 39, 92, 216),
-            leading: IconButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              icon: Icon(Icons.arrow_back_ios_new),
-            ),
             title: Text('yoHotel',
                 style: TextStyle(
                   fontSize: 25,
@@ -119,145 +109,167 @@ class _HomePageState extends State<HomePage> {
                 )),
             centerTitle: true,
           ),
-          body: ListView(
-            children: [
-              Column(
-                children: [
-                  SizedBox(height: 20),
-                  // Container(
-                  //   child: SizedBox(
-                  //     width: MediaQuery.of(context).size.width * 0.83,
-                  //     child: TextField(
-                  //       controller: searchInput,
-                  //       decoration: InputDecoration(
-                  //         prefixIcon: Icon(Icons.search_outlined),
-                  //         contentPadding: EdgeInsets.symmetric(vertical: 10),
-                  //         hintText: "City or hotels' name",
-                  //         border: OutlineInputBorder(
-                  //           borderRadius: BorderRadius.circular(7),
-                  //         ),
-                  //       ),
-                  //     ),
-                  //   ),
-                  // ),
-                  // Padding(padding: EdgeInsets.only(bottom: 3)),
-                  Container(
-                    child: Center(
-                      child: SizedBox(
-                        width: MediaQuery.of(context).size.width * 0.83,
-                        child: TextField(
-                          readOnly: true,
-                          controller: dateRangeInput,
-                          decoration: InputDecoration(
-                            prefixIcon: Icon(Icons.calendar_today),
-                            contentPadding: EdgeInsets.symmetric(vertical: 10),
-                            hintText: 'Choose dates',
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(7),
+          body: SingleChildScrollView(
+            child: Stack(
+              children: [
+                Column(
+                  children: [
+                    SizedBox(height: 15),
+                    Column(
+                      children: [
+                        SizedBox(
+                          width: MediaQuery.of(context).size.width * 0.83,
+                          child: Row(
+                            children: [
+                              Expanded(
+                                flex: 8,
+                                child: TextField(
+                                  controller: searchInput,
+                                  decoration: InputDecoration(
+                                    prefixIcon: Icon(Icons.search_outlined,
+                                        color: Colors.black),
+                                    contentPadding:
+                                        EdgeInsets.symmetric(vertical: 10),
+                                    hintText: "Search",
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(7),
+                                      borderSide: BorderSide(
+                                          color: Colors
+                                              .black), // Set the border color
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              SizedBox(width: 7),
+                              Expanded(
+                                flex: 2,
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    color: Color.fromARGB(255, 39, 92, 216),
+                                    borderRadius: BorderRadius.circular(7),
+                                  ),
+                                  child: DropdownButton<String>(
+                                    underline: SizedBox(),
+                                    icon: Icon(Icons.filter_alt_outlined,
+                                        color:
+                                            Color.fromARGB(255, 255, 255, 255)),
+                                    items: [
+                                      DropdownMenuItem<String>(
+                                        child: Center(
+                                          child: Icon(
+                                              Icons.location_on_outlined,
+                                              color: Color.fromARGB(
+                                                  255, 39, 92, 216)),
+                                        ),
+                                        value: 'location',
+                                      ),
+                                      DropdownMenuItem<String>(
+                                        child: Center(
+                                          child: Icon(Icons.home_outlined,
+                                              color: Color.fromARGB(
+                                                  255, 39, 92, 216)),
+                                        ),
+                                        value: 'home',
+                                      ),
+                                    ],
+                                    onChanged: (String? value) {
+                                      setState(() {
+                                        selectedValue = value ??
+                                            ''; // Update the selectedValue variable
+                                      });
+                                    },
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 10),
+                    Container(
+                      child: Center(
+                        child: SizedBox(
+                          width: MediaQuery.of(context).size.width * 0.83,
+                          child: TextField(
+                            readOnly: true,
+                            controller: dateRangeInput,
+                            decoration: InputDecoration(
+                              prefixIcon: Icon(Icons.calendar_today),
+                              contentPadding:
+                                  EdgeInsets.symmetric(vertical: 10),
+                              hintText: 'Choose dates',
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(7),
+                              ),
                             ),
-                          ),
-                          onTap: () async {
-                            DateTimeRange? pickedDateRange =
-                                await showDateRangePicker(
-                              context: context,
-                              firstDate: DateTime(1937),
-                              lastDate: DateTime(3333),
-                              // dark theme for calendar
-                              // builder: (context, child) {
-                              //   return Theme(data: ThemeData.dark(), child: child!);
-                              // },
-                            );
-
-                            if (pickedDateRange != null) {
-                              // print(pickedDateRange);
-                              String formattedStartDate =
-                                  DateFormat('yyyy-MM-dd')
-                                      .format(pickedDateRange.start);
-                              String formattedEndDate = DateFormat('yyyy-MM-dd')
-                                  .format(pickedDateRange.end);
-                              String formattedDateRange =
-                                  '$formattedStartDate - $formattedEndDate';
-                              print('homePage');
-                              print(formattedDateRange);
-
-                              updateNumberOfNights(pickedDateRange);
-
-                              setState(
-                                () {
-                                  dateRangeInput.text = formattedDateRange;
-                                },
+                            onTap: () async {
+                              DateTimeRange? pickedDateRange =
+                                  await showDateRangePicker(
+                                context: context,
+                                firstDate: DateTime(1937),
+                                lastDate: DateTime(3333),
                               );
-                            } else {
-                              print("Date range is not selected");
-                            }
-                          },
-                        ),
-                      ),
-                    ),
-                  ),
-                  Padding(padding: EdgeInsets.only(bottom: 3)),
-                  // Container(
-                  //   child: Center(
-                  //     child: SizedBox(
-                  //       width: MediaQuery.of(context).size.width * 0.83,
-                  //       child: ElevatedButton(
-                  //         style: ElevatedButton.styleFrom(
-                  //           backgroundColor: Color.fromARGB(255, 39, 92, 216),
-                  //         ),
-                  //         child: Text('Search'),
-                  //         onPressed: () async {
-                  //           if (searchInput.text == "") {
-                  //             ScaffoldMessenger.of(context)
-                  //                 .showSnackBar(SnackBar(
-                  //               content:
-                  //                   Text('Please enter city or hotel name'),
-                  //               duration: Duration(seconds: 2),
-                  //             ));
-                  //           } else {
-                  //             var dio = Dio();
 
-                  //             var response = await dio.get(
-                  //                 '$apiUrl/hotel/search?query=Sunny%20hotel%20Bhaktapur');
-                  //             if (response.statusCode == 200) {
-                  //               print(response.data);
-                  //             } else {
-                  //               print(response.statusCode);
-                  //             }
+                              if (pickedDateRange != null) {
+                                // print(pickedDateRange);
+                                String formattedStartDate =
+                                    DateFormat('yyyy-MM-dd')
+                                        .format(pickedDateRange.start);
+                                String formattedEndDate =
+                                    DateFormat('yyyy-MM-dd')
+                                        .format(pickedDateRange.end);
+                                String formattedDateRange =
+                                    '$formattedStartDate - $formattedEndDate';
+                                print('homePage');
+                                print(formattedDateRange);
 
-                  //             if (response.statusCode == 200) {
-                  //               print(response.data);
-                  //               // Navigator.pushNamed(context, 'search',
-                  //               //     arguments: response.data);
-                  //             } else {
-                  //               print(response.statusCode);
-                  //             }
-                  //           }
-                  //           // Navigator.pushNamed(context, 'dashboard');
-                  //         },
-                  //       ),
-                  //     ),
-                  //   ),
-                  // ),
-                  SizedBox(height: 33),
-                  Container(
-                    child: Center(
-                      child: SizedBox(
-                        width: MediaQuery.of(context).size.width * 0.9,
-                        child: Text(
-                          "Popular hotels around your location",
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.w700,
+                                updateNumberOfNights(pickedDateRange);
+
+                                setState(
+                                  () {
+                                    dateRangeInput.text = formattedDateRange;
+                                  },
+                                );
+                              } else {
+                                print("Date range is not selected");
+                              }
+                            },
                           ),
                         ),
                       ),
                     ),
-                  ),
-                  SizedBox(height: 7),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 15, right: 15),
-                    child: Container(
-                      height: MediaQuery.of(context).size.height * 0.66,
+                    Padding(padding: EdgeInsets.only(bottom: 3)),
+                    ElevatedButton(
+                      onPressed: () {
+                        String selectedFilter =
+                            ''; // Variable to store the selected filter
+                        if (selectedValue == 'location') {
+                          selectedFilter =
+                              'Location'; // Set the filter value for location
+                        } else if (selectedValue == 'home') {
+                          selectedFilter =
+                              'Home'; // Set the filter value for home
+                        }
+                        print('Search Input: ${searchInput.text}');
+                        print(
+                            'Selected Filter: $selectedFilter'); // Print the selected filter value
+                      },
+                      child: Text('Search',
+                          style: TextStyle(
+                              fontSize: 19, fontWeight: FontWeight.w600)),
+                      style: ElevatedButton.styleFrom(
+                        minimumSize:
+                            Size(MediaQuery.of(context).size.width * 0.37, 40),
+                        backgroundColor: Color.fromARGB(255, 39, 92, 216),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(7),
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 13),
+                    Container(
+                      height: MediaQuery.of(context).size.height * 0.58,
                       child: FutureBuilder(
                         future: getHotels(),
                         builder: (context, AsyncSnapshot snapshot) {
@@ -273,11 +285,15 @@ class _HomePageState extends State<HomePage> {
                             return ListView.builder(
                               itemCount: snapshot.data.length,
                               itemBuilder: (context, index) {
-                                return Column(
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.only(bottom: 5),
-                                      child: GestureDetector(
+                                return Padding(
+                                  padding: const EdgeInsets.only(
+                                    left: 10,
+                                    right: 10,
+                                    bottom: 7,
+                                  ),
+                                  child: Column(
+                                    children: [
+                                      GestureDetector(
                                         onTap: () {
                                           var ID = snapshot.data[index]._id;
                                           if (formattedStartDate.isEmpty ||
@@ -329,15 +345,10 @@ class _HomePageState extends State<HomePage> {
                                               child: Container(
                                                 height: 100,
                                                 child: Card(
-                                                  elevation: 7,
                                                   child: Image.network(
                                                     'https://bit.ly/3KAjXJW',
                                                     fit: BoxFit.cover,
                                                   ),
-                                                  // child: Placeholder(
-                                                  //   fallbackHeight: 100,
-                                                  //   fallbackWidth: 100,
-                                                  // ),
                                                 ),
                                               ),
                                             ),
@@ -346,80 +357,78 @@ class _HomePageState extends State<HomePage> {
                                               child: Container(
                                                 height: 100,
                                                 child: Card(
+                                                  elevation: 5,
                                                   shape: RoundedRectangleBorder(
                                                     borderRadius:
-                                                        BorderRadius.circular(
-                                                            10),
+                                                        BorderRadius.only(
+                                                      bottomLeft:
+                                                          Radius.circular(7),
+                                                      topLeft:
+                                                          Radius.circular(7),
+                                                      topRight:
+                                                          Radius.circular(11),
+                                                      bottomRight:
+                                                          Radius.circular(11),
+                                                    ),
                                                   ),
-                                                  elevation: 7,
-                                                  child: Container(
-                                                    color: Colors.white,
-                                                    child: Padding(
-                                                      padding:
-                                                          const EdgeInsets.only(
-                                                        top: 5,
-                                                        bottom: 5,
-                                                        left: 10,
-                                                        right: 10,
-                                                      ),
-                                                      child: Column(
-                                                        children: [
-                                                          Expanded(
-                                                            flex: 5,
-                                                            child: Row(
-                                                              children: [
-                                                                Expanded(
-                                                                  child: Text(
-                                                                    snapshot
-                                                                        .data[
-                                                                            index]
-                                                                        .propertyName,
+                                                  child: Padding(
+                                                    padding:
+                                                        const EdgeInsets.all(
+                                                            10),
+                                                    child: Column(
+                                                      children: [
+                                                        Expanded(
+                                                          flex: 5,
+                                                          child: Row(
+                                                            children: [
+                                                              Expanded(
+                                                                child: Text(
+                                                                  snapshot
+                                                                      .data[
+                                                                          index]
+                                                                      .propertyName,
+                                                                  style:
+                                                                      TextStyle(
+                                                                    fontSize:
+                                                                        15,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .bold,
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        ),
+                                                        SizedBox(height: 7),
+                                                        Expanded(
+                                                          flex: 5,
+                                                          child: Row(
+                                                            children: [
+                                                              Expanded(
+                                                                child: RichText(
+                                                                  text:
+                                                                      TextSpan(
                                                                     style:
                                                                         TextStyle(
+                                                                      color: Colors
+                                                                          .black,
                                                                       fontSize:
-                                                                          15,
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .bold,
+                                                                          13,
                                                                     ),
-                                                                  ),
-                                                                ),
-                                                              ],
-                                                            ),
-                                                          ),
-                                                          SizedBox(
-                                                            height: 7,
-                                                          ),
-                                                          Expanded(
-                                                            flex: 5,
-                                                            child: Row(
-                                                              children: [
-                                                                Expanded(
-                                                                  child:
-                                                                      RichText(
-                                                                    text:
-                                                                        TextSpan(
-                                                                      style:
-                                                                          TextStyle(
-                                                                        color: Colors
-                                                                            .black,
-                                                                        fontSize:
-                                                                            13,
+                                                                    children: [
+                                                                      TextSpan(
+                                                                        text:
+                                                                            '${snapshot.data[index].streetName}, ${snapshot.data[index].city}',
                                                                       ),
-                                                                      children: [
-                                                                        TextSpan(
-                                                                          text:
-                                                                              '${snapshot.data[index].streetName}, ${snapshot.data[index].city}',
-                                                                        ),
-                                                                      ],
-                                                                    ),
+                                                                    ],
                                                                   ),
                                                                 ),
-                                                              ],
-                                                            ),
+                                                              ),
+                                                            ],
                                                           ),
-                                                        ],
-                                                      ),
+                                                        ),
+                                                      ],
                                                     ),
                                                   ),
                                                 ),
@@ -428,8 +437,8 @@ class _HomePageState extends State<HomePage> {
                                           ],
                                         ),
                                       ),
-                                    ),
-                                  ],
+                                    ],
+                                  ),
                                 );
                               },
                             );
@@ -437,10 +446,10 @@ class _HomePageState extends State<HomePage> {
                         },
                       ),
                     ),
-                  ),
-                ],
-              ),
-            ],
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
       ),

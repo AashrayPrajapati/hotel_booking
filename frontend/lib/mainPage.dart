@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+
 import 'package:hotel_booking/screens/admin/roomCrud/createRoom.dart';
 import 'package:hotel_booking/screens/auth/login/login.dart';
-//
 import 'screens/hotels/getRoom.dart';
 import 'screens/mainPage/home.dart';
+import 'package:hotel_booking/screens/user/bookingHistory.dart';
 import 'screens/user/settings.dart';
 import 'screens/user/user.dart';
 
@@ -16,9 +17,10 @@ class MainPage extends StatefulWidget {
 class _MainPageState extends State<MainPage> {
   List pages = [
     Home(),
-    if (selectedRole == "Hotel Owner")
-      RoomCreate()
-    else if (selectedRole == "User")
+    if (selectedRole == "Hotel Owner") RoomCreate(),
+    if (selectedRole == "User")
+      BookingHistory()
+    else if (selectedRole == "")
       userSettings(),
     if (selectedRole == "Hotel Owner") GetRooms(),
     Profile(),
@@ -57,10 +59,21 @@ class _MainPageState extends State<MainPage> {
               icon: Icon(Icons.add),
               label: "Create rooms",
             ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.settings_outlined),
-            label: "Settings",
-          ),
+          if (selectedRole == "Hotel Owner")
+            BottomNavigationBarItem(
+              icon: Icon(Icons.hotel_outlined),
+              label: "Rooms",
+            ),
+          if (selectedRole == "User")
+            BottomNavigationBarItem(
+              icon: Icon(Icons.history_outlined),
+              label: "Booking History",
+            ),
+          if (selectedRole == null)
+            BottomNavigationBarItem(
+              icon: Icon(Icons.settings_outlined),
+              label: "Settings",
+            ),
           BottomNavigationBarItem(
             icon: Icon(Icons.person_outlined),
             label: "User",

@@ -152,7 +152,7 @@ class _GetRoomsState extends State<GetRooms> {
                             );
                           },
                           child: Card(
-                            color: Color.fromARGB(255, 71, 116, 222),
+                            color: Color.fromARGB(255, 76, 120, 223),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(22),
                             ),

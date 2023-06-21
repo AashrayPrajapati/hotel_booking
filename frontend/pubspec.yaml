@@ -71,7 +71,7 @@ flutter:
 
 
 flutter_native_splash:
-  background_image: "assets/splash.jpg"
-  android: true,
-  ios: true,
-  web: false,
+  background_image: "assets/splash1.png"
+  android: true
+  ios: true
+  web: false

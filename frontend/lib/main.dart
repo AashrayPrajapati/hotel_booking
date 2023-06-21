@@ -21,6 +21,7 @@ import 'screens/hotels/updateRoom.dart';
 import 'screens/hotels/viewBooking.dart';
 import 'screens/admin/roomCrud/createRoom.dart';
 
+import 'screens/user/bookingHistory.dart';
 import 'screens/user/editUser.dart';
 import 'screens/user/user.dart';
 import 'screens/user/updateUserPassword.dart';
@@ -60,6 +61,7 @@ class _MainState extends State<Main> {
         //
         'mainPage': (context) => MainPage(),
         'user': (context) => Profile(),
+        'bookingHistory': (context) => BookingHistory(),
         //
         'booking': (context) => BookingPage(),
         'dashboard': (context) => Dashboard(),

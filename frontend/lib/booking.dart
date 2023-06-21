@@ -75,7 +75,29 @@ class _BookingPageState extends State<BookingPage> {
         if (response.statusCode == 200) {
           print('Booking successful!');
           print('Response body: ${response.data}');
-          Navigator.pushNamed(context, 'mainPage');
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: Text(
+                  'Booking successful 🎉',
+                  style: TextStyle(fontSize: 23, fontWeight: FontWeight.bold),
+                ),
+                content: Text('Your booking has been confirmed.',
+                    style: TextStyle(fontSize: 17)),
+                actions: [
+                  TextButton(
+                    onPressed: () {
+                      // Navigator.of(context).pop();
+                      Navigator.pushNamed(context, 'mainPage');
+                    },
+                    child: Center(child: Text('OK')),
+                  ),
+                ],
+              );
+            },
+          );
+          // Navigator.pushNamed(context, 'mainPage');
         } else {
           print('Booking failed. Response status code: ${response.statusCode}');
           print('Response body: ${response.data}');
@@ -303,6 +325,7 @@ class _BookingPageState extends State<BookingPage> {
                         child: Container(
                           width: 120,
                           child: TextField(
+                            textAlign: TextAlign.center,
                             keyboardType: TextInputType.number,
                             inputFormatters: [
                               FilteringTextInputFormatter.digitsOnly,

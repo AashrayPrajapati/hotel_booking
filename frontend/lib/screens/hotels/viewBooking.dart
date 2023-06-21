@@ -106,6 +106,7 @@ class _ViewBookingState extends State<ViewBooking> {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
+        backgroundColor: Color.fromARGB(255, 246, 246, 246),
         appBar: AppBar(
           leading: IconButton(
             onPressed: () {
@@ -143,74 +144,128 @@ class _ViewBookingState extends State<ViewBooking> {
                   Bookings booking = bookings[index];
 
                   return Padding(
-                    padding:
-                        const EdgeInsets.only(left: 10, right: 10, bottom: 5),
+                    padding: const EdgeInsets.only(
+                      left: 10,
+                      right: 10,
+                      top: 10,
+                    ),
                     child: GestureDetector(
-                      child: Card(
-                        elevation: 5,
-                        child: ListTile(
-                          title: Text(
-                            'Guests: ${booking.guests}',
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 18,
+                      onTap: () {
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              title: Text(
+                                'Booking Details',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  color: Color(0xFF555555),
+                                  fontWeight: FontWeight.w800,
+                                  fontSize: 20,
+                                ),
+                              ),
+                              content: SingleChildScrollView(
+                                child: ListBody(
+                                  children: <Widget>[
+                                    Text('Guests: ${booking.guests}'),
+                                    Text('Total Price: ${booking.totalPrice}'),
+                                    Text(
+                                        'Payment Status: ${booking.paymentStatus}'),
+                                    Text(
+                                        'CheckIn Date: ${booking.checkInDate}'),
+                                    Text(
+                                        'CheckOut Date: ${booking.checkOutDate}'),
+                                    Text('Room Type: ${booking.roomType}'),
+                                  ],
+                                ),
+                              ),
+                              actions: <Widget>[
+                                Center(
+                                  child: TextButton(
+                                    child: Text('Close'),
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                  ),
+                                ),
+                              ],
+                            );
+                          },
+                        );
+                      },
+                      child: Column(
+                        children: [
+                          Card(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(15),
+                            ),
+                            elevation: 5,
+                            child: Column(
+                              children: [
+                                SizedBox(height: 10),
+                                ListTile(
+                                  leading: booking.paymentStatus == 'Pending'
+                                      ? Text(
+                                          'Unpaid',
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                            color: Colors.red,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        )
+                                      : Text(
+                                          'Paid',
+                                          style: TextStyle(
+                                            color: Colors.green,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                  title: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        '${booking.roomType}',
+                                        style: TextStyle(
+                                          // color: Color.fromARGB(
+                                          //     255, 136, 136, 136),
+                                          color: Colors.black87,
+                                          fontWeight: FontWeight.w800,
+                                          fontSize: 19,
+                                        ),
+                                      ),
+                                      SizedBox(height: 7),
+                                      Text(
+                                        'CheckIn Date: ${booking.checkInDate}',
+                                        style: TextStyle(
+                                          color: Colors.black54,
+                                          // color: Color.fromARGB(
+                                          //     255, 136, 136, 136),
+                                          // fontWeight: FontWeight.bold,
+                                          fontSize: 15,
+                                        ),
+                                      ),
+                                      Text(
+                                        'CheckOut Date: ${booking.checkOutDate}',
+                                        style: TextStyle(
+                                          color: Color.fromARGB(
+                                              255, 136, 136, 136),
+                                          // fontWeight: FontWeight.bold,
+                                          fontSize: 15,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  trailing: Icon(
+                                    Icons.more_horiz,
+                                    color: Color(0xFF555555),
+                                  ),
+                                ),
+                                SizedBox(height: 10),
+                              ],
                             ),
                           ),
-                          subtitle: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              // Text(
-                              //   'Check-In: $checkInDate',
-                              //   style: TextStyle(
-                              //     color: Colors.black,
-                              //     fontWeight: FontWeight.bold,
-                              //     fontSize: 15,
-                              //   ),
-                              // ),
-                              // Text(
-                              //   'Check-Out: $checkOutDate',
-                              //   style: TextStyle(
-                              //     color: Colors.black,
-                              //     fontWeight: FontWeight.bold,
-                              //     fontSize: 15,
-                              //   ),
-                              // ),
-                              Text(
-                                'Total Price: ${booking.totalPrice}',
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 15,
-                                ),
-                              ),
-                              Text(
-                                'Room: ${booking.roomType}',
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 15,
-                                ),
-                              ),
-                              Text(
-                                'CheckIn Date: ${booking.checkInDate}',
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 15,
-                                ),
-                              ),
-                              Text(
-                                'CheckOut Date: ${booking.checkOutDate}',
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 15,
-                                ),
-                              ),
-                            ],
-                          ),
-                          trailing: Icon(Icons.edit),
-                        ),
+                        ],
                       ),
                     ),
                   );

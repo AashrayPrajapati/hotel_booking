@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 
+import 'dart:convert';
+import 'package:dio/dio.dart';
+import 'package:hotel_booking/config.dart';
+
 class ChangePassword extends StatefulWidget {
   const ChangePassword({super.key});
 
@@ -7,8 +11,10 @@ class ChangePassword extends StatefulWidget {
   State<ChangePassword> createState() => _ChangePasswordState();
 }
 
+final Dio _dio = Dio();
+
 class _ChangePasswordState extends State<ChangePassword> {
-  TextEditingController newPasswordController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
   TextEditingController confirmPasswordController = TextEditingController();
 
   bool _obscureText = true;
@@ -19,7 +25,7 @@ class _ChangePasswordState extends State<ChangePassword> {
 
   @override
   void dispose() {
-    newPasswordController.dispose();
+    passwordController.dispose();
     confirmPasswordController.dispose();
     super.dispose();
   }
@@ -27,6 +33,86 @@ class _ChangePasswordState extends State<ChangePassword> {
   @override
   void initState() {
     super.initState();
+  }
+
+  resetPassword() async {
+    if (selectedRole.isNotEmpty && passwordController.text.isNotEmpty) {
+      try {
+        var regBody = {
+          'password': passwordController.text,
+          'role': selectedRole,
+        };
+        print(regBody);
+        var response = await _dio.patch(
+          '$apiUrl/auth/reset-password',
+          options: Options(headers: {'Content-Type': 'application/json'}),
+          data: jsonEncode(regBody),
+        );
+        print('Response status code: ${response.statusCode}');
+        print('Response body: ${response.data}');
+
+        if (response.statusCode == 200) {
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: Text('Password Changed'),
+                content: Text('Password has been changed successfully'),
+                actions: [
+                  TextButton(
+                    onPressed: () {
+                      Navigator.pushNamed(context, 'login');
+                    },
+                    child: Text('OK'),
+                  ),
+                ],
+              );
+            },
+          );
+        }
+        // else {
+        //   showDialog(
+        //     context: context,
+        //     builder: (BuildContext context) {
+        //       return AlertDialog(
+        //         title: Text('Password not changed'),
+        //         content: Text('Password has not been changed successfully'),
+        //         actions: [
+        //           TextButton(
+        //             onPressed: () {
+        //               Navigator.pushNamed(context, 'login');
+        //             },
+        //             child: Text('OK'),
+        //           ),
+        //         ],
+        //       );
+        //     },
+        //   );
+        // }
+      } on DioError catch (e) {
+        print('Error connecting to server: ${e.message}');
+
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text('Password not changed'),
+              content: Text('Password has not been changed successfully'),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.pushNamed(context, 'login');
+                  },
+                  child: Text('OK'),
+                ),
+              ],
+            );
+          },
+        );
+      }
+    } else {
+      setState(() {});
+    }
   }
 
   @override
@@ -125,7 +211,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                     padding: const EdgeInsets.only(
                         top: 10, bottom: 10, left: 17, right: 17),
                     child: TextField(
-                      controller: newPasswordController,
+                      controller: passwordController,
                       obscureText: _obscureText,
                       decoration: InputDecoration(
                         border: OutlineInputBorder(
@@ -157,7 +243,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(17),
                         ),
-                        labelText: 'New Password',
+                        labelText: 'Confirm Password',
                         suffixIcon: IconButton(
                           icon: Icon(
                             _obscureText2
@@ -175,41 +261,34 @@ class _ChangePasswordState extends State<ChangePassword> {
                   ),
                   ElevatedButton(
                     onPressed: () {
-                      print(newPasswordController.text);
+                      print(passwordController.text);
                       print(confirmPasswordController.text);
                       print('selected role: $selectedRole');
-                      // if new password and confirm password are same then update password in database and navigate to login screen
-                      if (newPasswordController.text ==
+                      // onPressed: () {
+                      if (passwordController.text ==
                           confirmPasswordController.text) {
-                        // update password in database
-                        // navigate to login screen
-                        // Navigator.pop(context);
+                        resetPassword();
                       } else {
-                        // show error message
-                        print('Password not matching');
                         showDialog(
                           context: context,
                           builder: (BuildContext context) {
                             return AlertDialog(
-                              title: Text(
-                                'Password not matching',
-                                style: TextStyle(
-                                    fontSize: 23, fontWeight: FontWeight.bold),
-                              ),
-                              content: Text('Please enter correct password',
-                                  style: TextStyle(fontSize: 17)),
+                              title: Text('Password not matching'),
+                              content:
+                                  Text('Please enter the correct password.'),
                               actions: [
                                 TextButton(
                                   onPressed: () {
                                     Navigator.of(context).pop();
                                   },
-                                  child: Center(child: Text('OK')),
+                                  child: Text('OK'),
                                 ),
                               ],
                             );
                           },
                         );
                       }
+                      // },
                     },
                     child: Text('Submit',
                         style: TextStyle(

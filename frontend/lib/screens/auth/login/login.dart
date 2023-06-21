@@ -11,7 +11,7 @@ class MyLogin extends StatefulWidget {
   _MyLoginState createState() => _MyLoginState();
 }
 
-String selectedRole = 'User';
+String? selectedRole;
 
 class _MyLoginState extends State<MyLogin> {
   bool notValidate = false;
@@ -68,11 +68,11 @@ class _MyLoginState extends State<MyLogin> {
           if (tokenMatch != null) {
             String token = tokenMatch.group(1) ?? '';
             // print(token); // Output: the extracted token value
-            String role = selectedRole;
+            String? role = selectedRole;
 
             SharedPreferences prefs = await SharedPreferences.getInstance();
             await prefs.setString('jwtToken', token);
-            await prefs.setString('role', role);
+            await prefs.setString('role', role!);
 
             // Check if the token is saved in SharedPreferences
             String storedToken = prefs.getString('jwtToken') ?? '';

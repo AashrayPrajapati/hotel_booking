@@ -8,10 +8,10 @@ require("dotenv/config");
 
 ("use strict");
 const nodemailer = require("nodemailer");
+const User = require("../models/User");
 
 // async..await is not allowed in global scope, must use a wrapper
 async function mail(t_price, checkInDate, checkOutDate) {
-
   // Generate test SMTP service account from ethereal.email
   // Only needed if you don't have a real mail account for testing
   let testAccount = await nodemailer.createTestAccount();
@@ -106,11 +106,11 @@ async function mail(t_price, checkInDate, checkOutDate) {
 router.post("/book", async (req, res) => {
   try {
     const UserExists = await Users.findById(req.body.user);
-    console.log('USER',UserExists);
+    console.log("USER", UserExists);
     if (!UserExists) return res.status(409).send("User does not exist");
 
     const HotelExists = await Admin.findById(req.body.hotel);
-    console.log('Hote',   HotelExists)
+    console.log("Hote", HotelExists);
     if (!HotelExists) return res.status(409).send("Hotel does not exist");
 
     const HotelRoomExists = await HotelRoom.findOne({
@@ -140,11 +140,11 @@ router.post("/book", async (req, res) => {
     let t_price = req.body.totalPrice;
     let checkInDate = new Date(req.body.checkInDate);
     let checkOutDate = new Date(req.body.checkOutDate);
-    
+
     // Create a new instance of User Schema
     const booking = new Booking({
       user: req.body.user,
-      hotel: req.body.hotel,  
+      hotel: req.body.hotel,
       room: req.body.room,
       roomType: type,
       checkInDate: req.body.checkInDate,
@@ -172,12 +172,32 @@ router.post("/book", async (req, res) => {
 //get all bookings with hotel id
 router.get("/getBookings/:id", async (req, res) => {
   try {
-
-    const bookings = await Booking.find({hotel: req.params.id});
+    const bookings = await Booking.find({ hotel: req.params.id });
     res.json(bookings);
   } catch (error) {
     res.json(error);
   }
 });
+
+//get all bookings with user id
+router.get("/getBookingsByUser/:id", async (req, res) => {
+  try {
+    const bookings = await Booking.find({ user: req.params.id });
+    res.json(bookings);
+  } catch (error) {
+    res.json(error);
+  }
+});
+
+//get all bookings with hotel id 
+router.get("/getBookingsByHotel/:id", async (req, res) => {
+  try {
+    const bookings = await Booking.find({ hotel: req.params.id });
+    res.json(bookings);
+  } catch (error) {
+    res.json(error);
+  }
+});
+
 
 module.exports = router;

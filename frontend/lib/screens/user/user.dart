@@ -254,6 +254,8 @@ class _ProfileState extends State<Profile> {
                             prefs.remove('role');
                             setState(() {
                               isLoggedIn = false;
+                              //
+                              selectedRole = 'User';
                             });
                           },
                         ),
