@@ -389,7 +389,7 @@ class _BookingPageState extends State<BookingPage> {
                           backgroundColor: Color.fromARGB(255, 87, 44, 138),
                         ),
                         onPressed: () {
-                          Navigator.pushNamed(context, 'khalti');
+                          Navigator.pushNamed(context, 'khaltiPage');
                         },
                         child: Text(
                           'Pay With Khalti',

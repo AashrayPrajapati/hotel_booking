@@ -5,8 +5,11 @@ import 'package:hotel_booking/screens/hotels/getRoom.dart';
 // import 'package:flutter/services.dart';
 
 import 'package:hotel_booking/getImage.dart';
+import 'package:hotel_booking/screens/mainPage/home.dart';
+import 'package:khalti_flutter/khalti_flutter.dart';
 
-import 'khalti.dart';
+import 'khalti/khalti.dart';
+import 'khalti/khaltiPage.dart';
 import 'screens/admin/hotelCrud/hotelCrud.dart';
 import 'screens/auth/changePassword.dart';
 import 'screens/auth/forgotPassword.dart';
@@ -34,7 +37,7 @@ import 'screens/hotels/roomType.dart';
 import 'screens/super admin/registeredUsers.dart';
 import 'screens/super admin/registeredHotels.dart';
 
-Future main() async {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Future.delayed(const Duration(seconds: 1));
   FlutterNativeSplash.remove();
@@ -42,52 +45,59 @@ Future main() async {
   runApp(Main());
 }
 
-class Main extends StatefulWidget {
+class Main extends StatelessWidget {
   const Main({key}) : super(key: key);
   @override
-  State<Main> createState() => _MainState();
-}
-
-class _MainState extends State<Main> {
-  @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      // theme: ThemeData(fontFamily: 'OpenSans'), // OPEN-SANS FONT STYLE
-      home: MyLogin(),
-      routes: {
-        'register': (context) => MyRegister(),
-        'login': (context) => MyLogin(),
-        //
-        'mainPage': (context) => MainPage(),
-        'user': (context) => Profile(),
-        'bookingHistory': (context) => BookingHistory(),
-        //
-        'booking': (context) => BookingPage(),
-        'dashboard': (context) => Dashboard(),
-        'hotelCrud': (context) => HotelCrud(),
-        'hotelInfo': (context) => HotelInfo(),
-        'roomCrud': (context) => RoomCreate(),
-        'roomType': (context) => RoomType(),
-        'updateHotel': (context) => UpdateHotel(),
-        'updateRoom': (context) => UpdateRoom(),
-        'getRooms': (context) => GetRooms(),
-        'viewBooking': (context) => ViewBooking(),
-        'getImage': (context) => ImageReceiver(),
-        //
-        'registeredUsers': (context) => RegisteredUsers(),
-        'registeredHotels': (context) => RegisteredHotels(),
+    return KhaltiScope(
+        publicKey: "test_public_key_081bd10255fa4631bd66953ed659a9c9",
+        enabledDebugging: true,
+        builder: (context, navKey) {
+          return MaterialApp(
+            debugShowCheckedModeBanner: false,
+            home: MyLogin(),
+            navigatorKey: navKey,
+            localizationsDelegates: const [
+              KhaltiLocalizations.delegate,
+            ],
 
-        //
-        'editUser': (context) => EditUser(),
-        'changeUserPassword': (context) => UpdateUserPassword(),
-        'changeHotelPassword': (context) => UpdateManagerPassword(),
-        'forgotPassword': (context) => ForgotPassword(),
-        'otp': (context) => OTP(),
-        'changePassword': (context) => ChangePassword(),
+            // theme: ThemeData(fontFamily: 'OpenSans'), // OPEN-SANS FONT STYLE
+            // home: MyLogin(),
+            routes: {
+              'register': (context) => MyRegister(),
+              'login': (context) => MyLogin(),
+              //
+              'mainPage': (context) => MainPage(),
+              'user': (context) => Profile(),
+              'bookingHistory': (context) => BookingHistory(),
+              //
+              'booking': (context) => BookingPage(),
+              'dashboard': (context) => Dashboard(),
+              'hotelCrud': (context) => HotelCrud(),
+              'hotelInfo': (context) => HotelInfo(),
+              'roomCrud': (context) => RoomCreate(),
+              'roomType': (context) => RoomType(),
+              'updateHotel': (context) => UpdateHotel(),
+              'updateRoom': (context) => UpdateRoom(),
+              'getRooms': (context) => GetRooms(),
+              'viewBooking': (context) => ViewBooking(),
+              'getImage': (context) => ImageReceiver(),
+              //
+              'registeredUsers': (context) => RegisteredUsers(),
+              'registeredHotels': (context) => RegisteredHotels(),
 
-        'khalti': (context) => Khalti(),
-      },
-    );
+              //
+              'editUser': (context) => EditUser(),
+              'changeUserPassword': (context) => UpdateUserPassword(),
+              'changeHotelPassword': (context) => UpdateManagerPassword(),
+              'forgotPassword': (context) => ForgotPassword(),
+              'otp': (context) => OTP(),
+              'changePassword': (context) => ChangePassword(),
+
+              'khalti': (context) => Khalti(),
+              'khaltiPage': (context) => KhaltiPage(),
+            },
+          );
+        });
   }
 }
