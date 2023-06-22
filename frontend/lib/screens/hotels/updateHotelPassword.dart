@@ -32,6 +32,9 @@ class UpdateManagerPasswordState extends State<UpdateManagerPassword> {
           showDialog(
         context: context,
         builder: (BuildContext context) => AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
           title: Text(
             'Password Not Updated',
             textAlign: TextAlign.center,
@@ -80,6 +83,9 @@ class UpdateManagerPasswordState extends State<UpdateManagerPassword> {
       showDialog(
         context: context,
         builder: (BuildContext context) => AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
           title: Text(
             'Password Updated',
             textAlign: TextAlign.center,
@@ -113,6 +119,9 @@ class UpdateManagerPasswordState extends State<UpdateManagerPassword> {
       showDialog(
         context: context,
         builder: (BuildContext context) => AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
           title: Text(
             'Password Not Updated',
             textAlign: TextAlign.center,

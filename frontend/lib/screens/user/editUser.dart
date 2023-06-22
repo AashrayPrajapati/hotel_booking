@@ -70,6 +70,9 @@ class _EditUserState extends State<EditUser> {
       showDialog(
         context: context,
         builder: (BuildContext context) => AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
           title: Text(
             'User Updated',
             textAlign: TextAlign.center,
@@ -102,6 +105,9 @@ class _EditUserState extends State<EditUser> {
       showDialog(
         context: context,
         builder: (BuildContext context) => AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
           title: Text(
             'User Not Updated',
             textAlign: TextAlign.center,
@@ -153,6 +159,9 @@ class _EditUserState extends State<EditUser> {
       showDialog(
         context: context,
         builder: (BuildContext context) => AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
           title: Text(
             'User Deleted',
             textAlign: TextAlign.center,
@@ -185,6 +194,9 @@ class _EditUserState extends State<EditUser> {
       showDialog(
         context: context,
         builder: (BuildContext context) => AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
           title: Text(
             'User Not Deleted',
             textAlign: TextAlign.center,
@@ -238,6 +250,9 @@ class _EditUserState extends State<EditUser> {
       showDialog(
         context: context,
         builder: (BuildContext context) => AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
           title: Text(
             'Password Updated',
             textAlign: TextAlign.center,
@@ -270,6 +285,9 @@ class _EditUserState extends State<EditUser> {
       showDialog(
         context: context,
         builder: (BuildContext context) => AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
           title: Text(
             'Password Not Updated',
             textAlign: TextAlign.center,
@@ -322,15 +340,13 @@ class _EditUserState extends State<EditUser> {
   @override
   Widget build(BuildContext context) {
     Widget buildEditUserWidget(User userData) {
-      return ListView(
+      return Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          SizedBox(
-            height: 100,
-          ),
-          Center(
-            child: SingleChildScrollView(
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
+          SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Center(
                 child: Card(
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(25),
@@ -535,15 +551,17 @@ class _EditUserState extends State<EditUser> {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
+        backgroundColor: Color.fromARGB(255, 238, 238, 238),
         appBar: AppBar(
           leading: IconButton(
             icon: Icon(Icons.arrow_back_ios_new),
             onPressed: () {
-              updatePassword(
-                oldPasswordController.text,
-                newPasswordController.text,
-                confirmPasswordController.text,
-              );
+              Navigator.pop(context);
+              // updatePassword(
+              //   oldPasswordController.text,
+              //   newPasswordController.text,
+              //   confirmPasswordController.text,
+              // );
             },
           ),
           backgroundColor: Color.fromARGB(255, 39, 92, 216),

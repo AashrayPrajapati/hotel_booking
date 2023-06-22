@@ -21,7 +21,7 @@ class _MainPageState extends State<MainPage> {
       RoomCreate()
     else if (selectedRole == "User")
       BookingHistory()
-    else if (selectedRole == null)
+    else if (selectedRole == "")
       userSettings(),
     if (selectedRole == "Hotel Owner") GetRooms(),
     Profile(),

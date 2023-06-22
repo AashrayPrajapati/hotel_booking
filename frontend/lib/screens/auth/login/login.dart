@@ -99,6 +99,9 @@ class _MyLoginState extends State<MyLogin> {
               context: context,
               builder: (BuildContext context) {
                 return AlertDialog(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20),
+                  ),
                   title: Text('Invalid email or password'),
                   content: Text('Please enter correct email or password'),
                   actions: [
@@ -106,7 +109,7 @@ class _MyLoginState extends State<MyLogin> {
                       onPressed: () {
                         Navigator.of(context).pop();
                       },
-                      child: Text('OK'),
+                      child: Center(child: Text('OK')),
                     ),
                   ],
                 );

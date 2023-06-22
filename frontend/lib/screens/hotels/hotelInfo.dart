@@ -149,6 +149,7 @@ class _HotelInfoPageState extends State<HotelInfoPage> {
                   debugShowCheckedModeBanner: false,
                   // theme: ThemeData(fontFamily: 'OpenSans'),
                   home: Scaffold(
+                    backgroundColor: Color.fromARGB(255, 238, 238, 238),
                     extendBodyBehindAppBar: true,
                     appBar: AppBar(
                       // toolbarHeight: 35,
@@ -447,81 +448,104 @@ class _HotelInfoPageState extends State<HotelInfoPage> {
                                                 children: roomData.map((room) {
                                                   var roomIndex = roomData.indexOf(
                                                       room); // Get the index of the current room
-                                                  return Card(
-                                                    elevation: 7,
-                                                    child: ListTile(
-                                                      title: Text(
-                                                        room.roomType,
-                                                        style: TextStyle(
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                          fontSize: 18,
+                                                  return Column(
+                                                    children: [
+                                                      Card(
+                                                        shape:
+                                                            RoundedRectangleBorder(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(17),
                                                         ),
-                                                      ),
-                                                      subtitle: Text(
-                                                        room.price,
-                                                        style: TextStyle(
-                                                          color: Colors.black,
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                          fontSize: 15,
-                                                        ),
-                                                      ),
-                                                      trailing: Icon(
-                                                        color: Colors.black,
-                                                        Icons.arrow_forward_ios,
-                                                        size: 15,
-                                                      ),
-                                                      onTap: () {
-                                                        var selectedRoom = roomData[
-                                                            roomIndex]; // Get the selected room based on the index
-                                                        var ID =
-                                                            selectedRoom._id;
-                                                        var price =
-                                                            selectedRoom.price;
-                                                        var roomName =
-                                                            selectedRoom
-                                                                .roomType;
+                                                        elevation: 7,
+                                                        child: ListTile(
+                                                          title: Text(
+                                                            room.roomType,
+                                                            style: TextStyle(
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold,
+                                                              fontSize: 18,
+                                                            ),
+                                                          ),
+                                                          subtitle: Text(
+                                                            room.price,
+                                                            style: TextStyle(
+                                                              color:
+                                                                  Colors.black,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold,
+                                                              fontSize: 15,
+                                                            ),
+                                                          ),
+                                                          trailing: Icon(
+                                                            color: Colors.black,
+                                                            Icons
+                                                                .arrow_forward_ios,
+                                                            size: 15,
+                                                          ),
+                                                          onTap: () {
+                                                            var selectedRoom =
+                                                                roomData[
+                                                                    roomIndex]; // Get the selected room based on the index
+                                                            var ID =
+                                                                selectedRoom
+                                                                    ._id;
+                                                            var price =
+                                                                selectedRoom
+                                                                    .price;
+                                                            var roomName =
+                                                                selectedRoom
+                                                                    .roomType;
 
-                                                        Navigator.of(context,
-                                                                rootNavigator:
-                                                                    true)
-                                                            .pushNamed(
-                                                          'booking',
-                                                          arguments: {
-                                                            'userId': userId,
-                                                            'roomName': roomName
-                                                                .toString(),
-                                                            'hotelId': HotelID
-                                                                .toString(),
-                                                            'roomId': ID,
-                                                            'startDate':
-                                                                startDate
+                                                            Navigator.of(
+                                                                    context,
+                                                                    rootNavigator:
+                                                                        true)
+                                                                .pushNamed(
+                                                              'booking',
+                                                              arguments: {
+                                                                'userId':
+                                                                    userId,
+                                                                'roomName': roomName
                                                                     .toString(),
-                                                            'endDate': endDate
-                                                                .toString(),
-                                                            'numberOfNights':
-                                                                numberOfNights
+                                                                'hotelId': HotelID
                                                                     .toString(),
-                                                            'price': price,
+                                                                'roomId': ID,
+                                                                'startDate':
+                                                                    startDate
+                                                                        .toString(),
+                                                                'endDate': endDate
+                                                                    .toString(),
+                                                                'numberOfNights':
+                                                                    numberOfNights
+                                                                        .toString(),
+                                                                'price': price,
+                                                              },
+                                                            );
+
+                                                            print(
+                                                                'Hotel ID: $HotelID');
+                                                            print(
+                                                                'Hotel room name: $roomName');
+                                                            print(
+                                                                'Room ID: $ID');
+                                                            print(
+                                                                'Check-in date: $startDate');
+                                                            print(
+                                                                'Check-out date: $endDate');
+                                                            print(
+                                                                'This is the numberOfNights: $numberOfNights');
+                                                            print(
+                                                                'This is the price: $price');
                                                           },
-                                                        );
-
-                                                        print(
-                                                            'Hotel ID: $HotelID');
-                                                        print(
-                                                            'Hotel room name: $roomName');
-                                                        print('Room ID: $ID');
-                                                        print(
-                                                            'Check-in date: $startDate');
-                                                        print(
-                                                            'Check-out date: $endDate');
-                                                        print(
-                                                            'This is the numberOfNights: $numberOfNights');
-                                                        print(
-                                                            'This is the price: $price');
-                                                      },
-                                                    ),
+                                                        ),
+                                                      ),
+                                                      SizedBox(
+                                                        height: 10,
+                                                      ),
+                                                    ],
                                                   );
                                                 }).toList(),
                                               ),

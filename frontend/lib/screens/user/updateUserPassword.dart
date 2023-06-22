@@ -51,6 +51,9 @@ class UpdateUserPasswordState extends State<UpdateUserPassword> {
           showDialog(
         context: context,
         builder: (BuildContext context) => AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
           title: Text(
             'Password Not Updated',
             textAlign: TextAlign.center,
@@ -99,6 +102,9 @@ class UpdateUserPasswordState extends State<UpdateUserPassword> {
       showDialog(
         context: context,
         builder: (BuildContext context) => AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
           title: Text(
             'Password Updated',
             textAlign: TextAlign.center,
@@ -131,6 +137,9 @@ class UpdateUserPasswordState extends State<UpdateUserPassword> {
       showDialog(
         context: context,
         builder: (BuildContext context) => AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
           title: Text(
             'Password Not Updated',
             textAlign: TextAlign.center,

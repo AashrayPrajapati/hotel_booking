@@ -60,6 +60,9 @@ class UpdateRoomState extends State<UpdateRoom> {
       showDialog(
         context: context,
         builder: (BuildContext context) => AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
           title: Text(
             'Room Updated',
             textAlign: TextAlign.center,
@@ -93,6 +96,9 @@ class UpdateRoomState extends State<UpdateRoom> {
       showDialog(
         context: context,
         builder: (BuildContext context) => AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
           title: Text(
             'Room Not Updated',
             textAlign: TextAlign.center,
@@ -148,6 +154,9 @@ class UpdateRoomState extends State<UpdateRoom> {
       showDialog(
         context: context,
         builder: (BuildContext context) => AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
           title: Text(
             'Room Deleted',
             textAlign: TextAlign.center,
@@ -181,6 +190,9 @@ class UpdateRoomState extends State<UpdateRoom> {
       showDialog(
         context: context,
         builder: (BuildContext context) => AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
           title: Text(
             'Room Not Deleted',
             textAlign: TextAlign.center,

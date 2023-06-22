@@ -4,8 +4,6 @@ import 'package:intl/intl.dart';
 import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:hotel_booking/config.dart';
-import 'package:hotel_booking/screens/auth/login/login.dart';
-import 'package:hotel_booking/utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class BookingHistory extends StatefulWidget {
@@ -22,12 +20,14 @@ class Booking {
   final String checkInDate;
   final String checkOutDate;
   final int totalPrice;
+  final String paymentStatus;
 
   Booking({
     required this.roomType,
     required this.checkInDate,
     required this.checkOutDate,
     required this.totalPrice,
+    required this.paymentStatus,
   });
 }
 
@@ -88,6 +88,7 @@ class _BookingHistoryState extends State<BookingHistory> {
           checkOutDate: DateFormat('dd-MM-y')
               .format(DateTime.parse(data['checkOutDate'])),
           totalPrice: data['totalPrice'],
+          paymentStatus: data['paymentStatus'],
         );
         bookings.add(booking);
         print(bookings);
@@ -177,7 +178,7 @@ class _BookingHistoryState extends State<BookingHistory> {
                                     ),
                                   ),
                                   content: Text(
-                                    'Room Type: ${booking.roomType}\nCheck-in: ${booking.checkInDate}\nCheck-out: ${booking.checkOutDate}\nTotal Price: ${booking.totalPrice}',
+                                    'Room Type: ${booking.roomType}\nCheck-in: ${booking.checkInDate}\nCheck-out: ${booking.checkOutDate}\nTotal Price: ${booking.totalPrice}\nPayment Status: ${booking.paymentStatus}',
                                     style: TextStyle(
                                       fontWeight: FontWeight.w500,
                                       fontSize: 17,

@@ -5,7 +5,6 @@ import 'package:hotel_booking/screens/hotels/getRoom.dart';
 // import 'package:flutter/services.dart';
 
 import 'package:hotel_booking/getImage.dart';
-import 'package:hotel_booking/screens/mainPage/home.dart';
 import 'package:khalti_flutter/khalti_flutter.dart';
 
 import 'khalti/khalti.dart';

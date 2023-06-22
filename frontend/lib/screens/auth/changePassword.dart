@@ -56,6 +56,9 @@ class _ChangePasswordState extends State<ChangePassword> {
             context: context,
             builder: (BuildContext context) {
               return AlertDialog(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20),
+                ),
                 title: Text('Password Changed'),
                 content: Text('Password has been changed successfully'),
                 actions: [
@@ -63,7 +66,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                     onPressed: () {
                       Navigator.pushNamed(context, 'login');
                     },
-                    child: Text('OK'),
+                    child: Center(child: Text('OK')),
                   ),
                 ],
               );
@@ -96,6 +99,9 @@ class _ChangePasswordState extends State<ChangePassword> {
           context: context,
           builder: (BuildContext context) {
             return AlertDialog(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20),
+              ),
               title: Text('Password not changed'),
               content: Text('Password has not been changed successfully'),
               actions: [
@@ -103,7 +109,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                   onPressed: () {
                     Navigator.pushNamed(context, 'login');
                   },
-                  child: Text('OK'),
+                  child: Center(child: Text('OK')),
                 ),
               ],
             );
@@ -273,6 +279,9 @@ class _ChangePasswordState extends State<ChangePassword> {
                           context: context,
                           builder: (BuildContext context) {
                             return AlertDialog(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(20),
+                              ),
                               title: Text('Password not matching'),
                               content:
                                   Text('Please enter the correct password.'),
@@ -281,7 +290,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                                   onPressed: () {
                                     Navigator.of(context).pop();
                                   },
-                                  child: Text('OK'),
+                                  child: Center(child: Text('OK')),
                                 ),
                               ],
                             );

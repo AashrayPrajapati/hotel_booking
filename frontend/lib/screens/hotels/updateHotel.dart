@@ -107,6 +107,9 @@ class _UpdateHotelState extends State<UpdateHotel> {
       showDialog(
         context: context,
         builder: (BuildContext context) => AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
           title: Text(
             'Hotel Updated',
             textAlign: TextAlign.center,
@@ -139,6 +142,9 @@ class _UpdateHotelState extends State<UpdateHotel> {
       showDialog(
         context: context,
         builder: (BuildContext context) => AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
           title: Text(
             'Hotel Not Updated',
             textAlign: TextAlign.center,
@@ -202,6 +208,9 @@ class _UpdateHotelState extends State<UpdateHotel> {
       showDialog(
         context: context,
         builder: (BuildContext context) => AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
           title: Text(
             'Hotel Deleted',
             textAlign: TextAlign.center,
@@ -234,6 +243,9 @@ class _UpdateHotelState extends State<UpdateHotel> {
       showDialog(
         context: context,
         builder: (BuildContext context) => AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
           title: Text(
             'Hotel Not Deleted',
             textAlign: TextAlign.center,
@@ -282,9 +294,6 @@ class _UpdateHotelState extends State<UpdateHotel> {
   void initState() {
     super.initState();
   }
-
-  bool _obscureText = true;
-  bool _obscureText2 = true;
 
   @override
   Widget build(BuildContext context) {

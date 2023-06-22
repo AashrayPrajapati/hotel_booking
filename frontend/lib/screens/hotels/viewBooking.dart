@@ -155,6 +155,9 @@ class _ViewBookingState extends State<ViewBooking> {
                           context: context,
                           builder: (BuildContext context) {
                             return AlertDialog(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(20),
+                              ),
                               title: Text(
                                 'Booking Details',
                                 textAlign: TextAlign.center,

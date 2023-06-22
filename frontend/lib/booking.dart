@@ -79,6 +79,9 @@ class _BookingPageState extends State<BookingPage> {
             context: context,
             builder: (BuildContext context) {
               return AlertDialog(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20),
+                ),
                 title: Text(
                   'Booking successful 🎉',
                   style: TextStyle(fontSize: 23, fontWeight: FontWeight.bold),
@@ -88,7 +91,6 @@ class _BookingPageState extends State<BookingPage> {
                 actions: [
                   TextButton(
                     onPressed: () {
-                      // Navigator.of(context).pop();
                       Navigator.pushNamed(context, 'mainPage');
                     },
                     child: Center(child: Text('OK')),
@@ -97,7 +99,6 @@ class _BookingPageState extends State<BookingPage> {
               );
             },
           );
-          // Navigator.pushNamed(context, 'mainPage');
         } else {
           print('Booking failed. Response status code: ${response.statusCode}');
           print('Response body: ${response.data}');
@@ -389,7 +390,22 @@ class _BookingPageState extends State<BookingPage> {
                           backgroundColor: Color.fromARGB(255, 87, 44, 138),
                         ),
                         onPressed: () {
-                          Navigator.pushNamed(context, 'khaltiPage');
+                          // pass the total price to khaltiPage
+                          Navigator.of(context, rootNavigator: true).pushNamed(
+                            'khaltiPage',
+                            arguments: {
+                              'userId': userId,
+                              'hotelId': hotelId,
+                              'roomId': roomId,
+                              'roomName': roomName,
+                              'totalPrice': totalprice,
+                              'noOfGuests': noOfGuests.text,
+                              'checkInDate': startDate,
+                              'checkOutDate': endDate,
+                            },
+                          );
+
+                          // Navigator.pushNamed(context, 'khaltiPage');
                         },
                         child: Text(
                           'Pay With Khalti',

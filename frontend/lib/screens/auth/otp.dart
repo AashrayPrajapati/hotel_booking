@@ -43,6 +43,9 @@ class _OTPState extends State<OTP> {
             context: context,
             builder: (BuildContext context) {
               return AlertDialog(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20),
+                ),
                 title: Text('OTP Verified'),
                 content: Text('OTP has been verified successfully'),
                 actions: [
@@ -50,7 +53,7 @@ class _OTPState extends State<OTP> {
                     onPressed: () {
                       Navigator.pushNamed(context, 'changePassword');
                     },
-                    child: Text('OK'),
+                    child: Center(child: Text('OK')),
                   ),
                 ],
               );
@@ -90,6 +93,9 @@ class _OTPState extends State<OTP> {
           context: context,
           builder: (BuildContext context) {
             return AlertDialog(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20),
+              ),
               title: Text('OTP Verification Failed'),
               content: Text('OTP verification failed. Please try again.'),
               actions: [
@@ -97,7 +103,7 @@ class _OTPState extends State<OTP> {
                   onPressed: () {
                     Navigator.pop(context);
                   },
-                  child: Text('OK'),
+                  child: Center(child: Text('OK')),
                 ),
               ],
             );

@@ -105,12 +105,14 @@ async function mail(t_price, checkInDate, checkOutDate) {
 // POST a new user
 router.post("/book", async (req, res) => {
   try {
+    console.log("req.bodysdfgsdgsdfg");
+    console.log("req.body", req.body);
     const UserExists = await Users.findById(req.body.user);
-    console.log("USER", UserExists);
+    // console.log("USER", UserExists);
     if (!UserExists) return res.status(409).send("User does not exist");
 
     const HotelExists = await Admin.findById(req.body.hotel);
-    console.log("Hote", HotelExists);
+    // console.log("Hotel", HotelExists);
     if (!HotelExists) return res.status(409).send("Hotel does not exist");
 
     const HotelRoomExists = await HotelRoom.findOne({
@@ -118,12 +120,16 @@ router.post("/book", async (req, res) => {
       hotelId: req.body.hotel,
     });
 
-    if (!HotelRoomExists)
+    console.log("HotelRoomExists");
+    if (!HotelRoomExists) {
+      console.log("HotelRoomExists", HotelRoomExists);
       return res
         .status(409)
         .send("Hotel room does not exist in the specified hotel");
-
+    }
     const type = HotelRoomExists.roomType;
+    console.log("typeskjdfskdfk");
+    console.log("type", type);
 
     // Check if the room is already booked during the selected dates
     const existingBooking = await Booking.findOne({
@@ -132,15 +138,17 @@ router.post("/book", async (req, res) => {
       checkOutDate: { $gte: req.body.checkInDate },
     });
 
-    if (existingBooking)
+    if (existingBooking) {
+      console.log("existing booking");
       return res
         .status(409)
         .send("The room is already booked during the selected dates");
+    }
 
     let t_price = req.body.totalPrice;
     let checkInDate = new Date(req.body.checkInDate);
     let checkOutDate = new Date(req.body.checkOutDate);
-
+    console.log("qwertyuiopsdfghjkxcvbnm,");
     // Create a new instance of User Schema
     const booking = new Booking({
       user: req.body.user,
@@ -154,6 +162,7 @@ router.post("/book", async (req, res) => {
       paymentStatus: req.body.paymentStatus,
     });
 
+    console.log("from booking", booking);
     // Save the user to the database
     const createBooking = await booking.save();
 
@@ -189,7 +198,7 @@ router.get("/getBookingsByUser/:id", async (req, res) => {
   }
 });
 
-//get all bookings with hotel id 
+//get all bookings with hotel id
 router.get("/getBookingsByHotel/:id", async (req, res) => {
   try {
     const bookings = await Booking.find({ hotel: req.params.id });
@@ -198,6 +207,5 @@ router.get("/getBookingsByHotel/:id", async (req, res) => {
     res.json(error);
   }
 });
-
 
 module.exports = router;
