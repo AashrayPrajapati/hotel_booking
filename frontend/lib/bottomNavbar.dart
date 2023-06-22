@@ -17,10 +17,11 @@ class MainPage extends StatefulWidget {
 class _MainPageState extends State<MainPage> {
   List pages = [
     Home(),
-    if (selectedRole == "Hotel Owner") RoomCreate(),
-    if (selectedRole == "User")
+    if (selectedRole == "Hotel Owner")
+      RoomCreate()
+    else if (selectedRole == "User")
       BookingHistory()
-    else if (selectedRole == "")
+    else if (selectedRole == null)
       userSettings(),
     if (selectedRole == "Hotel Owner") GetRooms(),
     Profile(),
@@ -69,11 +70,11 @@ class _MainPageState extends State<MainPage> {
               icon: Icon(Icons.history_outlined),
               label: "Booking History",
             ),
-          if (selectedRole == null)
-            BottomNavigationBarItem(
-              icon: Icon(Icons.settings_outlined),
-              label: "Settings",
-            ),
+          // else if (selectedRole == null)
+          //   BottomNavigationBarItem(
+          //     icon: Icon(Icons.settings_outlined),
+          //     label: "Settings",
+          //   ),
           BottomNavigationBarItem(
             icon: Icon(Icons.person_outlined),
             label: "User",

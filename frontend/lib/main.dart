@@ -14,7 +14,7 @@ import 'screens/auth/otp.dart';
 import 'screens/auth/register/register.dart';
 import 'screens/auth/login/login.dart';
 
-import 'mainPage.dart';
+import 'bottomNavbar.dart';
 import 'screens/hotels/updateHotel.dart';
 import 'screens/hotels/updateHotelPassword.dart';
 import 'screens/hotels/updateRoom.dart';
