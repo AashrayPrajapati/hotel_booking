@@ -17,6 +17,7 @@ import 'screens/auth/register/register.dart';
 import 'screens/auth/login/login.dart';
 
 import 'bottomNavbar.dart';
+import 'screens/hotels/searchedHotels.dart';
 import 'screens/hotels/updateHotel.dart';
 import 'screens/hotels/updateHotelPassword.dart';
 import 'screens/hotels/updateRoom.dart';
@@ -59,9 +60,6 @@ class Main extends StatelessWidget {
             localizationsDelegates: const [
               KhaltiLocalizations.delegate,
             ],
-
-            // theme: ThemeData(fontFamily: 'OpenSans'), // OPEN-SANS FONT STYLE
-            // home: MyLogin(),
             routes: {
               'register': (context) => MyRegister(),
               'login': (context) => MyLogin(),
@@ -69,6 +67,8 @@ class Main extends StatelessWidget {
               'mainPage': (context) => MainPage(),
               'user': (context) => Profile(),
               'bookingHistory': (context) => BookingHistory(),
+              //
+              'searchedHotels': (context) => SearchedHotelsPage(),
               //
               'booking': (context) => BookingPage(),
               'dashboard': (context) => Dashboard(),

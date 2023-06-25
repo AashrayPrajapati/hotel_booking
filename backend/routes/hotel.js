@@ -41,7 +41,7 @@ router.post("/login", async (req, res) => {
   // check if email exists
   console.log("Checking user database");
   const user = await Admin.findOne({ email: req.body.email });
-  if (!user) return res.send("Email or  is wrong");
+  if (!user) return res.send("Email is wrong");
   // res.send(user.password);
 
   console.log(req.body.password);
@@ -103,18 +103,6 @@ router.get("/getHotels", async (req, res) => {
 
 // SEARCH HOTELS...
 
-// search hotel by property name
-router.get("/getHotel/pName/:propertyName", async (req, res) => {
-  try {
-    const admin = await Admin.findOne({
-      propertyName: req.params.propertyName,
-    });
-    res.json(admin);
-  } catch (error) {
-    res.json(error);
-  }
-});
-
 // search hotel by id
 router.get("/getHotel/:id", async (req, res) => {
   try {
@@ -125,55 +113,57 @@ router.get("/getHotel/:id", async (req, res) => {
   }
 });
 
-// search hotel by city
-router.get("/getHotel/city/:city", async (req, res) => {
+
+
+
+// get all hotels or search hotel by city or property name
+router.post("/search", async (req, res) => {
   try {
-    const admin = await Admin.findOne({ city: req.params.city });
+    console.log('ksjdhfksahfdsakfhsakjdfh')
+    const { propertyName, city } = req.body;
+
+    if (propertyName) {
+      const regex = new RegExp(req.body.propertyName, "i");
+      const hotels = await Admin.find({ propertyName: regex });
+
+      return res.json(hotels);
+    } else if (city) {
+      const regex = new RegExp(req.body.city, "i");
+      const hotels = await Admin.find({ city: regex });
+      // const hotels = await Admin.find({ city: city });
+      return res.json(hotels);
+    } else {
+      const hotels = await Admin.find();
+      console.log(hotels);
+      return res.json(hotels);
+    }
+  } catch (error) {
+    res.json(error);
+  }
+});
+
+// search hotel by city
+router.get("/search/city/:city", async (req, res) => {
+  try {
+    const regex = new RegExp(req.params.city, "i");
+    const admin = await Admin.find({ 'city': regex });
+    console.log(admin)
     res.json(admin);
   } catch (error) {
     res.json(error);
   }
 });
 
-// search hotel by street name
-// router.get('/getHotel', async(req, res) => {
-//   const {query} = req;
-//   const streetName = query;
-//   let filter = {};
-//   if(streetName){
-//     filter = {streetName};
-//   }
-
-//   try{
-//     const admin = await Admin.findOne(filter);
-//     res.json(admin);
-//   }
-//   catch(error) {
-//     res.json(error);
-//   }
-// });
-
-// search hotel by street name
-router.get("/getHotel", async (req, res) => {
-  const { query } = req;
-  const { streetName } = query;
-
-  if (!streetName) {
-    return res
-      .status(400)
-      .json({ message: "Please provide a valid streetName parameter." });
-  }
-
+// search hotel by property name
+router.get("/search/name/:propertyName", async (req, res) => {
   try {
-    const admin = await Admin.findOne({ streetName });
-    if (!admin) {
-      return res
-        .status(404)
-        .json({ message: "No hotel found for the given streetName." });
-    }
+    const regex = new RegExp(req.params.propertyName, "i");
+    const admin = await Admin.find({
+      'propertyName': regex
+    });
     res.json(admin);
   } catch (error) {
-    res.status(500).json({ message: "Internal server error." });
+    res.json(error);
   }
 });
 
@@ -202,28 +192,6 @@ router.get("/getHotel", async (req, res) => {
 //     res.status(500).json({ message: 'Internal server error' });
 //   }
 // });
-router.get("/search", async (req, res) => {
-  const { query } = req;
-  const { query: searchQuery } = query;
-
-  // Use regular expression to extract propertyName and city from searchQuery
-  const regex = /([^ ]+) hotel ([^ ]+)/i;
-  const match = regex.exec(searchQuery);
-  const propertyName = match[1];
-  const city = match[2];
-
-  try {
-    const admin = await Admin.find({
-      $and: [
-        { city: { $regex: city, $options: "i" } },
-        { propertyName: { $regex: propertyName, $options: "i" } },
-      ],
-    });
-    res.json(admin);
-  } catch (error) {
-    res.status(500).json({ message: "Internal server error" });
-  }
-});
 
 // update hotel by id
 router.patch("/getHotel/:id", async (req, res) => {

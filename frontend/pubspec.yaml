@@ -38,6 +38,8 @@ dependencies:
   khalti_flutter: ^2.1.0
   email_validator: ^2.1.17
   khalti: ^1.0.2
+  country_picker: ^2.0.19
+  csc_picker: ^0.2.7
 
 
 
