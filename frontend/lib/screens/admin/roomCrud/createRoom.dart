@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+
+import 'dart:math';
 import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:flutter/services.dart';
@@ -6,9 +8,14 @@ import 'package:hotel_booking/config.dart';
 // import 'package:get/get.dart';
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
+import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
+import 'package:path_provider/path_provider.dart';
 // import 'package:path_provider/path_provider.dart';
 // import 'package:path/path.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+final parseObject = ParseObject('Gallery');
+var roomID = "";
 
 class RoomCreate extends StatelessWidget {
   const RoomCreate({super.key});
@@ -63,11 +70,18 @@ class _RoomCreatePageState extends State<RoomCreatePage> {
   Dio _dio = Dio();
 
   Future<void> _uploadImage() async {
+    ParseFileBase? parseFile;
+
     if (_selectedImage == null) {
       return;
     }
 
     try {
+      parseFile = ParseFile(File(_selectedImage!.path));
+      //Flutter Mobile/Desktop
+      await parseFile.save();
+      // roomid:'q';
+
       FormData formData = FormData.fromMap({
         'image': await MultipartFile.fromFile(_selectedImage?.path ?? ''),
       });
@@ -76,8 +90,15 @@ class _RoomCreatePageState extends State<RoomCreatePage> {
         '$apiUrl/hotelRoom/upload',
         data: formData,
       );
-
+      print('...####' + response.toString());
+      print('this is from room ID aqwsedrftugyihuoij');
+      print(roomID);
       if (response.statusCode == 200) {
+        final gallery = parseObject
+          ..set('file', parseFile)
+          ..set('ownerId', ownerId)
+          ..set('roomId', roomID);
+        await gallery.save();
         print('Image uploaded successfully');
         // Perform any additional actions after successful upload
       } else {
@@ -124,6 +145,7 @@ class _RoomCreatePageState extends State<RoomCreatePage> {
           "roomType": roomTypeValue,
           "price": priceController.text,
           "maxCapacity": maxGuestCapacityController.text,
+          "image": _selectedImage?.path ?? '',
         };
         print(regBody);
         try {
@@ -135,7 +157,10 @@ class _RoomCreatePageState extends State<RoomCreatePage> {
             data: jsonEncode(regBody),
           );
           Navigator.of(context, rootNavigator: true).pushNamed('mainPage');
-
+          print(
+              'qwertyuiopasdfghjklzxcvbnmasdfghjhgfdsadfghgfdfghgfdfghgfdfghgfdfghgfdttyufgvblfgv');
+          roomID = response.data;
+          print(roomID);
           print('Response status code: ${response.statusCode}');
           print('Response body: ${response.data}');
         } on DioError catch (e) {

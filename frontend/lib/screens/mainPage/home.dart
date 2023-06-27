@@ -363,6 +363,15 @@ class _HomePageState extends State<HomePage> {
       child: Container(
         height: 100,
         child: Card(
+          elevation: 5,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+              bottomLeft: Radius.circular(11),
+              topLeft: Radius.circular(11),
+              topRight: Radius.circular(11),
+              bottomRight: Radius.circular(11),
+            ),
+          ),
           child: Image.network(
             'https://bit.ly/3KAjXJW',
             fit: BoxFit.cover,

@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+
+// parse server sdk flutter
+import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:hotel_booking/screens/hotels/getRoom.dart';
 // import 'package:khalti_flutter/khalti_flutter.dart';
@@ -39,9 +43,20 @@ import 'screens/super admin/registeredHotels.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  // await Firebase.initializeApp();
   await Future.delayed(const Duration(seconds: 1));
   FlutterNativeSplash.remove();
+  final keyApplicationId = 'zmgZPvYhiw9iSwuwzgHAyPnvPc5n4WbP5vVNMwVK';
+  final keyClientKey = '2xrGuDVVsTdlwmmr2vRxo7OLi8muvzZpn8GZc5am';
+  final keyParseServerUrl = 'https://parseapi.back4app.com';
+  await Parse().initialize(keyApplicationId, keyParseServerUrl,
+      clientKey: keyClientKey, autoSendSessionId: true, debug: true);
+  var firstObject = ParseObject('FirstClass')
+    ..set(
+        'message', 'Hey ! First message from Flutter. Parse is now connected');
+  await firstObject.save();
 
+  print('....................done');
   runApp(Main());
 }
 

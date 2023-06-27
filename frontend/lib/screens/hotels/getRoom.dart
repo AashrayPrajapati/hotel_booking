@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 
 import 'package:dio/dio.dart';
 import 'package:hotel_booking/config.dart';
+import 'package:hotel_booking/screens/admin/roomCrud/createRoom.dart';
+import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -81,6 +83,20 @@ class _GetRoomsState extends State<GetRooms> {
       return rooms;
     } on DioError catch (e) {
       throw Exception("Error retrieving rooms: ${e.message}");
+    }
+  }
+
+  Future<ParseObject?> fetchImage(String roomId) async {
+    QueryBuilder<ParseObject> queryBook = QueryBuilder<ParseObject>(parseObject)
+      ..whereEqualTo('roomId', roomId)
+      ..whereEqualTo('ownerId', ownerId);
+
+    final ParseResponse responseBook = await queryBook.query();
+
+    if (responseBook.success && responseBook.results != null) {
+      return (responseBook.results?.first) as ParseObject;
+    } else {
+      return null;
     }
   }
 
@@ -164,27 +180,60 @@ class _GetRoomsState extends State<GetRooms> {
                                 top: 7,
                                 bottom: 7,
                               ),
-                              child: ListTile(
-                                title: Text(
-                                  room.roomType,
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.w700,
-                                    fontSize: 20,
-                                    color: Colors.white.withOpacity(0.9),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  FutureBuilder(
+                                    future: fetchImage(room.id),
+                                    builder: ((context, snapshot) {
+                                      var varFile = snapshot.data
+                                          ?.get<ParseFileBase>('file');
+                                      print('.....${varFile?.url ?? 'hell'}');
+                                      if (varFile?.url?.isEmpty ?? true) {
+                                        return Image.network(
+                                          'https://picsum.photos/200/300/?blur',
+                                          width: 100,
+                                          height: 100,
+                                        );
+                                      }
+                                      return Image.network(
+                                        varFile?.url ?? "",
+                                        width: 100,
+                                        height: 100,
+                                      );
+                                    }),
                                   ),
-                                ),
-                                subtitle: Text(
-                                  room.price,
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.w500,
-                                    fontSize: 15,
-                                    color: Colors.white.withOpacity(0.9),
+
+                                  // if there is image, display here
+                                  // else display default image
+
+                                  Expanded(
+                                    child: ListTile(
+                                      title: Text(
+                                        room.roomType,
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.w700,
+                                          fontSize: 20,
+                                          color: Colors.white.withOpacity(0.9),
+                                        ),
+                                      ),
+                                      subtitle: Text(
+                                        room.price,
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.w500,
+                                          fontSize: 15,
+                                          color: Colors.white.withOpacity(0.9),
+                                        ),
+                                      ),
+                                      trailing: Icon(
+                                        Icons.edit,
+                                        color: Colors.white.withOpacity(0.9),
+                                      ),
+                                    ),
                                   ),
-                                ),
-                                trailing: Icon(
-                                  Icons.edit,
-                                  color: Colors.white.withOpacity(0.9),
-                                ),
+                                ],
                               ),
                             ),
                           ),

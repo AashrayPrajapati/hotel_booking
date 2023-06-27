@@ -22,10 +22,14 @@ router.post("/register", async (req, res) => {
     price: req.body.price,
     maxCapacity: req.body.maxCapacity,
     isAvailable: "true",
+    // image: req.body.image,
   });
 
   try {
-    res.json(await hotelRoom.save());
+    
+    saveHotelRoom = await hotelRoom.save()
+    console.log(saveHotelRoom)
+    res.json(saveHotelRoom._id);
   } catch (error) {
     res.json(error);
   }
@@ -56,7 +60,7 @@ router.post("/upload", upload.single("image"), (req, res) => {
 
   // Save the relevant information to MongoDB or perform other operations
 
-  return res.status(200).json({ message: "Image uploaded successfully" });
+  return res.status(200).json({ message: "Image uploaded successfully" , });
 });
 
 //delete a room

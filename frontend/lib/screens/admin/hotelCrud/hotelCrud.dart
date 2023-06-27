@@ -150,7 +150,7 @@ class HotelCrudState extends State<HotelCrud> {
                 propertyName(),
                 country(),
                 city(),
-                postalCode(),
+                // postalCode(),
                 streetName(),
                 description(),
                 TextButton(
@@ -246,29 +246,30 @@ class HotelCrudState extends State<HotelCrud> {
                 ))));
   }
 
-  Padding streetName() {
+  Padding country() {
     return Padding(
-        padding: const EdgeInsets.only(
-          bottom: 15,
-          right: 15,
-          left: 15,
+      padding: const EdgeInsets.only(
+        bottom: 15,
+        right: 15,
+        left: 15,
+      ),
+      child: TextField(
+        controller: countryController,
+        keyboardType: TextInputType.text,
+        style: TextStyle(fontSize: 15, height: 0.7),
+        decoration: InputDecoration(
+          filled: true,
+          fillColor: Colors.transparent,
+          errorStyle: TextStyle(color: Colors.white),
+          errorText: _isNotValidate ? "Enter full name" : null,
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.all(Radius.circular(13)),
+          ),
+          labelText: "   Country",
         ),
-        child: TextField(
-            controller: streetNameController,
-            keyboardType: TextInputType.text,
-            style: TextStyle(fontSize: 15, height: 0.7),
-            decoration: InputDecoration(
-              //
-              filled: true,
-              fillColor: Colors.transparent,
-              errorStyle: TextStyle(color: Colors.white),
-              errorText: _isNotValidate ? "Enter full name" : null,
-              //
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.all(Radius.circular(13)),
-              ),
-              labelText: "   Street Name",
-            )));
+        onTap: () {},
+      ),
+    );
   }
 
   Padding city() {
@@ -293,35 +294,35 @@ class HotelCrudState extends State<HotelCrud> {
                 borderRadius: BorderRadius.all(Radius.circular(13)),
               ),
               labelText: "   City",
-            )));
+            ),
+            onTap: () {}));
   }
 
-  Padding country() {
+  Padding streetName() {
     return Padding(
-      padding: const EdgeInsets.only(
-        bottom: 15,
-        right: 15,
-        left: 15,
-      ),
-      child: TextField(
-        controller: countryController,
-        keyboardType: TextInputType.text,
-        style: TextStyle(fontSize: 15, height: 0.7),
-        decoration: InputDecoration(
-          filled: true,
-          fillColor: Colors.transparent,
-          errorStyle: TextStyle(color: Colors.white),
-          errorText: _isNotValidate ? "Enter full name" : null,
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.all(Radius.circular(13)),
-          ),
-          labelText: "   Country",
+        padding: const EdgeInsets.only(
+          bottom: 15,
+          right: 15,
+          left: 15,
         ),
-        onTap: () {
-          showCSCPicker(context);
-        },
-      ),
-    );
+        child: TextField(
+          controller: streetNameController,
+          keyboardType: TextInputType.text,
+          style: TextStyle(fontSize: 15, height: 0.7),
+          decoration: InputDecoration(
+            //
+            filled: true,
+            fillColor: Colors.transparent,
+            errorStyle: TextStyle(color: Colors.white),
+            errorText: _isNotValidate ? "Enter full name" : null,
+            //
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.all(Radius.circular(13)),
+            ),
+            labelText: "   Street Name",
+          ),
+          onTap: () {},
+        ));
   }
 
   Padding propertyName() {
@@ -427,22 +428,5 @@ class HotelCrudState extends State<HotelCrud> {
               ),
               labelText: "   Owner Name",
             )));
-  }
-
-  void showCSCPicker(BuildContext context) {
-    showModalBottomSheet(
-      context: context,
-      builder: (BuildContext context) {
-        return Container(
-          child: CSCPicker(
-            onCountryChanged: (value) {
-              setState(() {
-                countryController.text = value;
-              });
-            },
-          ),
-        );
-      },
-    );
   }
 }
