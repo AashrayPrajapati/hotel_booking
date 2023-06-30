@@ -36,7 +36,46 @@ class _ForgotPasswordState extends State<ForgotPassword> {
         );
         print('Response status code: ${response.statusCode}');
         print('Response body: ${response.data}');
-        Navigator.pushNamed(context, 'otp');
+        //
+        if (response.statusCode == 200) {
+          showDialog(
+            context: context,
+            barrierDismissible:
+                false, // Prevent dialog from being dismissed by tapping outside
+            builder: (BuildContext context) {
+              // Show the dialog
+              Future.delayed(Duration(seconds: 3), () {
+                Navigator.of(context).pop(); // Dismiss the dialog
+                Navigator.pushNamed(context, 'otp'); // Navigate to 'otp' page
+              });
+              return AlertDialog(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                title: Center(
+                  child: Text(
+                    'OTP Sent!',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+                content: Text('OTP has been sent to your email'),
+                actions: [
+                  // TextButton(
+                  //   onPressed: () {
+                  //     Navigator.of(context).pop(); // Dismiss the dialog
+                  //   },
+                  //   child: Center(child: Text('OK')),
+                  // ),
+                  SizedBox(height: 3),
+                ],
+              );
+            },
+          );
+        }
+
+        // Navigator.pushNamed(context, 'otp');
 
         // navigation logic
         // if (response.statusCode == 200) {
@@ -55,6 +94,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
+        backgroundColor: Color.fromARGB(255, 238, 238, 238),
         appBar: AppBar(
           backgroundColor: Color.fromARGB(255, 39, 92, 216),
           title: Text('Forgot Password'),
@@ -63,7 +103,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
           leading: IconButton(
             icon: Icon(Icons.arrow_back_ios_new),
             onPressed: () {
-              Navigator.pop(context);
+              Navigator.pushNamed(context, 'login');
             },
           ),
         ),
@@ -72,6 +112,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
           child: Padding(
             padding: const EdgeInsets.all(23),
             child: Card(
+              elevation: 7,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(17),
               ),
@@ -79,20 +120,14 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                 mainAxisSize: MainAxisSize.min,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Container(
-                    height: 69,
-                    width: double.infinity,
-                    color: Color.fromARGB(255, 241, 245, 249),
-                    child: Padding(
-                      padding: const EdgeInsets.all(19),
-                      child: Text('Send OTP',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                              fontSize: 23,
-                              fontWeight: FontWeight.bold,
-                              color: Color.fromARGB(255, 71, 85, 105))),
-                    ),
-                  ),
+                  SizedBox(height: 20),
+                  Text('Send OTP',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 23,
+                        fontWeight: FontWeight.bold,
+                        color: Color.fromARGB(255, 71, 85, 105),
+                      )),
                   SizedBox(height: 20),
                   Padding(
                     padding: const EdgeInsets.only(
@@ -107,6 +142,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                       ),
                     ),
                   ),
+                  SizedBox(height: 13),
                   ElevatedButton(
                     onPressed: () {
                       sendOTP();
@@ -114,14 +150,14 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                     },
                     child: Text('Submit',
                         style: TextStyle(
-                          fontSize: 17,
+                          fontSize: 20,
                           fontWeight: FontWeight.bold,
                         )),
                     style: ElevatedButton.styleFrom(
-                      minimumSize: Size(100, 37),
+                      minimumSize: Size(123, 50),
                       backgroundColor: Color.fromARGB(255, 39, 92, 216),
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(13),
+                        borderRadius: BorderRadius.circular(23),
                       ),
                     ),
                   ),

@@ -29,7 +29,7 @@ class _DashboardState extends State<Dashboard> {
           backgroundColor: Color.fromARGB(255, 39, 92, 216),
           leading: IconButton(
             onPressed: () {
-              Navigator.pop(context);
+              Navigator.pushNamed(context, 'mainPage');
             },
             icon: Icon(Icons.arrow_back_ios_new),
             //replace with our own icon data.

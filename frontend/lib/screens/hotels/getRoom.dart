@@ -114,7 +114,7 @@ class _GetRoomsState extends State<GetRooms> {
           backgroundColor: Color.fromARGB(255, 39, 92, 216),
           leading: IconButton(
             onPressed: () {
-              Navigator.pop(context);
+              Navigator.pushNamed(context, 'mainPage');
             },
             icon: Icon(Icons.arrow_back_ios_new),
             //replace with our own icon data.
@@ -192,10 +192,9 @@ class _GetRoomsState extends State<GetRooms> {
                                           ?.get<ParseFileBase>('file');
                                       print('.....${varFile?.url ?? 'hell'}');
                                       if (varFile?.url?.isEmpty ?? true) {
-                                        return Image.network(
-                                          'https://picsum.photos/200/300/?blur',
-                                          width: 100,
-                                          height: 100,
+                                        return Placeholder(
+                                          fallbackWidth: 100,
+                                          fallbackHeight: 100,
                                         );
                                       }
                                       return Image.network(

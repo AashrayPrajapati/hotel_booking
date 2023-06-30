@@ -13,7 +13,7 @@ import 'package:khalti_flutter/khalti_flutter.dart';
 
 import 'khalti/khalti.dart';
 import 'khalti/khaltiPage.dart';
-import 'screens/admin/hotelCrud/hotelCrud.dart';
+import 'screens/admin/hotelCrud/createHotel.dart';
 import 'screens/auth/changePassword.dart';
 import 'screens/auth/forgotPassword.dart';
 import 'screens/auth/otp.dart';

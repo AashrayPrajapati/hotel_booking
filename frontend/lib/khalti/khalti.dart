@@ -26,32 +26,6 @@ class _KhaltiState extends State<Khalti> {
           localizationsDelegates: [
             KhaltiLocalizations.delegate,
           ],
-
-          // supportedLocales: const [
-          //   Locale('en', 'US'),
-          //   Locale('ne', 'NP'),
-          // ],
-          // debugShowCheckedModeBanner: false,
-          // home: Scaffold(
-          //   appBar: AppBar(
-          //     backgroundColor: Color.fromARGB(255, 39, 92, 216),
-          //     leading: IconButton(
-          //       onPressed: () {
-          //         Navigator.pop(context);
-          //       },
-          //       icon: Icon(Icons.arrow_back_ios_new),
-          //     ),
-          //     title: const Text(
-          //       "Khalti Payment",
-          //       style: TextStyle(
-          //         fontSize: 25,
-          //         fontWeight: FontWeight.w600,
-          //       ),
-          //     ),
-          //     centerTitle: true,
-          //   ),
-
-          // ),
         );
       },
     );

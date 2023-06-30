@@ -4,7 +4,12 @@ import 'package:dio/dio.dart';
 import 'package:hotel_booking/config.dart';
 import 'package:hotel_booking/utils.dart';
 
-// final Dio _dio = Dio();
+class EditUser extends StatefulWidget {
+  const EditUser({Key? key}) : super(key: key);
+
+  @override
+  State<EditUser> createState() => _EditUserState();
+}
 
 class User {
   final String name;
@@ -17,50 +22,46 @@ class User {
   );
 }
 
-class EditUser extends StatefulWidget {
-  const EditUser({Key? key}) : super(key: key);
+final Dio _dio = Dio();
 
-  @override
-  State<EditUser> createState() => _EditUserState();
+Future<User> getUser(String id) async {
+  try {
+    print('ID from future: $id');
+    final response = await _dio.get('$apiUrl/users/$id');
+
+    var jsonData = response.data;
+
+    User userdata = User(
+      jsonData['name'] ?? '',
+      jsonData['email'] ?? '',
+      jsonData['password'] ?? '',
+    );
+
+    print('User name: ${userdata.name}'); // Print the name
+
+    return userdata;
+  } on DioError catch (e) {
+    print(e);
+    throw Exception("Error retrieving posts: ${e.response}");
+  }
 }
 
 class _EditUserState extends State<EditUser> {
-  final Dio _dio = Dio();
-
-  Future<User> getUser(String id) async {
-    try {
-      print('ID from future: $id');
-      final response = await _dio.get('$apiUrl/users/$id');
-
-      var jsonData = response.data;
-
-      User userdata = User(
-        jsonData['name'] ?? '',
-        jsonData['email'] ?? '',
-        jsonData['password'] ?? '',
-      );
-
-      print('User name: ${userdata.name}'); // Print the name
-
-      return userdata;
-    } catch (e) {
-      print(e);
-      throw Exception("Error retrieving posts: $e");
-    }
-  }
+  TextEditingController nameController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+  TextEditingController confirmPasswordController = TextEditingController();
 
   void updateUser(
     String name,
     String email,
+    String password,
   ) async {
     final String url = '$apiUrl/users/$ownerId';
 
     final response = await _dio.patch(
       url,
-      data: {
-        'name': name,
-        'email': email,
-      },
+      data: {'name': name, 'email': email, 'password': password},
     );
 
     print(response.data);
@@ -141,6 +142,7 @@ class _EditUserState extends State<EditUser> {
   void deleteUser(
     String name,
     String email,
+    String password,
   ) async {
     final String url = '$apiUrl/users/$ownerId';
 
@@ -149,6 +151,7 @@ class _EditUserState extends State<EditUser> {
       data: {
         'name': name,
         'email': email,
+        'password': password,
       },
     );
 
@@ -319,18 +322,20 @@ class _EditUserState extends State<EditUser> {
   }
 
   @override
+  void dispose() {
+    nameController.dispose();
+    emailController.dispose();
+    passwordController.dispose();
+    confirmPasswordController.dispose();
+    super.dispose();
+  }
+
+  @override
   void initState() {
     decodeUser();
     print('SUII ID: $ownerId');
     super.initState();
   }
-
-  TextEditingController nameController = TextEditingController();
-  TextEditingController emailController = TextEditingController();
-
-  TextEditingController oldPasswordController = TextEditingController();
-  TextEditingController newPasswordController = TextEditingController();
-  TextEditingController confirmPasswordController = TextEditingController();
 
   // bool _obscureText = true;
   // bool _obscureText2 = true;
@@ -339,6 +344,9 @@ class _EditUserState extends State<EditUser> {
 
   @override
   Widget build(BuildContext context) {
+    final Map<String, dynamic> arguments =
+        ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
+    final String? ownerId = arguments['ownerId'] as String?;
     Widget buildEditUserWidget(User userData) {
       return Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -458,6 +466,7 @@ class _EditUserState extends State<EditUser> {
                                   updateUser(
                                     nameController.text,
                                     emailController.text,
+                                    passwordController.text,
                                   );
                                 },
                                 child: Text(
@@ -482,6 +491,7 @@ class _EditUserState extends State<EditUser> {
                                   deleteUser(
                                     nameController.text,
                                     emailController.text,
+                                    passwordController.text,
                                   );
                                 },
                                 child: Text(
@@ -556,7 +566,7 @@ class _EditUserState extends State<EditUser> {
           leading: IconButton(
             icon: Icon(Icons.arrow_back_ios_new),
             onPressed: () {
-              Navigator.pop(context);
+              Navigator.pushNamed(context, 'mainPage');
               // updatePassword(
               //   oldPasswordController.text,
               //   newPasswordController.text,
@@ -575,7 +585,7 @@ class _EditUserState extends State<EditUser> {
           centerTitle: true,
         ),
         body: FutureBuilder<User>(
-          future: getUser(ownerId),
+          future: getUser(ownerId!),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return Center(child: CircularProgressIndicator());
@@ -587,7 +597,7 @@ class _EditUserState extends State<EditUser> {
 
               nameController.text = userData.name;
               emailController.text = userData.email;
-              // passwordController.text = userData.password;
+              passwordController.text = userData.password;
               // confirmPasswordController.text = userData.password;
 
               return buildEditUserWidget(userData);

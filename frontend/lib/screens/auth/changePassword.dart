@@ -135,7 +135,7 @@ class _ChangePasswordState extends State<ChangePassword> {
           leading: IconButton(
             icon: Icon(Icons.arrow_back_ios_new),
             onPressed: () {
-              Navigator.pop(context);
+              Navigator.pushNamed(context, 'login');
             },
           ),
         ),
@@ -144,6 +144,7 @@ class _ChangePasswordState extends State<ChangePassword> {
           child: Padding(
             padding: const EdgeInsets.all(23),
             child: Card(
+              elevation: 7,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(17),
               ),
@@ -152,30 +153,17 @@ class _ChangePasswordState extends State<ChangePassword> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   SizedBox(height: 20),
-                  ClipRRect(
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(17),
-                      topRight: Radius.circular(17),
-                    ),
-                    child: Container(
-                      height: 69,
-                      width: double.infinity,
-                      color: Color.fromARGB(255, 241, 245, 249),
-                      child: Padding(
-                        padding: const EdgeInsets.all(19),
-                        child: Text('Change Password',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                                fontSize: 23,
-                                fontWeight: FontWeight.bold,
-                                color: Color.fromARGB(255, 71, 85, 105))),
-                      ),
-                    ),
-                  ),
+                  Text('Change Password',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 23,
+                        fontWeight: FontWeight.bold,
+                        // color: Color.fromARGB(255, 71, 85, 105)
+                      )),
                   SizedBox(height: 20),
                   DropdownButton(
                     elevation: 0,
-                    dropdownColor: Colors.grey[200],
+                    dropdownColor: Colors.white.withOpacity(0.7),
                     isExpanded: false,
                     // focusColor: Colors.blue,
 

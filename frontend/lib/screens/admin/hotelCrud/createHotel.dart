@@ -126,7 +126,7 @@ class HotelCrudState extends State<HotelCrud> {
                 backgroundColor: Color.fromARGB(255, 39, 92, 216),
                 leading: IconButton(
                     onPressed: () {
-                      Navigator.pop(context);
+                      Navigator.pushNamed(context, 'mainPage');
                     },
                     icon: Icon(Icons.arrow_back_ios_new)),
                 automaticallyImplyLeading: false,

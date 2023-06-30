@@ -346,7 +346,7 @@ class _UpdateHotelState extends State<UpdateHotel> {
                       leading: IconButton(
                         icon: Icon(Icons.arrow_back_ios_new),
                         onPressed: () {
-                          Navigator.pop(context);
+                          Navigator.pushNamed(context, 'mainPage');
                         },
                       ),
                       backgroundColor: Color.fromARGB(255, 39, 92, 216),

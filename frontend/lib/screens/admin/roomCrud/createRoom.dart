@@ -15,7 +15,6 @@ import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 final parseObject = ParseObject('Gallery');
-var roomID = "";
 
 class RoomCreate extends StatelessWidget {
   const RoomCreate({super.key});
@@ -69,7 +68,7 @@ class _RoomCreatePageState extends State<RoomCreatePage> {
   File? _selectedImage = null;
   Dio _dio = Dio();
 
-  Future<void> _uploadImage() async {
+  Future<void> _uploadImage(String roomID) async {
     ParseFileBase? parseFile;
 
     if (_selectedImage == null) {
@@ -91,14 +90,16 @@ class _RoomCreatePageState extends State<RoomCreatePage> {
         data: formData,
       );
       print('...####' + response.toString());
-      print('this is from room ID aqwsedrftugyihuoij');
-      print(roomID);
+      print(
+        'this is from room ID aqwsedrftugyihasedrftgyuhwesrdftgyhwertfgyswedrftyhuwwserftgyhudrftgydrftwsedrfuoijaqwsedrftugyihasedrftgyuhwesrdftgyhwertfgyswedrftyhuwwserftgyhudrftgydrftwsedrfuoijaqwsedrftugyihasedrftgyuhwesrdftgyhwertfgyswedrftyhuwwserftgyhudrftgydrftwsedrfuoij, $roomID',
+      );
+      // print(roomID);
       if (response.statusCode == 200) {
-        final gallery = parseObject
+        final parseObject = ParseObject('Gallery')
           ..set('file', parseFile)
           ..set('ownerId', ownerId)
           ..set('roomId', roomID);
-        await gallery.save();
+        await parseObject.save();
         print('Image uploaded successfully');
         // Perform any additional actions after successful upload
       } else {
@@ -116,7 +117,7 @@ class _RoomCreatePageState extends State<RoomCreatePage> {
       setState(() {
         _selectedImage = File(pickedImage.path);
       });
-      await _uploadImage(); // Call the upload function after image selection
+      // await _uploadImage(); // Call the upload function after image selection
     }
   }
 
@@ -159,10 +160,12 @@ class _RoomCreatePageState extends State<RoomCreatePage> {
           Navigator.of(context, rootNavigator: true).pushNamed('mainPage');
           print(
               'qwertyuiopasdfghjklzxcvbnmasdfghjhgfdsadfghgfdfghgfdfghgfdfghgfdfghgfdttyufgvblfgv');
-          roomID = response.data;
+          final roomID = response.data;
+
           print(roomID);
           print('Response status code: ${response.statusCode}');
           print('Response body: ${response.data}');
+          _uploadImage(roomID);
         } on DioError catch (e) {
           print('Error connecting to server: ${e.message}');
         }
@@ -185,7 +188,7 @@ class _RoomCreatePageState extends State<RoomCreatePage> {
           backgroundColor: Color.fromARGB(255, 39, 92, 216),
           leading: IconButton(
             onPressed: () {
-              Navigator.pop(context);
+              Navigator.pushNamed(context, 'mainPage');
             },
             icon: Icon(Icons.arrow_back_ios_new),
             //replace with our own icon data.
@@ -366,6 +369,7 @@ class _RoomCreatePageState extends State<RoomCreatePage> {
                             child: ElevatedButton(
                               onPressed: () {
                                 room();
+                                // _uploadImage();
                                 // if (_isNotValidate == true) {
                                 //   Navigator.pushNamed(context, 'mainPage');
                                 // }
@@ -399,22 +403,22 @@ class _RoomCreatePageState extends State<RoomCreatePage> {
   }
 }
 
-CustomButton({
-  required String title,
-  required IconData icon,
-  required VoidCallback onClick,
-}) {
-  return Container(
-    width: 170,
-    child: ElevatedButton(
-      onPressed: () {},
-      child: Row(
-        children: [
-          Icon(icon),
-          SizedBox(width: 20),
-          Text("Pick an image"),
-        ],
-      ),
-    ),
-  );
-}
+// CustomButton({
+//   required String title,
+//   required IconData icon,
+//   required VoidCallback onClick,
+// }) {
+//   return Container(
+//     width: 170,
+//     child: ElevatedButton(
+//       onPressed: () {},
+//       child: Row(
+//         children: [
+//           Icon(icon),
+//           SizedBox(width: 20),
+//           Text("Pick an image"),
+//         ],
+//       ),
+//     ),
+//   );
+// }

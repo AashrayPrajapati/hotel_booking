@@ -119,7 +119,7 @@ class _BookingPageState extends State<BookingPage> {
           backgroundColor: Color.fromARGB(255, 39, 92, 216),
           leading: IconButton(
             onPressed: () {
-              Navigator.pop(context);
+              Navigator.pushNamed(context, 'hotelInfo');
             },
             icon: Icon(Icons.arrow_back_ios_new),
           ),

@@ -110,7 +110,7 @@ class _ViewBookingState extends State<ViewBooking> {
         appBar: AppBar(
           leading: IconButton(
             onPressed: () {
-              Navigator.pop(context);
+              Navigator.pushNamed(context, 'mainPage');
             },
             icon: Icon(Icons.arrow_back_ios_new),
           ),

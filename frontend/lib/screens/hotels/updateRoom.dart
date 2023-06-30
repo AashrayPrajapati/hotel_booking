@@ -174,7 +174,7 @@ class UpdateRoomState extends State<UpdateRoom> {
             Center(
               child: TextButton(
                 onPressed: () {
-                  Navigator.pushNamed(context, 'getRooms');
+                  Navigator.pushNamed(context, 'mainPage');
                 },
                 child: Text(
                   'OK',
@@ -248,7 +248,7 @@ class UpdateRoomState extends State<UpdateRoom> {
           backgroundColor: Color.fromARGB(255, 39, 92, 216),
           leading: IconButton(
             onPressed: () {
-              Navigator.pop(context);
+              Navigator.pushNamed(context, 'mainPage');
             },
             icon: Icon(Icons.arrow_back_ios_new),
           ),

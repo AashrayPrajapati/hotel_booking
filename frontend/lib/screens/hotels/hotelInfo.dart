@@ -213,120 +213,135 @@ class _HotelInfoPageState extends State<HotelInfoPage> {
                                                     MainAxisAlignment
                                                         .spaceBetween,
                                                 children: [
-                                                  Column(
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
-                                                    children: [
-                                                      Text(
-                                                        hotelData.propertyName,
-                                                        style: TextStyle(
-                                                          fontSize: 24,
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                        ),
-                                                      ),
-                                                      SizedBox(
-                                                        height: 7,
-                                                      ),
-                                                      RichText(
-                                                        text: TextSpan(
+                                                  Expanded(
+                                                    flex: 8,
+                                                    child: Column(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        Text(
+                                                          hotelData
+                                                              .propertyName,
                                                           style: TextStyle(
-                                                            color: Colors.black,
-                                                            fontSize: 15,
+                                                            fontSize: 24,
+                                                            fontWeight:
+                                                                FontWeight.bold,
                                                           ),
-                                                          children: [
-                                                            TextSpan(
-                                                              text: hotelData
-                                                                  .streetName,
-                                                              style: TextStyle(
-                                                                fontStyle:
-                                                                    FontStyle
-                                                                        .italic,
-                                                              ),
-                                                            ),
-                                                            TextSpan(
-                                                                text: ", "),
-                                                            TextSpan(
-                                                              text: hotelData
-                                                                  .city,
-                                                              style: TextStyle(
-                                                                fontStyle:
-                                                                    FontStyle
-                                                                        .italic,
-                                                              ),
-                                                            ),
-                                                          ],
                                                         ),
-                                                      ),
-                                                      SizedBox(
-                                                        height: 10,
-                                                      ),
-                                                    ],
+                                                        SizedBox(
+                                                          height: 7,
+                                                        ),
+                                                        RichText(
+                                                          text: TextSpan(
+                                                            style: TextStyle(
+                                                              color:
+                                                                  Colors.black,
+                                                              fontSize: 15,
+                                                            ),
+                                                            children: [
+                                                              TextSpan(
+                                                                text: hotelData
+                                                                    .streetName,
+                                                                style:
+                                                                    TextStyle(
+                                                                  fontStyle:
+                                                                      FontStyle
+                                                                          .italic,
+                                                                ),
+                                                              ),
+                                                              TextSpan(
+                                                                  text: ", "),
+                                                              TextSpan(
+                                                                text: hotelData
+                                                                    .city,
+                                                                style:
+                                                                    TextStyle(
+                                                                  fontStyle:
+                                                                      FontStyle
+                                                                          .italic,
+                                                                ),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        ),
+                                                        SizedBox(
+                                                          height: 10,
+                                                        ),
+                                                      ],
+                                                    ),
                                                   ),
 
                                                   Expanded(
+                                                    flex: 2,
                                                     child: Padding(
                                                       padding:
                                                           const EdgeInsets.only(
                                                               right: 20,
                                                               bottom: 20),
-                                                      child: IconButton(
-                                                        onPressed: () {
-                                                          showModalBottomSheet(
-                                                            context: context,
-                                                            builder: (context) {
-                                                              return Container(
-                                                                // height: MediaQuery.of(
-                                                                //             context)
-                                                                //         .size
-                                                                //         .height *
-                                                                //     0.5,
-                                                                height: 350,
+                                                      child: SizedBox(
+                                                        width: 30,
+                                                        child: IconButton(
+                                                          onPressed: () {
+                                                            showModalBottomSheet(
+                                                              context: context,
+                                                              builder:
+                                                                  (context) {
+                                                                return Container(
+                                                                  // height: MediaQuery.of(
+                                                                  //             context)
+                                                                  //         .size
+                                                                  //         .height *
+                                                                  //     0.5,
+                                                                  height: 350,
 
-                                                                // create a comment section
-                                                                child: Column(
-                                                                  children: [
-                                                                    Padding(
-                                                                      padding:
-                                                                          const EdgeInsets.all(
-                                                                              15),
-                                                                      child:
-                                                                          TextField(
-                                                                        decoration:
-                                                                            InputDecoration(
-                                                                          suffixIcon:
-                                                                              IconButton(
-                                                                            onPressed:
-                                                                                () {},
-                                                                            icon:
-                                                                                Icon(
-                                                                              Icons.send,
-                                                                              color: Color.fromARGB(255, 39, 92, 216),
+                                                                  // create a comment section
+                                                                  child: Column(
+                                                                    mainAxisSize:
+                                                                        MainAxisSize
+                                                                            .max,
+                                                                    children: [
+                                                                      Padding(
+                                                                        padding:
+                                                                            const EdgeInsets.all(15),
+                                                                        child:
+                                                                            TextField(
+                                                                          decoration:
+                                                                              InputDecoration(
+                                                                            suffixIcon:
+                                                                                IconButton(
+                                                                              onPressed: () {},
+                                                                              icon: Icon(
+                                                                                Icons.send,
+                                                                                color: Color.fromARGB(255, 39, 92, 216),
+                                                                              ),
                                                                             ),
-                                                                          ),
-                                                                          hintText:
-                                                                              'Add a comment',
-                                                                          border:
-                                                                              OutlineInputBorder(
-                                                                            borderRadius:
-                                                                                BorderRadius.circular(10),
+                                                                            hintText:
+                                                                                'Add a comment',
+                                                                            border:
+                                                                                OutlineInputBorder(
+                                                                              borderRadius: BorderRadius.circular(10),
+                                                                            ),
                                                                           ),
                                                                         ),
                                                                       ),
-                                                                    ),
-                                                                  ],
-                                                                ),
-                                                              );
-                                                            },
-                                                          );
-                                                        },
-                                                        icon: Icon(
-                                                          Icons
-                                                              .comment_outlined,
-                                                          color: Color.fromARGB(
-                                                              255, 39, 92, 216),
-                                                          size: 30,
+                                                                    ],
+                                                                  ),
+                                                                );
+                                                              },
+                                                            );
+                                                          },
+                                                          icon: Icon(
+                                                            Icons
+                                                                .comment_outlined,
+                                                            color:
+                                                                Color.fromARGB(
+                                                                    255,
+                                                                    39,
+                                                                    92,
+                                                                    216),
+                                                            size: 30,
+                                                          ),
                                                         ),
                                                       ),
                                                     ),

@@ -82,124 +82,135 @@ class _SearchedHotelsPageState extends State<SearchedHotelsPage> {
     return MaterialApp(
         debugShowCheckedModeBanner: false,
         home: Scaffold(
+            backgroundColor: Color.fromARGB(255, 238, 238, 238),
             appBar: AppBar(
               elevation: 0,
               backgroundColor: Colors.transparent,
-              leading: IconButton(
-                icon: Icon(
-                  Icons.arrow_back_ios_new,
-                  color: Colors.black,
+              actions: [
+                IconButton(
+                  icon: Icon(
+                    Icons.close,
+                    color: Colors.black,
+                    size: 33,
+                  ),
+                  onPressed: () => Navigator.pushNamed(context, 'mainPage'),
                 ),
-                onPressed: () => Navigator.pop(context),
-              ),
+              ],
             ),
-            body: selectedValue == 'home'
-                ? FutureBuilder(
-                    future: searchName(searchInput),
-                    builder: (context, AsyncSnapshot<List<Hotel>> snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return const Center(child: CircularProgressIndicator());
-                      } else if (snapshot.hasError) {
-                        return Center(
-                          child: Text("Error: ${snapshot.error}"),
-                        );
-                      } else {
-                        final List<Hotel> hotels = snapshot.data!;
+            body: Container(
+              height: double.infinity,
+              child: selectedValue == 'home'
+                  ? FutureBuilder(
+                      future: searchName(searchInput),
+                      builder: (context, AsyncSnapshot<List<Hotel>> snapshot) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return const Center(
+                              child: CircularProgressIndicator());
+                        } else if (snapshot.hasError) {
+                          return Center(
+                            child: Text("Error: ${snapshot.error}"),
+                          );
+                        } else {
+                          final List<Hotel> hotels = snapshot.data!;
 
-                        return ListView.builder(
-                            itemCount: hotels.length,
-                            itemBuilder: (context, index) {
-                              final Hotel hotel = hotels[index];
+                          return ListView.builder(
+                              itemCount: hotels.length,
+                              itemBuilder: (context, index) {
+                                final Hotel hotel = hotels[index];
 
-                              return Padding(
-                                  padding: const EdgeInsets.only(
-                                    left: 10,
-                                    right: 10,
-                                    bottom: 7,
-                                  ),
-                                  child: Column(children: [
-                                    GestureDetector(
-                                        onTap: () {
-                                          var ID = hotel._id;
-                                          Navigator.of(context,
-                                                  rootNavigator: true)
-                                              .pushNamed('hotelInfo',
-                                                  arguments: {
-                                                'userId': userId,
-                                                'id': ID,
-                                                'numberOfNights':
-                                                    numberOfNights.toString(),
-                                                'startDate': startDate,
-                                                'endDate': endDate
-                                              });
+                                return Padding(
+                                    padding: const EdgeInsets.only(
+                                      left: 10,
+                                      right: 10,
+                                      bottom: 7,
+                                    ),
+                                    child: Column(children: [
+                                      GestureDetector(
+                                          onTap: () {
+                                            var ID = hotel._id;
+                                            Navigator.of(context,
+                                                    rootNavigator: true)
+                                                .pushNamed('hotelInfo',
+                                                    arguments: {
+                                                  'userId': userId,
+                                                  'id': ID,
+                                                  'numberOfNights':
+                                                      numberOfNights.toString(),
+                                                  'startDate': startDate,
+                                                  'endDate': endDate
+                                                });
 
-                                          print("Specific hotel id: $ID");
-                                          print(
-                                              "Number of nights: $numberOfNights");
-                                          print('homePage');
-                                        },
-                                        child: Row(children: [
-                                          hotelImage(),
-                                          // hotelDetails(snapshot.data![index]),
-                                          hotelDetails(snapshot, index),
-                                        ]))
-                                  ]));
-                            });
-                      }
-                    })
-                : FutureBuilder(
-                    future: searchCity(searchInput),
-                    builder: (context, AsyncSnapshot<List<Hotel>> snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return const Center(child: CircularProgressIndicator());
-                      } else if (snapshot.hasError) {
-                        return Center(
-                          child: Text("Error: ${snapshot.error}"),
-                        );
-                      } else {
-                        final List<Hotel> hotels = snapshot.data!;
+                                            print("Specific hotel id: $ID");
+                                            print(
+                                                "Number of nights: $numberOfNights");
+                                            print('homePage');
+                                          },
+                                          child: Row(children: [
+                                            hotelImage(),
+                                            // hotelDetails(snapshot.data![index]),
+                                            hotelDetails(snapshot, index),
+                                          ]))
+                                    ]));
+                              });
+                        }
+                      })
+                  : FutureBuilder(
+                      future: searchCity(searchInput),
+                      builder: (context, AsyncSnapshot<List<Hotel>> snapshot) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return const Center(
+                              child: CircularProgressIndicator());
+                        } else if (snapshot.hasError) {
+                          return Center(
+                            child: Text("Error: ${snapshot.error}"),
+                          );
+                        } else {
+                          final List<Hotel> hotels = snapshot.data!;
 
-                        return ListView.builder(
-                            itemCount: hotels.length,
-                            itemBuilder: (context, index) {
-                              final Hotel hotel = hotels[index];
+                          return ListView.builder(
+                              itemCount: hotels.length,
+                              itemBuilder: (context, index) {
+                                final Hotel hotel = hotels[index];
 
-                              return Padding(
-                                  padding: const EdgeInsets.only(
-                                    left: 10,
-                                    right: 10,
-                                    bottom: 7,
-                                  ),
-                                  child: Column(children: [
-                                    GestureDetector(
-                                        onTap: () {
-                                          var ID = hotel._id;
-                                          Navigator.of(context,
-                                                  rootNavigator: true)
-                                              .pushNamed('hotelInfo',
-                                                  arguments: {
-                                                'userId': userId,
-                                                'id': ID,
-                                                'numberOfNights':
-                                                    numberOfNights.toString(),
-                                                'startDate': startDate,
-                                                'endDate': endDate
-                                              });
+                                return Padding(
+                                    padding: const EdgeInsets.only(
+                                      left: 10,
+                                      right: 10,
+                                      bottom: 7,
+                                    ),
+                                    child: Column(children: [
+                                      GestureDetector(
+                                          onTap: () {
+                                            var ID = hotel._id;
+                                            Navigator.of(context,
+                                                    rootNavigator: true)
+                                                .pushNamed('hotelInfo',
+                                                    arguments: {
+                                                  'userId': userId,
+                                                  'id': ID,
+                                                  'numberOfNights':
+                                                      numberOfNights.toString(),
+                                                  'startDate': startDate,
+                                                  'endDate': endDate
+                                                });
 
-                                          print("Specific hotel id: $ID");
-                                          print(
-                                              "Number of nights: $numberOfNights");
-                                          print('homePage');
-                                        },
-                                        child: Row(children: [
-                                          hotelImage(),
-                                          // hotelDetails(snapshot.data![index]),
-                                          hotelDetails(snapshot, index),
-                                        ]))
-                                  ]));
-                            });
-                      }
-                    })));
+                                            print("Specific hotel id: $ID");
+                                            print(
+                                                "Number of nights: $numberOfNights");
+                                            print('homePage');
+                                          },
+                                          child: Row(children: [
+                                            hotelImage(),
+                                            // hotelDetails(snapshot.data![index]),
+                                            hotelDetails(snapshot, index),
+                                          ]))
+                                    ]));
+                              });
+                        }
+                      }),
+            )));
   }
 }
 

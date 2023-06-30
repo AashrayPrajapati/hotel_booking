@@ -37,29 +37,45 @@ class _OTPState extends State<OTP> {
         );
         print('Response status code: ${response.statusCode}');
         print('Response body: ${response.data}');
-
         if (response.statusCode == 200) {
           showDialog(
             context: context,
+            barrierDismissible:
+                false, // Prevent dialog from being dismissed by tapping outside
             builder: (BuildContext context) {
+              // Show the dialog
+              Future.delayed(Duration(seconds: 3), () {
+                Navigator.of(context).pop(); // Dismiss the dialog
+                Navigator.pushNamed(
+                    context, 'changePassword'); // Navigate to 'otp' page
+              });
               return AlertDialog(
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20),
                 ),
-                title: Text('OTP Verified'),
+                title: Center(
+                  child: Text(
+                    'OTP Verified!',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
                 content: Text('OTP has been verified successfully'),
                 actions: [
-                  TextButton(
-                    onPressed: () {
-                      Navigator.pushNamed(context, 'changePassword');
-                    },
-                    child: Center(child: Text('OK')),
-                  ),
+                  // TextButton(
+                  //   onPressed: () {
+                  //     Navigator.of(context).pop(); // Dismiss the dialog
+                  //   },
+                  //   child: Center(child: Text('OK')),
+                  // ),
+                  // SizedBox(height: 10),
                 ],
               );
             },
           );
         }
+
         // else {
         //   showDialog(
         //     context: context,
@@ -120,6 +136,7 @@ class _OTPState extends State<OTP> {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
+        backgroundColor: Color.fromARGB(255, 238, 238, 238),
         appBar: AppBar(
           backgroundColor: Color.fromARGB(255, 39, 92, 216),
           title: Text('Verify OTP'),
@@ -128,7 +145,7 @@ class _OTPState extends State<OTP> {
           leading: IconButton(
             icon: Icon(Icons.arrow_back_ios_new),
             onPressed: () {
-              Navigator.pop(context);
+              Navigator.pushNamed(context, 'forgotPassword');
             },
           ),
         ),
@@ -137,27 +154,27 @@ class _OTPState extends State<OTP> {
           child: Padding(
             padding: const EdgeInsets.all(23),
             child: Card(
+              elevation: 7,
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(17),
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(17),
+                  topRight: Radius.circular(17),
+                  bottomLeft: Radius.circular(17),
+                  bottomRight: Radius.circular(17),
+                ),
               ),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Container(
-                    height: 69,
-                    width: double.infinity,
-                    color: Color.fromARGB(255, 241, 245, 249),
-                    child: Padding(
-                      padding: const EdgeInsets.all(19),
-                      child: Text('Verify OTP',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                              fontSize: 23,
-                              fontWeight: FontWeight.bold,
-                              color: Color.fromARGB(255, 71, 85, 105))),
-                    ),
-                  ),
+                  SizedBox(height: 20),
+                  Text('Verify OTP',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 23,
+                        fontWeight: FontWeight.bold,
+                        // color: Color.fromARGB(255, 71, 85, 105)
+                      )),
                   SizedBox(height: 20),
                   Padding(
                     padding: const EdgeInsets.only(
@@ -182,6 +199,7 @@ class _OTPState extends State<OTP> {
                       ),
                     ),
                   ),
+                  SizedBox(height: 13),
                   ElevatedButton(
                     onPressed: () {
                       verifyOTP();
@@ -190,14 +208,14 @@ class _OTPState extends State<OTP> {
                     },
                     child: Text('Submit',
                         style: TextStyle(
-                          fontSize: 17,
+                          fontSize: 20,
                           fontWeight: FontWeight.bold,
                         )),
                     style: ElevatedButton.styleFrom(
-                      minimumSize: Size(100, 37),
+                      minimumSize: Size(123, 50),
                       backgroundColor: Color.fromARGB(255, 39, 92, 216),
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(13),
+                        borderRadius: BorderRadius.circular(23),
                       ),
                     ),
                   ),
