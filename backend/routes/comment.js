@@ -11,10 +11,12 @@ router.post("/post", async (req, res) => {
       console.log("user");
 
       const userExists = await Users.findById(req.body.user);
+      console.log(userExists);
       if (!userExists) return res.status(409).send("User does not exist");
 
       const comment = new Comment({
         user: req.body.user,
+        userName: userExists.name,
         hotelId: req.body.hotelId,
         comment: req.body.comment,
       });
@@ -39,13 +41,13 @@ router.post("/post", async (req, res) => {
   }
 });
 
-// Get all comments
-router.get("/comments", async (req, res) => {
+// get comment of specfic hotel
+router.get("/getComment/:id", async (req, res) => {
   try {
-    const comments = await Comment.find();
-    res.json(comments);
+    const comments = await Comment.find({ hotelId: req.params.id });
+    res.status(200).json(comments);
   } catch (err) {
-    res.status(500).json({ error: "Failed to retrieve comments" });
+    res.status(500).json(err);
   }
 });
 

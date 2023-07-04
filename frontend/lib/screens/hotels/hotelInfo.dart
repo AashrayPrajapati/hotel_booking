@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_profile_picture/flutter_profile_picture.dart';
 import 'package:hotel_booking/config.dart';
+import 'package:hotel_booking/utils.dart';
+import 'package:intl/intl.dart';
 // import 'package:get/get.dart';
 // import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:readmore/readmore.dart';
@@ -18,6 +20,8 @@ class Hotel {
     this.description,
   );
 }
+
+var hId;
 
 class Room {
   final String roomType;
@@ -39,10 +43,12 @@ class HotelInfo extends StatelessWidget {
 Future postComment() async {
   try {
     var regBody = {
-      'user': '6412c87cd16ee5e7f1446f33',
-      'hotelId': '6497e8c6f87dedeef8a80cc7',
+      'user': ownerId, //ownerId is userId
+      'hotelId': hId,
       'comment': commentController.text
     };
+    print('azwsxerdtcfvgybzsxrdtcfgvybhjnsxrfvtgbyhujnsxtcrfvgyhuj');
+    print(ownerId);
     print(regBody);
 
     final response = await Dio().post(
@@ -58,6 +64,42 @@ Future postComment() async {
   }
 }
 
+class Comment {
+  final String userName;
+  final String comment;
+  final String timestamp;
+
+  Comment(this.userName, this.comment, this.timestamp);
+
+  @override
+  String toString() {
+    return 'User: $userName, Comment: $comment';
+  }
+}
+
+Future<List<Comment>> getComments() async {
+  try {
+    print(hId);
+    List<Comment> comments = [];
+    final commentResponse = await Dio().get('$apiUrl/comment/getComment/$hId');
+
+    var commentData = commentResponse.data;
+
+    for (var data in commentData) {
+      Comment comment = Comment(
+        data['userName'],
+        data['comment'],
+        DateFormat('yyyy-MM-dd').format(DateTime.parse(data['timestamp'])),
+      );
+      comments.add(comment);
+    }
+    print(comments);
+    return comments;
+  } on DioError catch (e) {
+    throw Exception("Error retrieving comments: ${e.message}");
+  }
+}
+
 final Dio _dio = Dio();
 TextEditingController commentController = TextEditingController();
 
@@ -69,6 +111,12 @@ class HotelInfoPage extends StatefulWidget {
 }
 
 class _HotelInfoPageState extends State<HotelInfoPage> {
+  @override
+  void initState() {
+    super.initState();
+    decodeUser();
+  }
+
   // double _initialRating = 4.5;
   // IconData? _selectedIcon;
 
@@ -124,6 +172,8 @@ class _HotelInfoPageState extends State<HotelInfoPage> {
         ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
     // final String? price = arguments['price'] as String?;
     final String? HotelID = arguments['id'] as String?;
+
+    hId = HotelID;
     final String? userId = arguments['userId'] as String?;
     final String? numberOfNights = arguments['numberOfNights'] as String?;
     final String? startDate = arguments['startDate'] as String?;
@@ -245,6 +295,8 @@ class _HotelInfoPageState extends State<HotelInfoPage> {
                                                                       IconButton(
                                                                           onPressed:
                                                                               () {
+                                                                            // getComments();
+                                                                            // print(ownerId);
                                                                             showModalBottomSheet(
                                                                                 context: context,
                                                                                 builder: (context) {
@@ -453,108 +505,155 @@ class _HotelInfoPageState extends State<HotelInfoPage> {
     ]);
   }
 
-  List<String> comments = [
-    "“excellent location, very good breakfast on the roof terrace with a view. the owners are extremely friendly and helpful. come back anytime”",
-    "Another comment",
-    "Yet another comment Yet another comment Yet another comment Yet another comment",
+  List<Map<String, dynamic>> comments = [
+    {
+      "userNmae": 'John Doe',
+      "hotelId": 101,
+      "comment": "Great hotel with excellent service!"
+    },
+    {
+      "userNmae": 'Doe Doe',
+      "hotelId": 102,
+      "comment": "The room was clean and comfortable."
+    },
+    {
+      "userNmae": 'John John',
+      "hotelId": 103,
+      "comment": "I had a pleasant stay at this hotel."
+    }
   ];
 
   Container commentSection() {
     return Container(
-      height: 500,
-      child: Column(
-        children: [
+        height: 500,
+        child: Column(children: [
           Padding(
-            padding: const EdgeInsets.all(15),
-            child: Row(
-              children: [
+              padding: const EdgeInsets.all(15),
+              child: Row(children: [
                 Expanded(
-                  child: TextField(
-                    controller: commentController,
-                    decoration: InputDecoration(
-                      suffixIcon: IconButton(
-                        onPressed: () {
-                          postComment();
-                        },
-                        icon: Icon(
-                          Icons.send,
-                          color: Color.fromARGB(255, 39, 92, 216),
-                        ),
-                      ),
-                      hintText: 'Add a comment',
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
+                    child: TextField(
+                        controller: commentController,
+                        decoration: InputDecoration(
+                            suffixIcon: IconButton(
+                                onPressed: () {
+                                  postComment();
+                                },
+                                icon: Icon(Icons.send,
+                                    color: Color.fromARGB(255, 39, 92, 216))),
+                            hintText: 'Add a comment',
+                            border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10)))))
+              ])),
           SizedBox(height: 15),
-          Text(
-            'Reviews',
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 23,
-              decoration: TextDecoration.underline,
-            ),
-          ),
+          Text('Reviews',
+              style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 23,
+                  decoration: TextDecoration.underline)),
           SingleChildScrollView(
             scrollDirection: Axis.horizontal,
-            child: Row(
-              children: List.generate(comments.length, (index) {
-                return Padding(
-                  padding: const EdgeInsets.all(15),
-                  child: Container(
-                    width: MediaQuery.of(context).size.width * 0.9,
-                    height: 250,
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                        color: Colors.grey,
-                        width: 1,
-                      ),
-                      borderRadius: BorderRadius.circular(23),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(23),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            children: [
-                              ProfilePicture(
-                                name: 'Kokia Chan',
-                                radius: 31,
-                                fontsize: 21,
-                                random: true,
-                              ),
-                              SizedBox(width: 23),
-                              Text(
-                                'John Doe',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 19,
+            child: FutureBuilder<List<Comment>>(
+              future: getComments(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return Center(child: CircularProgressIndicator());
+                } else if (snapshot.hasError) {
+                  return Center(child: Text('Error: ${snapshot.error}'));
+                } else {
+                  // Data has been successfully fetched
+                  List<Comment> comments = snapshot.data ?? [];
+                  if (comments.isEmpty) {
+                    return Center(child: Text('No comments available'));
+                  }
+                  return Row(
+                    children: List.generate(comments.length, (index) {
+                      return Padding(
+                        padding: const EdgeInsets.all(15),
+                        child: Container(
+                          width: MediaQuery.of(context).size.width * 0.9,
+                          height: 250,
+                          decoration: BoxDecoration(
+                            border: Border.all(color: Colors.grey, width: 1),
+                            borderRadius: BorderRadius.circular(23),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.all(23),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  children: [
+                                    ProfilePicture(
+                                      name: comments[index].userName,
+                                      radius: 31,
+                                      fontsize: 21,
+                                      random: true,
+                                    ),
+                                    SizedBox(width: 23),
+                                    Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          comments[index].userName,
+                                          style: TextStyle(
+                                            color:
+                                                Color.fromARGB(255, 38, 38, 38),
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 20,
+                                          ),
+                                        ),
+                                        Text(
+                                          comments[index].timestamp,
+                                          style: TextStyle(
+                                            color: Color.fromARGB(
+                                                    255, 107, 107, 107)
+                                                .withOpacity(0.5),
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 15,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
                                 ),
-                              ),
-                            ],
+                                SizedBox(height: 23),
+                                Expanded(
+                                  child: SingleChildScrollView(
+                                    child: ReadMoreText(comments[index].comment,
+                                        style: TextStyle(
+                                          color: Colors.grey[700],
+                                        ),
+                                        textAlign: TextAlign.justify,
+                                        //
+                                        trimLength: 200,
+                                        trimMode: TrimMode.Length,
+                                        trimCollapsedText: '   Show more',
+                                        trimExpandedText: '   Show less',
+                                        moreStyle: TextStyle(
+                                          color: Colors.blue[600],
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.bold,
+                                          fontStyle: FontStyle.italic,
+                                        ),
+                                        lessStyle: TextStyle(
+                                            color: Colors.blue[600],
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.bold,
+                                            fontStyle: FontStyle.italic)),
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
-                          SizedBox(height: 23),
-                          Text(
-                            comments[index],
-                            style: TextStyle(fontSize: 15),
-                            textAlign: TextAlign.justify,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                );
-              }),
+                        ),
+                      );
+                    }),
+                  );
+                }
+              },
             ),
           ),
-        ],
-      ),
-    );
+        ]));
   }
 }
