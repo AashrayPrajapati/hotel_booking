@@ -186,6 +186,7 @@ class _ProfileState extends State<Profile> {
                           fontWeight: FontWeight.bold,
                         ),
                       ),
+
                     SizedBox(
                       height: 30,
                     ),
@@ -278,16 +279,17 @@ class _ProfileState extends State<Profile> {
 
   Widget buildOriginalUI() {
     return Scaffold(
+      backgroundColor: Color.fromARGB(255, 238, 238, 238),
       body: Center(
         child: SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.all(15),
             child: Card(
-              color: Color.fromARGB(255, 232, 232, 232),
+              color: Color.fromARGB(255, 255, 255, 255),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(30),
               ),
-              elevation: 7,
+              elevation: 11,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
@@ -341,7 +343,7 @@ class _ProfileState extends State<Profile> {
                           Navigator.pushNamed(context, 'login');
                         },
                         child: Text(
-                          "Already have an account?",
+                          "Login to your account?",
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
                             color: Colors.white,

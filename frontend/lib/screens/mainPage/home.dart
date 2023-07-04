@@ -309,8 +309,8 @@ class _HomePageState extends State<HomePage> {
                             Fluttertoast.showToast(
                               msg: "Please select check-in and check-out dates",
                               toastLength: Toast.LENGTH_SHORT,
-                              gravity: ToastGravity.BOTTOM,
-                              timeInSecForIosWeb: 1,
+                              gravity: ToastGravity.CENTER,
+                              timeInSecForIosWeb: 2,
                               backgroundColor: Colors.red[400],
                               textColor: Colors.white,
                               fontSize: 17,

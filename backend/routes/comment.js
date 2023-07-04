@@ -7,7 +7,7 @@ const Comment = require("../models/Comment");
 // Create a new comment
 router.post("/post", async (req, res) => {
   try {
-    if (req.body.user) {
+     if (req.body) {
       console.log("user");
 
       const userExists = await Users.findById(req.body.user);
@@ -23,10 +23,10 @@ router.post("/post", async (req, res) => {
       res.status(201).json(savedComments);
     } else {
       console.log("admin");
-      const userExists = await Admin.findById(req.body.admin);
+      const userExists = await Admin.findById(req.body.hotelId);
       if (!userExists) return res.status(409).send("Admin does not exist");
       const comment = new Comment({
-        admin: req.body.user,
+        user: req.body.user,
         hotelId: req.body.hotelId,
         comment: req.body.comment,
       });

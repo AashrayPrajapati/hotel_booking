@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'dart:math';
+// import 'dart:math';
 import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:flutter/services.dart';
@@ -9,7 +9,7 @@ import 'package:hotel_booking/config.dart';
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
-import 'package:path_provider/path_provider.dart';
+// import 'package:path_provider/path_provider.dart';
 // import 'package:path_provider/path_provider.dart';
 // import 'package:path/path.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -55,9 +55,13 @@ class _RoomCreatePageState extends State<RoomCreatePage> {
     print('USER ID: $ownerId');
   }
 
-  String roomTypeValue = 'Single Bed';
+  String roomTypeValue = 'Twin Room';
 
-  var number = ['Single Bed', 'Double Bed'];
+  var number = [
+    'Twin Room',
+    'Double Room',
+    'Family Room',
+  ];
 
   TextEditingController priceController = TextEditingController();
   TextEditingController maxGuestCapacityController = TextEditingController();

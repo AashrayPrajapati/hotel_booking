@@ -170,12 +170,12 @@ class _GetRoomsState extends State<GetRooms> {
                           child: Card(
                             color: Color.fromARGB(255, 76, 120, 223),
                             shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(22),
+                              borderRadius: BorderRadius.circular(11),
                             ),
                             elevation: 7,
                             child: Padding(
                               padding: const EdgeInsets.only(
-                                left: 13,
+                                left: 7,
                                 right: 13,
                                 top: 7,
                                 bottom: 7,
@@ -183,7 +183,7 @@ class _GetRoomsState extends State<GetRooms> {
                               child: Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
-                                crossAxisAlignment: CrossAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   FutureBuilder(
                                     future: fetchImage(room.id),
@@ -193,21 +193,18 @@ class _GetRoomsState extends State<GetRooms> {
                                       print('.....${varFile?.url ?? 'hell'}');
                                       if (varFile?.url?.isEmpty ?? true) {
                                         return Placeholder(
-                                          fallbackWidth: 100,
+                                          fallbackWidth: 134,
                                           fallbackHeight: 100,
                                         );
                                       }
                                       return Image.network(
                                         varFile?.url ?? "",
-                                        width: 100,
+                                        width: 134,
                                         height: 100,
+                                        fit: BoxFit.cover,
                                       );
                                     }),
                                   ),
-
-                                  // if there is image, display here
-                                  // else display default image
-
                                   Expanded(
                                     child: ListTile(
                                       title: Text(
@@ -219,7 +216,7 @@ class _GetRoomsState extends State<GetRooms> {
                                         ),
                                       ),
                                       subtitle: Text(
-                                        room.price,
+                                        'Rate: ${room.price}',
                                         style: TextStyle(
                                           fontWeight: FontWeight.w500,
                                           fontSize: 15,

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-// parse server sdk flutter
+// import 'package:hotel_booking/carousel_slider.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
-import 'package:firebase_core/firebase_core.dart';
+// import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:hotel_booking/screens/hotels/getRoom.dart';
 // import 'package:khalti_flutter/khalti_flutter.dart';
@@ -21,6 +21,7 @@ import 'screens/auth/register/register.dart';
 import 'screens/auth/login/login.dart';
 
 import 'bottomNavbar.dart';
+import 'screens/hotels/comments.dart';
 import 'screens/hotels/searchedHotels.dart';
 import 'screens/hotels/updateHotel.dart';
 import 'screens/hotels/updateHotelPassword.dart';
@@ -96,6 +97,7 @@ class Main extends StatelessWidget {
               'getRooms': (context) => GetRooms(),
               'viewBooking': (context) => ViewBooking(),
               'getImage': (context) => ImageReceiver(),
+              'postGetComment': (context) => PostGetComment(),
               //
               'registeredUsers': (context) => RegisteredUsers(),
               'registeredHotels': (context) => RegisteredHotels(),

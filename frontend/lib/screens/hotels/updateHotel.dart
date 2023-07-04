@@ -1,3 +1,4 @@
+import 'package:csc_picker/csc_picker.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:hotel_booking/config.dart';
@@ -427,36 +428,74 @@ class _UpdateHotelState extends State<UpdateHotel> {
                                     ),
                                   ),
                                 ),
+                                // Padding(
+                                //   padding: const EdgeInsets.only(
+                                //     left: 20,
+                                //     right: 20,
+                                //     bottom: 20,
+                                //   ),
+                                //   child: TextField(
+                                //     controller: countryController,
+                                //     decoration: InputDecoration(
+                                //       border: OutlineInputBorder(
+                                //         borderRadius: BorderRadius.circular(17),
+                                //       ),
+                                //       labelText: 'Country',
+                                //     ),
+                                //   ),
+                                // ),
+                                // Padding(
+                                //   padding: const EdgeInsets.only(
+                                //     left: 20,
+                                //     right: 20,
+                                //     bottom: 20,
+                                //   ),
+                                //   child: TextField(
+                                //     controller: cityController,
+                                //     decoration: InputDecoration(
+                                //       border: OutlineInputBorder(
+                                //         borderRadius: BorderRadius.circular(17),
+                                //       ),
+                                //       labelText: 'City',
+                                //     ),
+                                //   ),
+                                // ),
                                 Padding(
                                   padding: const EdgeInsets.only(
-                                    left: 20,
-                                    right: 20,
-                                    bottom: 20,
-                                  ),
-                                  child: TextField(
-                                    controller: countryController,
-                                    decoration: InputDecoration(
-                                      border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(17),
-                                      ),
-                                      labelText: 'Country',
-                                    ),
-                                  ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(
-                                    left: 20,
-                                    right: 20,
-                                    bottom: 20,
-                                  ),
-                                  child: TextField(
-                                    controller: cityController,
-                                    decoration: InputDecoration(
-                                      border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(17),
-                                      ),
-                                      labelText: 'City',
-                                    ),
+                                      left: 20, right: 20, bottom: 20),
+                                  child: CSCPicker(
+                                    // make rounded corners
+                                    // showStates: true,
+                                    // showCities: true,
+                                    flagState:
+                                        CountryFlag.SHOW_IN_DROP_DOWN_ONLY,
+                                    // dropdownDecoration: BoxDecoration(
+                                    //   borderRadius: BorderRadius.all(
+                                    //     Radius.circular(17),
+                                    //   ),
+                                    //   color: Colors.white,
+                                    //   border: Border.all(
+                                    //     color: Colors.grey,
+                                    //     width: 1.5,
+                                    //   ),
+                                    // ),
+
+                                    layout: Layout.vertical,
+                                    onCountryChanged: (value) {
+                                      setState(() {
+                                        countryController.text = value!;
+                                      });
+                                    },
+                                    onStateChanged: (value) {
+                                      setState(() {
+                                        cityController.text = value!;
+                                      });
+                                    },
+                                    onCityChanged: (value) {
+                                      setState(() {
+                                        cityController.text = value!;
+                                      });
+                                    },
                                   ),
                                 ),
                                 Padding(
