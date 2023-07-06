@@ -301,7 +301,64 @@ class UpdateRoomState extends State<UpdateRoom> {
                                         ),
                                         child: ElevatedButton(
                                             onPressed: () {
-                                              deleteRoom(roomId!);
+                                              showDialog(
+                                                  context: context,
+                                                  builder: (BuildContext context) =>
+                                                      AlertDialog(
+                                                          shape:
+                                                              RoundedRectangleBorder(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        20),
+                                                          ),
+                                                          title: Text('Alert!',
+                                                              textAlign:
+                                                                  TextAlign
+                                                                      .center,
+                                                              style: TextStyle(
+                                                                  fontSize: 23,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold)),
+                                                          content: Text(
+                                                              'Are you sure you want to delete this room?',
+                                                              textAlign:
+                                                                  TextAlign
+                                                                      .center,
+                                                              style: TextStyle(
+                                                                  fontSize:
+                                                                      17)),
+                                                          actions: [
+                                                            Center(
+                                                              child: Row(
+                                                                mainAxisAlignment:
+                                                                    MainAxisAlignment
+                                                                        .spaceEvenly,
+                                                                children: [
+                                                                  TextButton(
+                                                                      onPressed:
+                                                                          () {
+                                                                        deleteRoom(
+                                                                            roomId!);
+                                                                      },
+                                                                      child: Text(
+                                                                          'Yes')),
+                                                                  TextButton(
+                                                                      onPressed:
+                                                                          () {
+                                                                        Navigator.pop(
+                                                                            context);
+                                                                      },
+                                                                      child: Text(
+                                                                          'No')),
+                                                                ],
+                                                              ),
+                                                            )
+                                                          ]));
+                                              // deleteRoom(roomId!);
+                                              //
+
                                               // print(roomTypeController.text);
                                               // print(capacityController.text);
                                               // print(priceController.text);

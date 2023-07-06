@@ -39,7 +39,7 @@ class _MainPageState extends State<MainPage> {
       backgroundColor: Colors.transparent,
       body: pages[thisIndex],
       bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: Color.fromARGB(255, 238, 238, 238),
+        backgroundColor: Color.fromARGB(255, 255, 255, 255),
         // unselectedFontSize: 0,
         // selectedFontSize: 0,
         type: BottomNavigationBarType.fixed,

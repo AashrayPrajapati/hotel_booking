@@ -112,7 +112,12 @@ class _SearchedHotelsPageState extends State<SearchedHotelsPage> {
                             child: Text("Error: ${snapshot.error}"),
                           );
                         } else {
-                          final List<Hotel> hotels = snapshot.data!;
+                          final List<Hotel> hotels = snapshot.data ?? [];
+
+                          if (hotels.isEmpty) {
+                            return Center(
+                                child: Text('No searched results found'));
+                          }
 
                           return ListView.builder(
                               itemCount: hotels.length,
@@ -168,6 +173,12 @@ class _SearchedHotelsPageState extends State<SearchedHotelsPage> {
                           );
                         } else {
                           final List<Hotel> hotels = snapshot.data!;
+
+                          if (hotels.isEmpty) {
+                            print('No searched results found');
+                            return Center(
+                                child: Text('No searched results found'));
+                          }
 
                           return ListView.builder(
                               itemCount: hotels.length,

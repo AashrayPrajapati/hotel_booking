@@ -3,7 +3,11 @@ import 'package:dio/dio.dart';
 import 'package:flutter/services.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:hotel_booking/config.dart';
+import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 // import 'dart:convert';
+
+final parseObject = ParseObject('Gallery');
+var hId;
 
 class BookingPage extends StatefulWidget {
   @override
@@ -32,6 +36,20 @@ class _BookingPageState extends State<BookingPage> {
     super.initState();
   }
 
+  Future<ParseObject?> fetchImage(String roomId) async {
+    QueryBuilder<ParseObject> queryBook = QueryBuilder<ParseObject>(parseObject)
+      ..whereEqualTo('roomId', roomId)
+      ..whereEqualTo('ownerId', hId);
+
+    final ParseResponse responseBook = await queryBook.query();
+
+    if (responseBook.success && responseBook.results != null) {
+      return (responseBook.results?.first) as ParseObject;
+    } else {
+      return null;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final Map<String, dynamic> arguments =
@@ -40,6 +58,7 @@ class _BookingPageState extends State<BookingPage> {
     final String? price = arguments['price'] as String?;
     final String? roomId = arguments['roomId'] as String?;
     final String? hotelId = arguments['hotelId'] as String?;
+    hId = hotelId;
     final String? numberOfNights = arguments['numberOfNights'] as String?;
     final String? startDate = arguments['startDate'] as String?;
     final String? endDate = arguments['endDate'] as String?;
@@ -147,6 +166,28 @@ class _BookingPageState extends State<BookingPage> {
                       fontWeight: FontWeight.w700,
                       color: HexColor('#345c7d'),
                     ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(23),
+                  child: FutureBuilder(
+                    future: fetchImage(roomId!),
+                    builder: ((context, snapshot) {
+                      var varFile = snapshot.data?.get<ParseFileBase>('file');
+                      print('.....${varFile?.url ?? 'hell'}');
+                      if (varFile?.url?.isEmpty ?? true) {
+                        return Placeholder(
+                          fallbackWidth: 134,
+                          fallbackHeight: 100,
+                        );
+                      }
+                      return Image.network(
+                        varFile?.url ?? "",
+                        width: 500,
+                        height: 200,
+                        fit: BoxFit.cover,
+                      );
+                    }),
                   ),
                 ),
                 SizedBox(height: 20),

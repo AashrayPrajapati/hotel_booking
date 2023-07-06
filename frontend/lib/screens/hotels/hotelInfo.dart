@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_profile_picture/flutter_profile_picture.dart';
 import 'package:hotel_booking/config.dart';
+import 'package:hotel_booking/screens/admin/roomCrud/createRoom.dart';
 import 'package:hotel_booking/utils.dart';
 import 'package:intl/intl.dart';
+import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 // import 'package:get/get.dart';
 // import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:readmore/readmore.dart';
@@ -110,6 +112,8 @@ class HotelInfoPage extends StatefulWidget {
   State<HotelInfoPage> createState() => _HotelInfoPageState();
 }
 
+var firstRoomId;
+
 class _HotelInfoPageState extends State<HotelInfoPage> {
   @override
   void initState() {
@@ -160,9 +164,33 @@ class _HotelInfoPageState extends State<HotelInfoPage> {
             data['roomType'], data['maxCapacity'], data['price'], data['_id']);
         rooms.add(room);
       }
+
+      if (!rooms.isEmpty) {
+        var firstRoomData = roomData[0]; // Access the first room data
+        firstRoomId =
+            firstRoomData['_id']; // Retrieve the _id of the first room
+        print('First Room Id: $firstRoomId');
+        Text('No rooms available');
+        return rooms;
+      }
+
       return rooms;
     } on DioError catch (e) {
       throw Exception("Error retrieving posts: ${e.message}");
+    }
+  }
+
+  Future<ParseObject?> fetchImage(String roomId) async {
+    QueryBuilder<ParseObject> queryBook = QueryBuilder<ParseObject>(parseObject)
+      ..whereEqualTo('roomId', firstRoomId)
+      ..whereEqualTo('ownerId', hId);
+
+    final ParseResponse responseBook = await queryBook.query();
+
+    if (responseBook.success && responseBook.results != null) {
+      return (responseBook.results?.first) as ParseObject;
+    } else {
+      return null;
     }
   }
 
@@ -226,14 +254,39 @@ class _HotelInfoPageState extends State<HotelInfoPage> {
                                       child: Stack(children: [
                                     Column(children: [
                                       Padding(
-                                          padding: const EdgeInsets.all(10),
-                                          child: ClipRRect(
-                                              borderRadius:
-                                                  BorderRadius.circular(20),
-                                              child: Image.network(
-                                                  'https://bit.ly/3KAjXJW',
-                                                  height: 250,
-                                                  fit: BoxFit.cover))),
+                                          padding: const EdgeInsets.only(
+                                              top: 7,
+                                              bottom: 5,
+                                              right: 9,
+                                              left: 9),
+                                          child: FutureBuilder(
+                                            future: fetchImage(firstRoomId),
+                                            builder: ((context, snapshot) {
+                                              var varFile = snapshot.data
+                                                  ?.get<ParseFileBase>('file');
+                                              print(
+                                                  '.....${varFile?.url ?? 'hell'}');
+                                              if (varFile?.url?.isEmpty ??
+                                                  true) {
+                                                // return Placeholder(
+                                                //   fallbackWidth: 500,
+                                                //   fallbackHeight: 270,
+                                                // );
+                                                return Image.network(
+                                                  'https://www.generationsforpeace.org/wp-content/uploads/2018/03/empty.jpg',
+                                                  width: 500,
+                                                  height: 270,
+                                                  fit: BoxFit.cover,
+                                                );
+                                              }
+                                              return Image.network(
+                                                varFile?.url ?? "",
+                                                width: 500,
+                                                height: 270,
+                                                fit: BoxFit.cover,
+                                              );
+                                            }),
+                                          )),
                                       Padding(
                                           padding: const EdgeInsets.only(
                                               left: 15, right: 15),

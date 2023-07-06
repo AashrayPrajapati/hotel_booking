@@ -260,19 +260,19 @@ class HotelCrudState extends State<HotelCrud> {
                     icon: Icon(Icons.arrow_back_ios_new)),
                 automaticallyImplyLeading: false,
                 centerTitle: true,
-                title: Text('yoHotel',
+                title: Text('Create Hotel',
                     style: TextStyle(
                         // color: Color.fromARGB(255, 34, 150, 243),
                         fontSize: 25,
                         fontWeight: FontWeight.w600))),
             body: SingleChildScrollView(
                 child: Column(children: [
-              Padding(
-                padding: const EdgeInsets.only(top: 15, right: 15, left: 15),
-                child: Text("Create Hotel",
-                    style:
-                        TextStyle(fontSize: 22, fontWeight: FontWeight.w700)),
-              ),
+              // Padding(
+              //   padding: const EdgeInsets.only(top: 15, right: 15, left: 15),
+              //   child: Text("Create Hotel",
+              //       style:
+              //           TextStyle(fontSize: 22, fontWeight: FontWeight.w700)),
+              // ),
               Padding(
                 padding: const EdgeInsets.all(17),
                 child: Card(
@@ -588,7 +588,7 @@ class HotelCrudState extends State<HotelCrud> {
           ),
         ),
         layout: Layout.vertical,
-        flagState: CountryFlag.SHOW_IN_DROP_DOWN_ONLY,
+        flagState: CountryFlag.ENABLE,
         onCountryChanged: (value) {
           setState(() {
             selectedCountry = value;

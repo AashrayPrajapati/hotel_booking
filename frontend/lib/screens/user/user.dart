@@ -116,7 +116,7 @@ class _ProfileState extends State<Profile> {
       debugShowCheckedModeBanner: false,
       // theme: ThemeData(fontFamily: 'OpenSans'),
       home: Scaffold(
-        backgroundColor: Color.fromARGB(255, 250, 250, 250),
+        backgroundColor: Color.fromARGB(255, 255, 255, 255),
         appBar: AppBar(
           leading: IconButton(
             icon: Icon(Icons.arrow_back_ios_new, color: Colors.white),
@@ -143,6 +143,7 @@ class _ProfileState extends State<Profile> {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
+        backgroundColor: Color.fromARGB(255, 255, 255, 255),
         body: Center(
           child: SingleChildScrollView(
             child: Padding(
@@ -279,13 +280,13 @@ class _ProfileState extends State<Profile> {
 
   Widget buildOriginalUI() {
     return Scaffold(
-      backgroundColor: Color.fromARGB(255, 238, 238, 238),
+      backgroundColor: Color.fromARGB(255, 255, 255, 255),
       body: Center(
         child: SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.all(15),
             child: Card(
-              color: Color.fromARGB(255, 255, 255, 255),
+              color: Color.fromARGB(255, 231, 231, 231),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(30),
               ),

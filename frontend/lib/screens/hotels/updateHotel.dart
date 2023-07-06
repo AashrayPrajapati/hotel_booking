@@ -68,6 +68,9 @@ class _UpdateHotelState extends State<UpdateHotel> {
   TextEditingController streetNameController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   TextEditingController confirmPasswordController = TextEditingController();
+  String? selectedCountry;
+  String? selectedState;
+  String? selectedCity;
 
   void updateHotel(
     String hotelId,
@@ -95,7 +98,7 @@ class _UpdateHotelState extends State<UpdateHotel> {
         "propertyName": propertyName,
         "country": country,
         "city": city,
-        "postalCode": "44800",
+        "postalCode": "1000",
         "streetName": streetName,
         "description": description,
       },
@@ -105,75 +108,83 @@ class _UpdateHotelState extends State<UpdateHotel> {
     if (response.statusCode == 200) {
       print('Hotel Updated');
       // Navigator.pushNamed(context, 'user');
-      showDialog(
-        context: context,
-        builder: (BuildContext context) => AlertDialog(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(20),
-          ),
-          title: Text(
-            'Hotel Updated',
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              fontSize: 23,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          content: Text(
-            'Hotel Updated Successfully',
-            textAlign: TextAlign.center,
-            style: TextStyle(fontSize: 17),
-          ),
-          actions: [
-            Center(
-              child: TextButton(
-                onPressed: () {
-                  Navigator.pushNamed(context, 'user');
-                },
-                child: Text(
-                  'OK',
-                ),
-              ),
-            ),
-          ],
-        ),
-      );
+      update_hotel();
     } else {
       print('Error updating hotel');
-      showDialog(
-        context: context,
-        builder: (BuildContext context) => AlertDialog(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(20),
+      hotelNotUpdated();
+    }
+  }
+
+  Future<dynamic> update_hotel() {
+    return showDialog(
+      context: context,
+      builder: (BuildContext context) => AlertDialog(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20),
+        ),
+        title: Text(
+          'Hotel Updated',
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            fontSize: 23,
+            fontWeight: FontWeight.bold,
           ),
-          title: Text(
-            'Hotel Not Updated',
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              fontSize: 23,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          content: Text(
-            'Hotel is not updated',
-            textAlign: TextAlign.center,
-            style: TextStyle(fontSize: 17),
-          ),
-          actions: [
-            Center(
-              child: TextButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                child: Text(
-                  'OK',
-                ),
+        ),
+        content: Text(
+          'Hotel Updated Successfully',
+          textAlign: TextAlign.center,
+          style: TextStyle(fontSize: 17),
+        ),
+        actions: [
+          Center(
+            child: TextButton(
+              onPressed: () {
+                Navigator.pushNamed(context, 'mainPage');
+              },
+              child: Text(
+                'OK',
               ),
             ),
-          ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Future<dynamic> hotelNotUpdated() {
+    return showDialog(
+      context: context,
+      builder: (BuildContext context) => AlertDialog(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20),
         ),
-      );
-    }
+        title: Text(
+          'Hotel Not Updated',
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            fontSize: 23,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        content: Text(
+          'Hotel is not updated',
+          textAlign: TextAlign.center,
+          style: TextStyle(fontSize: 17),
+        ),
+        actions: [
+          Center(
+            child: TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: Text(
+                'OK',
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 
   void deleteHotel(
@@ -463,39 +474,48 @@ class _UpdateHotelState extends State<UpdateHotel> {
                                 Padding(
                                   padding: const EdgeInsets.only(
                                       left: 20, right: 20, bottom: 20),
-                                  child: CSCPicker(
-                                    // make rounded corners
-                                    // showStates: true,
-                                    // showCities: true,
-                                    flagState:
-                                        CountryFlag.SHOW_IN_DROP_DOWN_ONLY,
-                                    // dropdownDecoration: BoxDecoration(
-                                    //   borderRadius: BorderRadius.all(
-                                    //     Radius.circular(17),
-                                    //   ),
-                                    //   color: Colors.white,
-                                    //   border: Border.all(
-                                    //     color: Colors.grey,
-                                    //     width: 1.5,
-                                    //   ),
-                                    // ),
-
-                                    layout: Layout.vertical,
-                                    onCountryChanged: (value) {
-                                      setState(() {
-                                        countryController.text = value!;
-                                      });
-                                    },
-                                    onStateChanged: (value) {
-                                      setState(() {
-                                        cityController.text = value!;
-                                      });
-                                    },
-                                    onCityChanged: (value) {
-                                      setState(() {
-                                        cityController.text = value!;
-                                      });
-                                    },
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(
+                                        bottom: 20, right: 15, left: 15),
+                                    child: CSCPicker(
+                                      dropdownDecoration: BoxDecoration(
+                                        borderRadius: BorderRadius.all(
+                                          Radius.circular(13),
+                                        ),
+                                        color: Colors.white,
+                                        border: Border.all(
+                                          color: Colors.grey,
+                                          width: 1.7,
+                                        ),
+                                      ),
+                                      disabledDropdownDecoration: BoxDecoration(
+                                        borderRadius: BorderRadius.all(
+                                          Radius.circular(13),
+                                        ),
+                                        color: Colors.grey.withOpacity(0.3),
+                                        border: Border.all(
+                                          color: Colors.grey,
+                                          width: 1.3,
+                                        ),
+                                      ),
+                                      layout: Layout.vertical,
+                                      flagState: CountryFlag.ENABLE,
+                                      onCountryChanged: (value) {
+                                        setState(() {
+                                          selectedCountry = value;
+                                        });
+                                      },
+                                      onStateChanged: (value) {
+                                        setState(() {
+                                          selectedState = value;
+                                        });
+                                      },
+                                      onCityChanged: (value) {
+                                        setState(() {
+                                          selectedCity = value;
+                                        });
+                                      },
+                                    ),
                                   ),
                                 ),
                                 Padding(
@@ -601,17 +621,93 @@ class _UpdateHotelState extends State<UpdateHotel> {
                                             print('Update button pressed');
                                             print(ownerNameController.text);
 
-                                            updateHotel(
-                                              hotelId,
-                                              ownerNameController.text,
-                                              emailController.text,
-                                              descriptionController.text,
-                                              propertyNameController.text,
-                                              countryController.text,
-                                              cityController.text,
-                                              streetNameController.text,
-                                              passwordController.text,
+                                            showDialog(
+                                              context: context,
+                                              builder: (BuildContext context) =>
+                                                  AlertDialog(
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(20),
+                                                ),
+                                                title: Text(
+                                                  'Update profile?',
+                                                  textAlign: TextAlign.center,
+                                                  style: TextStyle(
+                                                    fontSize: 23,
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
+                                                ),
+                                                content: Text(
+                                                  ' Are you sure you want to update your profile?',
+                                                  textAlign: TextAlign.center,
+                                                  style:
+                                                      TextStyle(fontSize: 17),
+                                                ),
+                                                actions: [
+                                                  Center(
+                                                    child: Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceEvenly,
+                                                      children: [
+                                                        TextButton(
+                                                          onPressed: () {
+                                                            updateHotel(
+                                                              hotelId,
+                                                              ownerNameController
+                                                                  .text,
+                                                              emailController
+                                                                  .text,
+                                                              descriptionController
+                                                                  .text,
+                                                              propertyNameController
+                                                                  .text,
+                                                              countryController
+                                                                  .text,
+                                                              cityController
+                                                                  .text,
+                                                              streetNameController
+                                                                  .text,
+                                                              passwordController
+                                                                  .text,
+                                                            );
+                                                            // update_hotel();
+
+                                                            // Navigator.pushNamed(
+                                                            //     context,
+                                                            //     'user');
+                                                          },
+                                                          child: Text(
+                                                            'Yes',
+                                                          ),
+                                                        ),
+                                                        TextButton(
+                                                          onPressed: () {
+                                                            Navigator.pop(
+                                                                context);
+                                                          },
+                                                          child: Text(
+                                                            'No',
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
                                             );
+
+                                            // updateHotel(
+                                            //   hotelId,
+                                            //   ownerNameController.text,
+                                            //   emailController.text,
+                                            //   descriptionController.text,
+                                            //   propertyNameController.text,
+                                            //   countryController.text,
+                                            //   cityController.text,
+                                            //   streetNameController.text,
+                                            //   passwordController.text,
+                                            // );
                                           },
                                           child: Text(
                                             'Update',

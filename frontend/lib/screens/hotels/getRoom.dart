@@ -215,12 +215,16 @@ class _GetRoomsState extends State<GetRooms> {
                                           color: Colors.white.withOpacity(0.9),
                                         ),
                                       ),
-                                      subtitle: Text(
-                                        'Rate: ${room.price}',
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.w500,
-                                          fontSize: 15,
-                                          color: Colors.white.withOpacity(0.9),
+                                      subtitle: Padding(
+                                        padding: const EdgeInsets.only(top: 11),
+                                        child: Text(
+                                          'Rate: ${room.price}',
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.w500,
+                                            fontSize: 15,
+                                            color:
+                                                Colors.white.withOpacity(0.9),
+                                          ),
                                         ),
                                       ),
                                       trailing: Icon(
@@ -250,8 +254,7 @@ class _GetRoomsState extends State<GetRooms> {
             children: [
               FloatingActionButton(
                 onPressed: () {
-                  // Add your desired functionality here
-                  print('Floating action button pressed');
+                  print('view booking button pressed');
                   Navigator.of(context, rootNavigator: true).pushNamed(
                     'viewBooking',
                     arguments: {

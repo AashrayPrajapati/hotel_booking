@@ -105,6 +105,7 @@ class _BookingHistoryState extends State<BookingHistory> {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
+        backgroundColor: Color.fromARGB(255, 255, 255, 255),
         appBar: AppBar(
           elevation: 3,
           backgroundColor: Color.fromARGB(255, 39, 92, 216),
@@ -185,19 +186,34 @@ class _BookingHistoryState extends State<BookingHistory> {
                                     ),
                                   ),
                                   actions: [
-                                    Center(
-                                      child: TextButton(
-                                        onPressed: () {
-                                          Navigator.pop(context);
-                                        },
-                                        child: Text(
-                                          'Close',
-                                          style: TextStyle(
-                                            fontWeight: FontWeight.w600,
-                                            fontSize: 15,
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceEvenly,
+                                      children: [
+                                        TextButton(
+                                          onPressed: () {
+                                            Navigator.pop(context);
+                                          },
+                                          child: Text(
+                                            'Close',
+                                            style: TextStyle(
+                                              fontWeight: FontWeight.w600,
+                                              fontSize: 15,
+                                            ),
                                           ),
                                         ),
-                                      ),
+                                        TextButton(
+                                          onPressed: () {},
+                                          child: Text(
+                                            'Cancel Booking',
+                                            style: TextStyle(
+                                              color: Colors.red,
+                                              fontWeight: FontWeight.w600,
+                                              fontSize: 15,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   ],
                                 );
@@ -212,10 +228,10 @@ class _BookingHistoryState extends State<BookingHistory> {
                             elevation: 7,
                             child: Padding(
                               padding: const EdgeInsets.only(
-                                left: 13,
-                                right: 13,
-                                top: 7,
-                                bottom: 7,
+                                left: 17,
+                                right: 17,
+                                top: 17,
+                                bottom: 17,
                               ),
                               child: ListTile(
                                 title: Text(
