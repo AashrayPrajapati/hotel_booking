@@ -170,6 +170,7 @@ class _HotelInfoPageState extends State<HotelInfoPage> {
         firstRoomId =
             firstRoomData['_id']; // Retrieve the _id of the first room
         print('First Room Id: $firstRoomId');
+        print('FIRST ROOM CAPCACITY: ${firstRoomData['maxCapacity']}');
         Text('No rooms available');
         return rooms;
       }
@@ -253,302 +254,17 @@ class _HotelInfoPageState extends State<HotelInfoPage> {
                                   return SingleChildScrollView(
                                       child: Stack(children: [
                                     Column(children: [
-                                      Padding(
-                                          padding: const EdgeInsets.only(
-                                              top: 7,
-                                              bottom: 5,
-                                              right: 9,
-                                              left: 9),
-                                          child: FutureBuilder(
-                                            future: fetchImage(firstRoomId),
-                                            builder: ((context, snapshot) {
-                                              var varFile = snapshot.data
-                                                  ?.get<ParseFileBase>('file');
-                                              print(
-                                                  '.....${varFile?.url ?? 'hell'}');
-                                              if (varFile?.url?.isEmpty ??
-                                                  true) {
-                                                // return Placeholder(
-                                                //   fallbackWidth: 500,
-                                                //   fallbackHeight: 270,
-                                                // );
-                                                return Image.network(
-                                                  'https://www.generationsforpeace.org/wp-content/uploads/2018/03/empty.jpg',
-                                                  width: 500,
-                                                  height: 270,
-                                                  fit: BoxFit.cover,
-                                                );
-                                              }
-                                              return Image.network(
-                                                varFile?.url ?? "",
-                                                width: 500,
-                                                height: 270,
-                                                fit: BoxFit.cover,
-                                              );
-                                            }),
-                                          )),
-                                      Padding(
-                                          padding: const EdgeInsets.only(
-                                              left: 15, right: 15),
-                                          child: Column(children: [
-                                            Padding(
-                                                padding: const EdgeInsets.only(
-                                                    top: 15),
-                                                child: Row(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .spaceBetween,
-                                                    children: [
-                                                      Expanded(
-                                                          flex: 8,
-                                                          child: Column(
-                                                              crossAxisAlignment:
-                                                                  CrossAxisAlignment
-                                                                      .start,
-                                                              children: [
-                                                                Text(
-                                                                    hotelData
-                                                                        .propertyName,
-                                                                    style: TextStyle(
-                                                                        fontSize:
-                                                                            24,
-                                                                        fontWeight:
-                                                                            FontWeight.bold)),
-                                                                SizedBox(
-                                                                    height: 7),
-                                                                Text(
-                                                                    hotelData
-                                                                            .streetName +
-                                                                        ', ' +
-                                                                        hotelData
-                                                                            .city,
-                                                                    style: TextStyle(
-                                                                        color: Colors
-                                                                            .black,
-                                                                        fontSize:
-                                                                            15,
-                                                                        fontStyle:
-                                                                            FontStyle.italic)),
-                                                                SizedBox(
-                                                                    height: 10)
-                                                              ])),
-
-                                                      Expanded(
-                                                          flex: 2,
-                                                          child: Padding(
-                                                              padding:
-                                                                  const EdgeInsets
-                                                                          .only(
-                                                                      right: 20,
-                                                                      bottom:
-                                                                          20),
-                                                              child: SizedBox(
-                                                                  width: 30,
-                                                                  child:
-                                                                      IconButton(
-                                                                          onPressed:
-                                                                              () {
-                                                                            // getComments();
-                                                                            // print(ownerId);
-                                                                            showModalBottomSheet(
-                                                                                context: context,
-                                                                                builder: (context) {
-                                                                                  return commentSection();
-                                                                                });
-                                                                          },
-                                                                          icon: Icon(
-                                                                              Icons.comment_outlined,
-                                                                              color: Color.fromARGB(255, 39, 92, 216),
-                                                                              size: 30))))),
-
-                                                      //THIS IS FOR RATING---------------
-                                                      // Container(
-                                                      //     padding:
-                                                      //         EdgeInsets.all(5),
-                                                      //     decoration: ShapeDecoration(
-                                                      //         color:
-                                                      //             Colors.blue,
-                                                      //         shape: RoundedRectangleBorder(
-                                                      //             borderRadius:
-                                                      //                 BorderRadius.circular(
-                                                      //                     10),
-                                                      //             side: BorderSide(
-                                                      //                 color: Color.fromARGB(
-                                                      //                     255,
-                                                      //                     0,
-                                                      //                     0,
-                                                      //                     0)))),
-                                                      //     child: Center(
-                                                      //         child: Text("8.7",
-                                                      //             style: TextStyle(
-                                                      //                 color: Colors.white,
-                                                      //                 fontWeight: FontWeight.bold))))
-                                                    ])),
-                                            ReadMoreText(hotelData.description,
-                                                style: TextStyle(
-                                                  color: Colors.grey[700],
-                                                ),
-                                                textAlign: TextAlign.justify,
-                                                //
-                                                trimLength: 333,
-                                                trimMode: TrimMode.Length,
-                                                trimCollapsedText:
-                                                    '   Show more',
-                                                trimExpandedText:
-                                                    '   Show less',
-                                                moreStyle: TextStyle(
-                                                  color: Colors.blue[600],
-                                                  fontSize: 14,
-                                                  fontWeight: FontWeight.bold,
-                                                  fontStyle: FontStyle.italic,
-                                                ),
-                                                lessStyle: TextStyle(
-                                                    color: Colors.blue[600],
-                                                    fontSize: 14,
-                                                    fontWeight: FontWeight.bold,
-                                                    fontStyle:
-                                                        FontStyle.italic)),
-                                            SizedBox(height: 10),
-                                            GestureDetector(
-                                                onTap: () {
-                                                  var room = roomData[
-                                                      index]; // Get the room at the tapped index
-                                                  var ID = room._id;
-                                                  var price = room.price;
-                                                  var roomName = room.roomType;
-
-                                                  Navigator.of(context,
-                                                          rootNavigator: true)
-                                                      .pushNamed('booking',
-                                                          arguments: {
-                                                        'userId': userId,
-                                                        'roomName':
-                                                            roomName.toString(),
-                                                        'hotelId':
-                                                            HotelID.toString(),
-                                                        'roomId': ID,
-                                                        'startDate': startDate
-                                                            .toString(),
-                                                        'endDate':
-                                                            endDate.toString(),
-                                                        'numberOfNights':
-                                                            numberOfNights
-                                                                .toString(),
-                                                        'price': price
-                                                      });
-
-                                                  print('Hotel ID: $HotelID');
-                                                  print(
-                                                      'Hotel room name: $roomName');
-                                                  print('Room ID: $ID');
-                                                  print(
-                                                      'Check-in date: $startDate');
-                                                  print(
-                                                      'Check-out date: $endDate');
-                                                  print(
-                                                      'This is the numberOfNights: $numberOfNights');
-                                                  print(
-                                                      'This is the price: $price');
-                                                },
-                                                child: Column(
-                                                    children:
-                                                        roomData.map((room) {
-                                                  var roomIndex = roomData.indexOf(
-                                                      room); // Get the index of the current room
-                                                  return Column(children: [
-                                                    Card(
-                                                        shape: RoundedRectangleBorder(
-                                                            borderRadius:
-                                                                BorderRadius.circular(
-                                                                    17)),
-                                                        elevation: 7,
-                                                        child: ListTile(
-                                                            title: Text(
-                                                                room.roomType,
-                                                                style: TextStyle(
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .bold,
-                                                                    fontSize:
-                                                                        18)),
-                                                            subtitle: Text(
-                                                                room.price,
-                                                                style: TextStyle(
-                                                                    color: Colors
-                                                                        .black,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .bold,
-                                                                    fontSize:
-                                                                        15)),
-                                                            trailing: Icon(
-                                                                color: Colors
-                                                                    .black,
-                                                                Icons.arrow_forward_ios,
-                                                                size: 15),
-                                                            onTap: () {
-                                                              var selectedRoom =
-                                                                  roomData[
-                                                                      roomIndex]; // Get the selected room based on the index
-                                                              var ID =
-                                                                  selectedRoom
-                                                                      ._id;
-                                                              var price =
-                                                                  selectedRoom
-                                                                      .price;
-                                                              var roomName =
-                                                                  selectedRoom
-                                                                      .roomType;
-
-                                                              Navigator.of(
-                                                                      context,
-                                                                      rootNavigator:
-                                                                          true)
-                                                                  .pushNamed(
-                                                                      'booking',
-                                                                      arguments: {
-                                                                    'userId':
-                                                                        userId,
-                                                                    'roomName':
-                                                                        roomName
-                                                                            .toString(),
-                                                                    'hotelId':
-                                                                        HotelID
-                                                                            .toString(),
-                                                                    'roomId':
-                                                                        ID,
-                                                                    'startDate':
-                                                                        startDate
-                                                                            .toString(),
-                                                                    'endDate':
-                                                                        endDate
-                                                                            .toString(),
-                                                                    'numberOfNights':
-                                                                        numberOfNights
-                                                                            .toString(),
-                                                                    'price':
-                                                                        price
-                                                                  });
-
-                                                              print(
-                                                                  'Hotel ID: $HotelID');
-                                                              print(
-                                                                  'Hotel room name: $roomName');
-                                                              print(
-                                                                  'Room ID: $ID');
-                                                              print(
-                                                                  'Check-in date: $startDate');
-                                                              print(
-                                                                  'Check-out date: $endDate');
-                                                              print(
-                                                                  'This is the numberOfNights: $numberOfNights');
-                                                              print(
-                                                                  'This is the price: $price');
-                                                            })),
-                                                    SizedBox(height: 10)
-                                                  ]);
-                                                }).toList()))
-                                          ]))
+                                      getImage(),
+                                      getHotelDetails(
+                                          hotelData,
+                                          context,
+                                          roomData,
+                                          index,
+                                          userId,
+                                          HotelID,
+                                          startDate,
+                                          endDate,
+                                          numberOfNights)
                                     ])
                                   ]));
                                 })
@@ -556,6 +272,203 @@ class _HotelInfoPageState extends State<HotelInfoPage> {
                 }
               }))
     ]);
+  }
+
+  Padding getHotelDetails(
+      Hotel hotelData,
+      BuildContext context,
+      List<Room> roomData,
+      int index,
+      String userId,
+      String HotelID,
+      String startDate,
+      String endDate,
+      String numberOfNights) {
+    return Padding(
+        padding: const EdgeInsets.only(left: 15, right: 15),
+        child: Column(children: [
+          Padding(
+              padding: const EdgeInsets.only(top: 15),
+              child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Expanded(
+                        flex: 8,
+                        child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(hotelData.propertyName,
+                                  style: TextStyle(
+                                      fontSize: 24,
+                                      fontWeight: FontWeight.bold)),
+                              SizedBox(height: 7),
+                              Text(hotelData.streetName + ', ' + hotelData.city,
+                                  style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 15,
+                                      fontStyle: FontStyle.italic)),
+                              SizedBox(height: 10)
+                            ])),
+                    Expanded(
+                        flex: 2,
+                        child: Padding(
+                            padding:
+                                const EdgeInsets.only(right: 20, bottom: 20),
+                            child: SizedBox(
+                                width: 30,
+                                child: IconButton(
+                                    onPressed: () {
+                                      // getComments();
+                                      // print(ownerId);
+                                      showModalBottomSheet(
+                                          context: context,
+                                          builder: (context) {
+                                            return commentSection();
+                                          });
+                                    },
+                                    icon: Icon(Icons.comment_outlined,
+                                        color: Color.fromARGB(255, 39, 92, 216),
+                                        size: 30))))),
+                  ])),
+          ReadMoreText(hotelData.description,
+              style: TextStyle(
+                color: Colors.grey[700],
+              ),
+              textAlign: TextAlign.justify,
+              //
+              trimLength: 333,
+              trimMode: TrimMode.Length,
+              trimCollapsedText: '   Show more',
+              trimExpandedText: '   Show less',
+              moreStyle: TextStyle(
+                color: Colors.blue[600],
+                fontSize: 14,
+                fontWeight: FontWeight.bold,
+                fontStyle: FontStyle.italic,
+              ),
+              lessStyle: TextStyle(
+                  color: Colors.blue[600],
+                  fontSize: 14,
+                  fontWeight: FontWeight.bold,
+                  fontStyle: FontStyle.italic)),
+          SizedBox(height: 10),
+          GestureDetector(
+              onTap: () {
+                var room = roomData[index]; // Get the room at the tapped index
+                var ID = room._id;
+                var price = room.price;
+                var roomName = room.roomType;
+                var maxCapacity = room.maxCapacity;
+
+                Navigator.of(context, rootNavigator: true)
+                    .pushNamed('booking', arguments: {
+                  'userId': userId,
+                  'roomName': roomName.toString(),
+                  'hotelId': HotelID.toString(),
+                  'roomId': ID,
+                  'startDate': startDate.toString(),
+                  'endDate': endDate.toString(),
+                  'numberOfNights': numberOfNights.toString(),
+                  'price': price,
+                  'maxGuests': maxCapacity
+                });
+
+                print('Hotel ID: $HotelID');
+                print('Hotel room name: $roomName');
+                print('Room ID: $ID');
+                print('Check-in date: $startDate');
+                print('Check-out date: $endDate');
+                print('This is the numberOfNights: $numberOfNights');
+                print('This is the price: $price');
+                print('This is the max: $maxCapacity');
+              },
+              child: Column(
+                  children: roomData.map((room) {
+                var roomIndex =
+                    roomData.indexOf(room); // Get the index of the current room
+                return Column(children: [
+                  Card(
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(17)),
+                      elevation: 7,
+                      child: ListTile(
+                          title: Text(room.roomType,
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 18)),
+                          subtitle: Text(room.price,
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 15)),
+                          trailing: Icon(
+                              color: Colors.black,
+                              Icons.arrow_forward_ios,
+                              size: 15),
+                          onTap: () {
+                            var selectedRoom = roomData[
+                                roomIndex]; // Get the selected room based on the index
+                            var ID = selectedRoom._id;
+                            var price = selectedRoom.price;
+                            var roomName = selectedRoom.roomType;
+                            var maxCapacity = selectedRoom.maxCapacity;
+
+                            Navigator.of(context, rootNavigator: true)
+                                .pushNamed('booking', arguments: {
+                              'userId': userId,
+                              'roomName': roomName.toString(),
+                              'hotelId': HotelID.toString(),
+                              'roomId': ID,
+                              'startDate': startDate.toString(),
+                              'endDate': endDate.toString(),
+                              'numberOfNights': numberOfNights.toString(),
+                              'price': price,
+                              'maxGuests': maxCapacity
+                            });
+
+                            print('Hotel ID: $HotelID');
+                            print('Hotel room name: $roomName');
+                            print('Room ID: $ID');
+                            print('Check-in date: $startDate');
+                            print('Check-out date: $endDate');
+                            print(
+                                'This is the numberOfNights: $numberOfNights');
+                            print('This is the price: $price');
+                            print('This is the max: $maxCapacity');
+                          })),
+                  SizedBox(height: 10)
+                ]);
+              }).toList()))
+        ]));
+  }
+
+  Padding getImage() {
+    return Padding(
+        padding: const EdgeInsets.only(top: 7, bottom: 5, right: 9, left: 9),
+        child: FutureBuilder(
+          future: fetchImage(firstRoomId),
+          builder: ((context, snapshot) {
+            var varFile = snapshot.data?.get<ParseFileBase>('file');
+            print('.....${varFile?.url ?? 'hell'}');
+            if (varFile?.url?.isEmpty ?? true) {
+              // return Placeholder(
+              //   fallbackWidth: 500,
+              //   fallbackHeight: 270,
+              // );
+              return Image.network(
+                'https://www.generationsforpeace.org/wp-content/uploads/2018/03/empty.jpg',
+                width: 500,
+                height: 270,
+                fit: BoxFit.cover,
+              );
+            }
+            return Image.network(
+              varFile?.url ?? "",
+              width: 500,
+              height: 270,
+              fit: BoxFit.cover,
+            );
+          }),
+        ));
   }
 
   List<Map<String, dynamic>> comments = [

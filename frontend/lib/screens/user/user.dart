@@ -75,7 +75,7 @@ class _ProfileState extends State<Profile> {
       // Access the token claims from the payload
       userId = payloadJson['_id'];
       print('Stored Role: $userRole');
-      print('User ID: $userId');
+      print('User IIIID: $userId');
 
       setState(() {
         isLoggedIn = true;
@@ -215,13 +215,17 @@ class _ProfileState extends State<Profile> {
                             color: Color.fromARGB(255, 39, 92, 216),
                           ),
                           onTap: () {
-                            if (selectedRole == "Hotel Owner")
+                            if (selectedRole == "Hotel Owner") {
                               Navigator.pushNamed(context, 'updateHotel',
                                   arguments: {
                                     'id': userId,
                                   });
-                            else
-                              Navigator.pushNamed(context, 'editUser');
+                            } else if (selectedRole == "User") {
+                              Navigator.pushNamed(context, 'editUser',
+                                  arguments: {
+                                    'id': userId,
+                                  });
+                            }
                           },
                         ),
                       ),

@@ -63,7 +63,8 @@ class _RoomCreatePageState extends State<RoomCreatePage> {
     'Family Room',
   ];
 
-  TextEditingController priceController = TextEditingController();
+  TextEditingController roomTypeController = TextEditingController();
+  TextEditingController priceController = TextEditingController(text: '');
   TextEditingController maxGuestCapacityController = TextEditingController();
   // ignore: unused_field
   bool _isNotValidate = false;
@@ -240,39 +241,57 @@ class _RoomCreatePageState extends State<RoomCreatePage> {
                           Center(
                             child: Container(
                               color: Colors.white,
-                              child: DropdownButton(
-                                underline: Container(
-                                  height: 1,
-                                  color: Colors.black,
+                              child: SizedBox(
+                                width: 150,
+                                height: 50,
+                                child: TextFormField(
+                                  controller: roomTypeController,
+                                  decoration: InputDecoration(
+                                    hintText: 'Twin Room',
+                                    filled: true,
+                                    fillColor: Colors.white,
+                                    border: OutlineInputBorder(),
+                                  ),
+                                  onChanged: (value) {
+                                    setState(() {
+                                      roomTypeValue = value;
+                                    });
+                                  },
                                 ),
-
-                                // Initial Value
-                                value: roomTypeValue,
-
-                                // Down Arrow Icon
-                                icon: const Icon(
-                                  Icons.keyboard_arrow_down,
-                                  color: Colors.black,
-                                ),
-
-                                // Array list of items
-                                items: number.map((String items) {
-                                  return DropdownMenuItem(
-                                    value: items,
-                                    child: Text(
-                                      items,
-                                      style: TextStyle(fontSize: 17),
-                                    ),
-                                  );
-                                }).toList(),
-                                // After selecting the desired option,it will
-                                // change button value to selected value
-                                onChanged: (String? newValue) {
-                                  setState(() {
-                                    roomTypeValue = newValue!;
-                                  });
-                                },
                               ),
+                              // DropdownButton(
+                              //   underline: Container(
+                              //     height: 1,
+                              //     color: Colors.black,
+                              //   ),
+
+                              //   // Initial Value
+                              //   value: roomTypeValue,
+
+                              //   // Down Arrow Icon
+                              //   icon: const Icon(
+                              //     Icons.keyboard_arrow_down,
+                              //     color: Colors.black,
+                              //   ),
+
+                              //   // Array list of items
+                              //   items: number.map((String items) {
+                              //     return DropdownMenuItem(
+                              //       value: items,
+                              //       child: Text(
+                              //         items,
+                              //         style: TextStyle(fontSize: 17),
+                              //       ),
+                              //     );
+                              //   }).toList(),
+                              //   // After selecting the desired option,it will
+                              //   // change button value to selected value
+                              //   onChanged: (String? newValue) {
+                              //     setState(() {
+                              //       roomTypeValue = newValue!;
+                              //     });
+                              //   },
+                              // ),
                             ),
                           ),
                           SizedBox(height: 13),

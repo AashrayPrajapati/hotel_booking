@@ -178,6 +178,24 @@ router.post("/book", async (req, res) => {
   }
 });
 
+// cancel booking
+router.delete("/cancelBooking/:id", async (req, res) => {
+  try {
+    const booking = await Booking.findById(req.params.id);
+    if (!booking) return res.status(404).send("Booking not found");
+
+    const deletedBooking = await Booking.findByIdAndDelete(req.params.id);
+    res.status(200).json({
+      status: "Success",
+      message: "Booking cancelled successfully",
+      data: deletedBooking,
+    });
+  } catch (error) {
+    res.status(400).json(error);
+  }
+});
+
+
 //get all bookings with hotel id
 router.get("/getBookings/:id", async (req, res) => {
   try {

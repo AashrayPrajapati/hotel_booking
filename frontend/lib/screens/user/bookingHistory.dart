@@ -16,6 +16,7 @@ class BookingHistory extends StatefulWidget {
 final Dio _dio = Dio();
 
 class Booking {
+  final String bookingID;
   final String roomType;
   final String checkInDate;
   final String checkOutDate;
@@ -23,6 +24,7 @@ class Booking {
   final String paymentStatus;
 
   Booking({
+    required this.bookingID,
     required this.roomType,
     required this.checkInDate,
     required this.checkOutDate,
@@ -82,6 +84,7 @@ class _BookingHistoryState extends State<BookingHistory> {
 
       for (var data in bookingData) {
         Booking booking = Booking(
+          bookingID: data['_id'],
           roomType: data['roomType'],
           checkInDate:
               DateFormat('dd-MM-y').format(DateTime.parse(data['checkInDate'])),
@@ -91,12 +94,26 @@ class _BookingHistoryState extends State<BookingHistory> {
           paymentStatus: data['paymentStatus'],
         );
         bookings.add(booking);
-        print(bookings);
+        print(bookings[0].bookingID);
       }
 
       return bookings;
     } on DioError catch (e) {
       throw Exception("Error retrieving bookings: ${e.message}");
+    }
+  }
+
+  Future<void> cancelBooking(String bookingId) async {
+    try {
+      final String url = '$apiUrl/bookRoom/cancelBooking/$bookingId';
+
+      final response = await _dio.delete(url, data: {
+        'bookingId': bookingId,
+      });
+
+      print(response.data);
+    } on DioError catch (e) {
+      throw Exception("Error cancelling booking: ${e.message}");
     }
   }
 
@@ -203,7 +220,83 @@ class _BookingHistoryState extends State<BookingHistory> {
                                           ),
                                         ),
                                         TextButton(
-                                          onPressed: () {},
+                                          onPressed: () {
+                                            showDialog(
+                                              context: context,
+                                              builder: (BuildContext context) {
+                                                return AlertDialog(
+                                                  shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            22),
+                                                  ),
+                                                  title: Center(
+                                                    child: Text(
+                                                      'Cancel Booking',
+                                                      style: TextStyle(
+                                                        fontWeight:
+                                                            FontWeight.w800,
+                                                        fontSize: 20,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  content: Text(
+                                                    'Are you sure you want to cancel this booking?',
+                                                    style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.w500,
+                                                      fontSize: 17,
+                                                    ),
+                                                  ),
+                                                  actions: [
+                                                    Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceEvenly,
+                                                      children: [
+                                                        TextButton(
+                                                          onPressed: () {
+                                                            Navigator.pop(
+                                                                context);
+                                                          },
+                                                          child: Text(
+                                                            'No',
+                                                            style: TextStyle(
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w600,
+                                                              fontSize: 15,
+                                                            ),
+                                                          ),
+                                                        ),
+                                                        TextButton(
+                                                          onPressed: () {
+                                                            cancelBooking(
+                                                                bookings[index]
+                                                                    .bookingID);
+                                                            Navigator.pop(
+                                                                context);
+                                                            Navigator.pop(
+                                                                context);
+                                                          },
+                                                          child: Text(
+                                                            'Yes',
+                                                            style: TextStyle(
+                                                              color: Colors.red,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w600,
+                                                              fontSize: 15,
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ],
+                                                );
+                                              },
+                                            );
+                                          },
                                           child: Text(
                                             'Cancel Booking',
                                             style: TextStyle(

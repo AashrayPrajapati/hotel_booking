@@ -55,6 +55,7 @@ Future<Detail> getDetails(
     print(totalPrice);
 
     final Dio _dio = Dio();
+    var khaltiOfferPrice = (totalPrice - (totalPrice * 0.15)).toInt();
 
     var regBody = {
       "user": userId,
@@ -63,7 +64,7 @@ Future<Detail> getDetails(
       "checkInDate": checkInDate,
       "checkOutDate": checkOutDate,
       "guests": int.parse(noOfGuests),
-      "totalPrice": totalPrice,
+      "totalPrice": khaltiOfferPrice,
       "paymentStatus": "Paid"
     };
     print(regBody);
@@ -173,9 +174,19 @@ class _KhaltiPageState extends State<KhaltiPage> {
   }
 
   payWithKhaltiInApp() {
+    final Map<String, dynamic> arguments =
+        ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
+
+    final int? totalPrice = arguments['totalPrice'] as int?;
+
+    print("THI SI THE TTAL PRICE $totalPrice");
+
+    // var khaltiOfferPrice = (totalPrice-(totalPrice * 0.15)).toInt();
+    var khaltiOfferPrice = (totalPrice! - (totalPrice * 0.15)).toInt();
     KhaltiScope.of(context).pay(
       config: PaymentConfig(
-        amount: 1000, //in paisa
+        // amount: khaltiOfferPrice * 100, //in paisa
+        amount: 10 * 100, //in paisa
         productIdentity: 'Product Id',
         productName: 'Product Name',
         mobileReadOnly: false,

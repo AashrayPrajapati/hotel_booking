@@ -8,6 +8,8 @@ import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 
 final parseObject = ParseObject('Gallery');
 var hId;
+var maxCapacity;
+int numGuest = 0;
 
 class BookingPage extends StatefulWidget {
   @override
@@ -18,7 +20,7 @@ class _BookingPageState extends State<BookingPage> {
   TextEditingController userId = TextEditingController();
   TextEditingController checkIn = TextEditingController();
   TextEditingController checkOut = TextEditingController();
-  TextEditingController noOfGuests = TextEditingController();
+  TextEditingController noOfGuests = TextEditingController(text: '1');
 
   String referenceId = "";
 
@@ -63,14 +65,52 @@ class _BookingPageState extends State<BookingPage> {
     final String? startDate = arguments['startDate'] as String?;
     final String? endDate = arguments['endDate'] as String?;
     final String? userId = arguments['userId'] as String?;
+    final String? maxGuests = arguments['maxGuests'] as String?;
+    maxCapacity = maxGuests;
+    print('THIS IS THE MAX NUMBER OF PEOPLE IT CAN HOLD $maxGuests');
 
     var totalprice = int.parse(price!) * int.parse(numberOfNights!);
+    numGuest = int.parse(noOfGuests.text);
     print('bookingPage');
     print('Total price: $totalprice');
     print('User id: $userId');
 
     void book() async {
       try {
+        print(maxCapacity);
+        print(numGuest);
+
+        // if (int.parse(maxCapacity) < numGuest) {
+        //   showDialog(
+        //     context: context,
+        //     builder: (BuildContext context) {
+        //       return AlertDialog(
+        //         shape: RoundedRectangleBorder(
+        //           borderRadius: BorderRadius.circular(20),
+        //         ),
+        //         title: Text(
+        //           'Booking failed',
+        //           style: TextStyle(fontSize: 23, fontWeight: FontWeight.bold),
+        //         ),
+        //         content: Text(
+        //             'The number of guests exceeds the maximum capacity of the room.',
+        //             textAlign: TextAlign.center,
+        //             style: TextStyle(fontSize: 17)),
+        //         actions: [
+        //           TextButton(
+        //             onPressed: () {
+        //               Navigator.pushNamed(context, 'mainPage');
+        //             },
+        //             child: Center(child: Text('OK')),
+        //           ),
+        //         ],
+        //       );
+        //     },
+        //   );
+        //   return;
+        // }
+        print(
+            'sdxfghjkbhjkoladfbhnjfdsafdshaj;fdsabhnjfsdabhnjfdsasfdhajsfdyahiulqfnhajskd');
         final Dio _dio = Dio();
 
         var regBody = {
@@ -92,8 +132,10 @@ class _BookingPageState extends State<BookingPage> {
         );
 
         if (response.statusCode == 200) {
-          print('Booking successful!');
-          print('Response body: ${response.data}');
+          // Successful booking
+          var responseData = response.data;
+          // Process the responseData as needed
+          print(responseData);
           showDialog(
             context: context,
             builder: (BuildContext context) {
@@ -118,12 +160,49 @@ class _BookingPageState extends State<BookingPage> {
               );
             },
           );
+        } else if (response.statusCode == 409) {
+          // Booking failed
+          var errorMessage = response.data["message"];
+          // Handle the error message appropriately
+          print("Status Code: ${response.statusCode}");
+          print("Error Message: $errorMessage");
         } else {
-          print('Booking failed. Response status code: ${response.statusCode}');
-          print('Response body: ${response.data}');
+          // Handle other status codes if needed
+          print("Status Code: ${response.statusCode}");
+          print("Response Body: ${response.data}");
         }
       } catch (e) {
-        print('Error connecting to server: $e');
+        // Handle the error
+        print('Error connecting to the server: $e');
+        //show a sialog box with a message that the server is not responding
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20),
+              ),
+              title: Center(
+                child: Text(
+                  'Booking failed',
+                  style: TextStyle(fontSize: 23, fontWeight: FontWeight.bold),
+                ),
+              ),
+              content: Text(
+                  'The room is already booked during the selected dates',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontSize: 17)),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.pushNamed(context, 'mainPage');
+                  },
+                  child: Center(child: Text('OK')),
+                ),
+              ],
+            );
+          },
+        );
       }
     }
 
@@ -169,7 +248,7 @@ class _BookingPageState extends State<BookingPage> {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.all(23),
+                  padding: const EdgeInsets.only(top: 23, left: 23, right: 23),
                   child: FutureBuilder(
                     future: fetchImage(roomId!),
                     builder: ((context, snapshot) {
@@ -177,8 +256,8 @@ class _BookingPageState extends State<BookingPage> {
                       print('.....${varFile?.url ?? 'hell'}');
                       if (varFile?.url?.isEmpty ?? true) {
                         return Placeholder(
-                          fallbackWidth: 134,
-                          fallbackHeight: 100,
+                          fallbackWidth: 500,
+                          fallbackHeight: 200,
                         );
                       }
                       return Image.network(
@@ -261,6 +340,29 @@ class _BookingPageState extends State<BookingPage> {
                           ),
                         ],
                       ),
+                      SizedBox(height: 17),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          Text(
+                            'Max guests',
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.grey[800],
+                            ),
+                          ),
+                          SizedBox(width: 20),
+                          Text(
+                            '${maxGuests}',
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.grey[800],
+                            ),
+                          ),
+                        ],
+                      ),
                       SizedBox(height: 20),
                     ],
                   ),
@@ -287,7 +389,7 @@ class _BookingPageState extends State<BookingPage> {
                     children: [
                       SizedBox(height: 10),
                       Container(
-                        height: MediaQuery.of(context).size.height * 0.15,
+                        height: MediaQuery.of(context).size.height * 0.27,
                         child: Padding(
                           padding: const EdgeInsets.only(
                             top: 20,
@@ -346,6 +448,27 @@ class _BookingPageState extends State<BookingPage> {
                                   ),
                                 ],
                               ),
+                              SizedBox(height: 17),
+                              // Divider(
+                              //   thickness: 1,
+                              //   color: Colors.black54,
+                              // ),
+                              // SizedBox(height: 7),
+                              Expanded(
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(15),
+                                    color: Colors.grey[200],
+                                  ),
+                                  child: Text(
+                                      "Note\n*15% discount on paying with Khalti and\n No refund if you cancel your booking.",
+                                      style: TextStyle(
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.w500,
+                                        color: Color.fromARGB(255, 255, 14, 14),
+                                      )),
+                                ),
+                              )
                             ],
                           ),
                         ),
@@ -353,7 +476,7 @@ class _BookingPageState extends State<BookingPage> {
                     ],
                   ),
                 ),
-                SizedBox(height: 35),
+                SizedBox(height: 25),
                 Padding(
                   padding: const EdgeInsets.only(
                     left: 10,
@@ -363,31 +486,43 @@ class _BookingPageState extends State<BookingPage> {
                   ),
                   child: Column(
                     children: [
-                      Center(
-                        child: Container(
-                          width: 120,
-                          child: TextField(
-                            textAlign: TextAlign.center,
-                            keyboardType: TextInputType.number,
-                            inputFormatters: [
-                              FilteringTextInputFormatter.digitsOnly,
-                              LengthLimitingTextInputFormatter(1),
-                              FilteringTextInputFormatter.allow(
-                                RegExp('[0-5]'),
-                              ),
-                            ],
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Text(
+                            'No. of guests',
                             style: TextStyle(
-                              height: 1.0,
-                            ),
-                            controller: noOfGuests,
-                            decoration: InputDecoration(
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(20),
-                              ),
-                              hintText: 'No. of guests',
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.grey[700],
                             ),
                           ),
-                        ),
+                          Container(
+                            width: 120,
+                            child: TextField(
+                              textAlign: TextAlign.center,
+                              keyboardType: TextInputType.number,
+                              inputFormatters: [
+                                FilteringTextInputFormatter.digitsOnly,
+                                LengthLimitingTextInputFormatter(1),
+                                FilteringTextInputFormatter.allow(
+                                  RegExp('[1-9]'),
+                                ),
+                              ],
+                              style: TextStyle(
+                                height: 1.0,
+                              ),
+                              controller: noOfGuests,
+                              decoration: InputDecoration(
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(20),
+                                ),
+                                // hintText: '1',
+                                // labelText: 'No. of guests',
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                     ],
                   ),
@@ -407,7 +542,70 @@ class _BookingPageState extends State<BookingPage> {
                             backgroundColor: HexColor('#FF265CD8'),
                           ),
                           onPressed: () {
-                            book();
+                            //check if userId exists
+
+                            if (userId == null || userId.isEmpty) {
+                              showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(20),
+                                    ),
+                                    title: Text(
+                                      'Login Required',
+                                      style: TextStyle(
+                                          fontSize: 23,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    content: Text('Please login first.'),
+                                    actions: [
+                                      TextButton(
+                                        onPressed: () {
+                                          Navigator.pushNamed(context, 'login');
+                                        },
+                                        child: Text('OK'),
+                                      ),
+                                    ],
+                                  );
+                                },
+                              );
+                              return; // Exit the function if userId is empty
+                            } else if (int.parse(maxCapacity) < numGuest) {
+                              print('exit the fucntion if userid is empty');
+                              showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(20),
+                                    ),
+                                    title: Text(
+                                      'Booking failed',
+                                      style: TextStyle(
+                                          fontSize: 23,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    content: Text(
+                                        'The number of guests exceeds the maximum capacity of the room.',
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(fontSize: 17)),
+                                    actions: [
+                                      TextButton(
+                                        onPressed: () {
+                                          Navigator.pop(context);
+                                        },
+                                        child: Center(child: Text('OK')),
+                                      ),
+                                    ],
+                                  );
+                                },
+                              );
+                              return;
+                            } else {
+                              print('this is the selected guest $numGuest');
+                              book();
+                            }
                           },
                           child: Text(
                             'Pay With Cash',
@@ -431,20 +629,83 @@ class _BookingPageState extends State<BookingPage> {
                           backgroundColor: Color.fromARGB(255, 87, 44, 138),
                         ),
                         onPressed: () {
-                          // pass the total price to khaltiPage
-                          Navigator.of(context, rootNavigator: true).pushNamed(
-                            'khaltiPage',
-                            arguments: {
-                              'userId': userId,
-                              'hotelId': hotelId,
-                              'roomId': roomId,
-                              'roomName': roomName,
-                              'totalPrice': totalprice,
-                              'noOfGuests': noOfGuests.text,
-                              'checkInDate': startDate,
-                              'checkOutDate': endDate,
-                            },
-                          );
+                          //check if userId exists
+
+                          if (userId == null || userId.isEmpty) {
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(20),
+                                  ),
+                                  title: Text(
+                                    'Login Required',
+                                    style: TextStyle(
+                                        fontSize: 23,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  content: Text('Please login first.'),
+                                  actions: [
+                                    TextButton(
+                                      onPressed: () {
+                                        Navigator.pushNamed(context, 'login');
+                                      },
+                                      child: Text('OK'),
+                                    ),
+                                  ],
+                                );
+                              },
+                            );
+                            return; // Exit the function if userId is empty
+                          } else if (int.parse(maxCapacity) < numGuest) {
+                            print('exit the fucntion if userid is empty');
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(20),
+                                  ),
+                                  title: Text(
+                                    'Booking failed',
+                                    style: TextStyle(
+                                        fontSize: 23,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  content: Text(
+                                      'The number of guests exceeds the maximum capacity of the room.',
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(fontSize: 17)),
+                                  actions: [
+                                    TextButton(
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                      },
+                                      child: Center(child: Text('OK')),
+                                    ),
+                                  ],
+                                );
+                              },
+                            );
+                            return;
+                          } else {
+                            // pass the total price to khaltiPage
+                            Navigator.of(context, rootNavigator: true)
+                                .pushNamed(
+                              'khaltiPage',
+                              arguments: {
+                                'userId': userId,
+                                'hotelId': hotelId,
+                                'roomId': roomId,
+                                'roomName': roomName,
+                                'totalPrice': totalprice,
+                                'noOfGuests': noOfGuests.text,
+                                'checkInDate': startDate,
+                                'checkOutDate': endDate,
+                              },
+                            );
+                          }
 
                           // Navigator.pushNamed(context, 'khaltiPage');
                         },

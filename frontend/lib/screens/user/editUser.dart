@@ -346,7 +346,8 @@ class _EditUserState extends State<EditUser> {
   Widget build(BuildContext context) {
     final Map<String, dynamic> arguments =
         ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
-    final String? ownerId = arguments['ownerId'] as String?;
+    final String? ownerId = arguments['id'] as String?;
+    // print("THIS SHOULLd PRIN THE OWERNER ID:$ownerId");
     Widget buildEditUserWidget(User userData) {
       return Column(
         mainAxisAlignment: MainAxisAlignment.center,
