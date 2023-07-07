@@ -259,7 +259,7 @@ class _HomePageState extends State<HomePage> {
                                     child: Column(children: [
                                       GestureDetector(
                                           onTap: () {
-                                            var ID = snapshot.data[index]._id;
+                                            var ID = snapshot.data[index].id;
                                             if (formattedStartDate.isEmpty ||
                                                 formattedEndDate.isEmpty) {
                                               print("Dates are not selected");

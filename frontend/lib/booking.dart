@@ -248,7 +248,7 @@ class _BookingPageState extends State<BookingPage> {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(top: 23, left: 23, right: 23),
+                  padding: const EdgeInsets.only(top: 23, left: 7, right: 7),
                   child: FutureBuilder(
                     future: fetchImage(roomId!),
                     builder: ((context, snapshot) {
@@ -387,9 +387,9 @@ class _BookingPageState extends State<BookingPage> {
                   elevation: 5,
                   child: Column(
                     children: [
-                      SizedBox(height: 10),
+                      SizedBox(height: 15),
                       Container(
-                        height: MediaQuery.of(context).size.height * 0.27,
+                        height: MediaQuery.of(context).size.height * 0.24,
                         child: Padding(
                           padding: const EdgeInsets.only(
                             top: 20,
@@ -433,17 +433,19 @@ class _BookingPageState extends State<BookingPage> {
                                   Text(
                                     'Total price',
                                     style: TextStyle(
-                                      fontSize: 26,
+                                      fontStyle: FontStyle.italic,
+                                      fontSize: 25,
                                       fontWeight: FontWeight.w700,
                                       color: Colors.grey[800],
                                     ),
                                   ),
                                   Text(
-                                    'NPR $totalprice',
+                                    'NPR.$totalprice',
                                     style: TextStyle(
-                                      fontSize: 22,
+                                      fontStyle: FontStyle.italic,
+                                      fontSize: 25,
                                       fontWeight: FontWeight.w900,
-                                      color: Colors.grey[800],
+                                      color: Colors.grey[900],
                                     ),
                                   ),
                                 ],
@@ -456,17 +458,22 @@ class _BookingPageState extends State<BookingPage> {
                               // SizedBox(height: 7),
                               Expanded(
                                 child: Container(
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(15),
-                                    color: Colors.grey[200],
+                                  // decoration: BoxDecoration(
+                                  //   border: Border.all(),
+                                  //   borderRadius: BorderRadius.circular(15),
+                                  //   // color: Colors.grey[200],
+                                  // ),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Text(
+                                        "*15% discount on paying with Khalti and\n No refund if you cancel your booking.",
+                                        style: TextStyle(
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.w500,
+                                          color:
+                                              Color.fromARGB(255, 255, 14, 14),
+                                        )),
                                   ),
-                                  child: Text(
-                                      "Note\n*15% discount on paying with Khalti and\n No refund if you cancel your booking.",
-                                      style: TextStyle(
-                                        fontSize: 15,
-                                        fontWeight: FontWeight.w500,
-                                        color: Color.fromARGB(255, 255, 14, 14),
-                                      )),
                                 ),
                               )
                             ],
@@ -476,7 +483,7 @@ class _BookingPageState extends State<BookingPage> {
                     ],
                   ),
                 ),
-                SizedBox(height: 25),
+                SizedBox(height: 15),
                 Padding(
                   padding: const EdgeInsets.only(
                     left: 10,
