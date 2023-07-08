@@ -352,97 +352,87 @@ class _HotelInfoPageState extends State<HotelInfoPage> {
                   fontWeight: FontWeight.bold,
                   fontStyle: FontStyle.italic)),
           SizedBox(height: 10),
-          GestureDetector(
-              onTap: () {
-                var room = roomData[index]; // Get the room at the tapped index
-                // var selectedRoom = roomData[roomIndex];
-                var ID = room._id;
-                var price = room.price;
-                var roomName = room.roomType;
-                var maxCapacity = room.maxCapacity;
-
-                Navigator.of(context, rootNavigator: true)
-                    .pushNamed('booking', arguments: {
-                  'userId': userId,
-                  'roomName': roomName.toString(),
-                  'hotelId': HotelID.toString(),
-                  'roomId': ID,
-                  'startDate': startDate.toString(),
-                  'endDate': endDate.toString(),
-                  'numberOfNights': numberOfNights.toString(),
-                  'price': price,
-                  'maxGuests': maxCapacity
-                });
-
-                print('Hotel ID: $HotelID');
-                print('Hotel room name: $roomName');
-                print('Room ID: $ID');
-                print('Check-in date: $startDate');
-                print('Check-out date: $endDate');
-                print('This is the numberOfNights: $numberOfNights');
-                print('This is the price: $price');
-                print('This is the max: $maxCapacity');
-              },
-              child: Column(
-                  children: roomData.map((room) {
-                var roomIndex =
-                    roomData.indexOf(room); // Get the index of the current room
-                return Column(children: [
-                  Card(
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(13)),
-                      elevation: 5,
-                      child: Padding(
-                        padding: const EdgeInsets.only(
-                            top: 7, bottom: 7, left: 15, right: 15),
-                        child: ListTile(
-                          // leading:
-                          //     Icon(Icons.hotel, color: Colors.black, size: 30),
-                          title: Text(room.roomType,
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold, fontSize: 20)),
-                          subtitle: Column(
-                            children: [
-                              SizedBox(height: 15),
-                              Row(
-                                children: [
-                                  Text("${room.maxCapacity}",
-                                      style: TextStyle(
-                                          fontStyle: FontStyle.italic,
-                                          color: Colors.black,
-                                          fontSize: 16)),
-                                  SizedBox(width: 10),
-                                  // Icon(
-                                  //   Icons.person_outline,
-                                  //   color: Colors.black,
-                                  //   size: 16,
-                                  // ),
-
-                                  Icon(
-                                    Icons.person,
-                                    size: 19,
-                                    color: Color.fromARGB(255, 39, 92, 216),
-                                  ),
-                                  SizedBox(width: 77),
-                                  Text("Nrs. ${room.price}",
-                                      style: TextStyle(
-                                          fontStyle: FontStyle.italic,
-                                          color: Colors.black,
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 16)),
-                                ],
-                              ),
-                            ],
-                          ),
-                          trailing: Icon(
-                              color: Colors.black,
-                              Icons.arrow_forward_ios,
-                              size: 23),
+          Column(
+              children: roomData.map((room) {
+            var roomIndex =
+                roomData.indexOf(room); // Get the index of the current room
+            return Column(children: [
+              Card(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(13)),
+                  elevation: 5,
+                  child: Padding(
+                    padding: const EdgeInsets.only(
+                        top: 7, bottom: 7, left: 15, right: 15),
+                    child: ListTile(
+                        title: Text(room.roomType,
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 20)),
+                        subtitle: Column(
+                          children: [
+                            SizedBox(height: 15),
+                            Row(
+                              children: [
+                                Text("${room.maxCapacity}",
+                                    style: TextStyle(
+                                        fontStyle: FontStyle.italic,
+                                        color: Colors.black,
+                                        fontSize: 16)),
+                                SizedBox(width: 10),
+                                Icon(
+                                  Icons.person,
+                                  size: 19,
+                                  color: Color.fromARGB(255, 39, 92, 216),
+                                ),
+                                SizedBox(width: 77),
+                                Text("Nrs. ${room.price}",
+                                    style: TextStyle(
+                                        fontStyle: FontStyle.italic,
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 16)),
+                              ],
+                            ),
+                          ],
                         ),
-                      )),
-                  SizedBox(height: 10)
-                ]);
-              }).toList()))
+                        trailing: Icon(
+                            color: Colors.black,
+                            Icons.arrow_forward_ios,
+                            size: 23),
+                        onTap: () {
+                          var selectedRoom = roomData[
+                              roomIndex]; // Get the selected room based on the index
+                          var ID = selectedRoom._id;
+                          var price = selectedRoom.price;
+                          var roomName = selectedRoom.roomType;
+                          var maxCapacity = selectedRoom.maxCapacity;
+
+                          Navigator.of(context, rootNavigator: true)
+                              .pushNamed('booking', arguments: {
+                            'userId': userId,
+                            'roomName': roomName.toString(),
+                            'hotelId': HotelID.toString(),
+                            'roomId': ID,
+                            'startDate': startDate.toString(),
+                            'endDate': endDate.toString(),
+                            'numberOfNights': numberOfNights.toString(),
+                            'price': price,
+                            'maxGuests': maxCapacity
+                          });
+
+                          print('Hotel ID: $HotelID');
+                          print('Hotel room name: $roomName');
+                          print('Room ID: $ID');
+                          print('Check-in date: $startDate');
+                          print('Check-out date: $endDate');
+                          print('This is the numberOfNights: $numberOfNights');
+                          print('This is the price: $price');
+                          print('This is the max: $maxCapacity');
+                        }),
+                  )),
+              SizedBox(height: 10)
+            ]);
+          }).toList())
         ]));
   }
 

@@ -3,6 +3,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/services.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:hotel_booking/config.dart';
+import 'package:hotel_booking/screens/auth/login/login.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 // import 'dart:convert';
 
@@ -10,6 +11,7 @@ final parseObject = ParseObject('Gallery');
 var hId;
 var maxCapacity;
 int numGuest = 0;
+bool isBooked = false;
 
 class BookingPage extends StatefulWidget {
   @override
@@ -80,35 +82,6 @@ class _BookingPageState extends State<BookingPage> {
         print(maxCapacity);
         print(numGuest);
 
-        // if (int.parse(maxCapacity) < numGuest) {
-        //   showDialog(
-        //     context: context,
-        //     builder: (BuildContext context) {
-        //       return AlertDialog(
-        //         shape: RoundedRectangleBorder(
-        //           borderRadius: BorderRadius.circular(20),
-        //         ),
-        //         title: Text(
-        //           'Booking failed',
-        //           style: TextStyle(fontSize: 23, fontWeight: FontWeight.bold),
-        //         ),
-        //         content: Text(
-        //             'The number of guests exceeds the maximum capacity of the room.',
-        //             textAlign: TextAlign.center,
-        //             style: TextStyle(fontSize: 17)),
-        //         actions: [
-        //           TextButton(
-        //             onPressed: () {
-        //               Navigator.pushNamed(context, 'mainPage');
-        //             },
-        //             child: Center(child: Text('OK')),
-        //           ),
-        //         ],
-        //       );
-        //     },
-        //   );
-        //   return;
-        // }
         print(
             'sdxfghjkbhjkoladfbhnjfdsafdshaj;fdsabhnjfsdabhnjfdsasfdhajsfdyahiulqfnhajskd');
         final Dio _dio = Dio();
@@ -162,6 +135,125 @@ class _BookingPageState extends State<BookingPage> {
           );
         } else if (response.statusCode == 409) {
           // Booking failed
+          var errorMessage = response.data["message"];
+          // Handle the error message appropriately
+          print("Status Code: ${response.statusCode}");
+          print("Error Message: $errorMessage");
+        } else {
+          // Handle other status codes if needed
+          print("Status Code: ${response.statusCode}");
+          print("Response Body: ${response.data}");
+        }
+      } catch (e) {
+        // Handle the error
+        print('Error connecting to the server: $e');
+        //show a sialog box with a message that the server is not responding
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20),
+              ),
+              title: Center(
+                child: Text(
+                  'Booking failed',
+                  style: TextStyle(fontSize: 23, fontWeight: FontWeight.bold),
+                ),
+              ),
+              content: Text(
+                  'The room is already booked during the selected dates',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontSize: 17)),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.pushNamed(context, 'mainPage');
+                  },
+                  child: Center(child: Text('OK')),
+                ),
+              ],
+            );
+          },
+        );
+      }
+    }
+
+    Future bookWithKhalti() async {
+      try {
+        print(maxCapacity);
+        print(numGuest);
+
+        print(
+            'sdxfghjkbhjkoladfbhnjfdsafdshaj;fdsabhnjfsdabhnjfdsasfdhajsfdyahiulqfnhajskd');
+        final Dio _dio = Dio();
+
+        var regBody = {
+          "user": userId!,
+          "hotel": hotelId!,
+          "room": roomId!,
+          "checkInDate": startDate!,
+          "checkOutDate": endDate!,
+          "guests": int.parse(noOfGuests.text),
+          "totalPrice": totalprice,
+          "paymentStatus": "Pending"
+        };
+        print(regBody);
+
+        var response = await _dio.post(
+          '$apiUrl/bookRoom/existingbooking',
+          options: Options(headers: {"Content-Type": "application/json"}),
+          data: regBody,
+        );
+
+        if (response.statusCode == 200) {
+          // Successful booking
+          Navigator.of(context, rootNavigator: true).pushNamed(
+            'khaltiPage',
+            arguments: {
+              'userId': userId,
+              'hotelId': hotelId,
+              'roomId': roomId,
+              'roomName': roomName,
+              'totalPrice': totalprice,
+              'noOfGuests': noOfGuests.text,
+              'checkInDate': startDate,
+              'checkOutDate': endDate
+            },
+          );
+          var responseData = response.data;
+          // Process the responseData as needed
+          print(responseData);
+        } else if (response.statusCode == 409) {
+          // Booking failed
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                title: Center(
+                  child: Text(
+                    'Booking failed',
+                    style: TextStyle(fontSize: 23, fontWeight: FontWeight.bold),
+                  ),
+                ),
+                content: Text(
+                    'The room is already booked during the selected dates',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(fontSize: 17)),
+                actions: [
+                  TextButton(
+                    onPressed: () {
+                      Navigator.pushNamed(context, 'mainPage');
+                    },
+                    child: Center(child: Text('OK')),
+                  ),
+                ],
+              );
+            },
+          );
           var errorMessage = response.data["message"];
           // Handle the error message appropriately
           print("Status Code: ${response.statusCode}");
@@ -433,19 +525,18 @@ class _BookingPageState extends State<BookingPage> {
                                   Text(
                                     'Total price',
                                     style: TextStyle(
-                                      fontStyle: FontStyle.italic,
                                       fontSize: 25,
                                       fontWeight: FontWeight.w700,
                                       color: Colors.grey[800],
                                     ),
                                   ),
                                   Text(
-                                    'NPR.$totalprice',
+                                    'NRs.$totalprice',
                                     style: TextStyle(
-                                      fontStyle: FontStyle.italic,
+                                      // fontStyle: FontStyle.italic,
                                       fontSize: 25,
-                                      fontWeight: FontWeight.w900,
-                                      color: Colors.grey[900],
+                                      fontWeight: FontWeight.w700,
+                                      color: Colors.grey[890],
                                     ),
                                   ),
                                 ],
@@ -542,6 +633,13 @@ class _BookingPageState extends State<BookingPage> {
                         height: 50,
                         width: 200,
                         child: ElevatedButton(
+                          child: Text(
+                            'Pay With Cash',
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
                           style: ElevatedButton.styleFrom(
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(50),
@@ -549,8 +647,44 @@ class _BookingPageState extends State<BookingPage> {
                             backgroundColor: HexColor('#FF265CD8'),
                           ),
                           onPressed: () {
-                            //check if userId exists
+                            if (selectedRole == 'Hotel Owner') {
+                              showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(20),
+                                    ),
+                                    title: Center(
+                                      child: Text(
+                                        'Login as user',
+                                        style: TextStyle(
+                                            fontSize: 23,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    ),
+                                    content: Text(
+                                        'Logged in as a hotel owner,\nneed to login as a user',
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(fontSize: 17)),
+                                    actions: [
+                                      Center(
+                                        child: TextButton(
+                                          onPressed: () {
+                                            Navigator.pushNamed(
+                                                context, 'login');
+                                          },
+                                          child: Text('Login Now'),
+                                        ),
+                                      ),
+                                    ],
+                                  );
+                                },
+                              );
+                              return;
+                            }
 
+                            //check if userId exists
                             if (userId == null || userId.isEmpty) {
                               showDialog(
                                 context: context,
@@ -614,13 +748,6 @@ class _BookingPageState extends State<BookingPage> {
                               book();
                             }
                           },
-                          child: Text(
-                            'Pay With Cash',
-                            style: TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
                         ),
                       ),
                     ),
@@ -629,6 +756,13 @@ class _BookingPageState extends State<BookingPage> {
                       height: 50,
                       width: 200,
                       child: ElevatedButton(
+                        child: Text(
+                          'Pay With Khalti',
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
                         style: ElevatedButton.styleFrom(
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(50),
@@ -636,8 +770,43 @@ class _BookingPageState extends State<BookingPage> {
                           backgroundColor: Color.fromARGB(255, 87, 44, 138),
                         ),
                         onPressed: () {
-                          //check if userId exists
+                          if (selectedRole == 'Hotel Owner') {
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(20),
+                                  ),
+                                  title: Center(
+                                    child: Text(
+                                      'Login as user',
+                                      style: TextStyle(
+                                          fontSize: 23,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  ),
+                                  content: Text(
+                                      'Logged in as a hotel owner,\nneed to login as a user',
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(fontSize: 17)),
+                                  actions: [
+                                    Center(
+                                      child: TextButton(
+                                        onPressed: () {
+                                          Navigator.pushNamed(context, 'login');
+                                        },
+                                        child: Text('Login Now'),
+                                      ),
+                                    ),
+                                  ],
+                                );
+                              },
+                            );
+                            return;
+                          }
 
+                          //check if userId exists
                           if (userId == null || userId.isEmpty) {
                             showDialog(
                               context: context,
@@ -697,32 +866,56 @@ class _BookingPageState extends State<BookingPage> {
                             );
                             return;
                           } else {
-                            // pass the total price to khaltiPage
-                            Navigator.of(context, rootNavigator: true)
-                                .pushNamed(
-                              'khaltiPage',
-                              arguments: {
-                                'userId': userId,
-                                'hotelId': hotelId,
-                                'roomId': roomId,
-                                'roomName': roomName,
-                                'totalPrice': totalprice,
-                                'noOfGuests': noOfGuests.text,
-                                'checkInDate': startDate,
-                                'checkOutDate': endDate,
-                              },
-                            );
+                            bookWithKhalti();
+                            // if (bookWithKhalti() == false) {
+                            // showDialog(
+                            //   context: context,
+                            //   builder: (BuildContext context) {
+                            //     return AlertDialog(
+                            //       shape: RoundedRectangleBorder(
+                            //         borderRadius: BorderRadius.circular(20),
+                            //       ),
+                            //       title: Center(
+                            //         child: Text(
+                            //           'Booking failed',
+                            //           style: TextStyle(
+                            //               fontSize: 23,
+                            //               fontWeight: FontWeight.bold),
+                            //         ),
+                            //       ),
+                            //       content: Text(
+                            //           'The room is already booked during the selected dates',
+                            //           textAlign: TextAlign.center,
+                            //           style: TextStyle(fontSize: 17)),
+                            //       actions: [
+                            //         TextButton(
+                            //           onPressed: () {
+                            //             Navigator.pushNamed(
+                            //                 context, 'mainPage');
+                            //           },
+                            //           child: Center(child: Text('OK')),
+                            //         ),
+                            //       ],
+                            //     );
+                            //   },
+                            // );
+                            // Navigator.of(context, rootNavigator: true)
+                            //     .pushNamed(
+                            //   'khaltiPage',
+                            //   arguments: {
+                            //     'userId': userId,
+                            //     'hotelId': hotelId,
+                            //     'roomId': roomId,
+                            //     'roomName': roomName,
+                            //     'totalPrice': totalprice,
+                            //     'noOfGuests': noOfGuests.text,
+                            //     'checkInDate': startDate,
+                            //     'checkOutDate': endDate
+                            //   },
+                            // );
+                            // }
                           }
-
-                          // Navigator.pushNamed(context, 'khaltiPage');
                         },
-                        child: Text(
-                          'Pay With Khalti',
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
                       ),
                     ),
                   ],

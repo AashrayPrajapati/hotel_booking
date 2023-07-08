@@ -178,6 +178,27 @@ router.post("/book", async (req, res) => {
   }
 });
 
+router.post("/existingbooking", async (req, res) => {
+    console.log("req.body", req.body);
+  try {
+    const bookingExists = await Booking.findOne({
+      room: req.body.room,
+      checkInDate: { $lte: req.body.checkOutDate },
+      checkOutDate: { $gte: req.body.checkInDate },
+    });
+    if (bookingExists) {
+      console.log("The room is already booked during the selected dates");
+      return res
+        .status(409)
+        .send("The room is already booked during the selected dates");
+    }else{
+      return res.status(200).send("No booking exists");
+    }
+  } catch (err) {
+    res.status(400).json(err);
+  }
+});
+
 // cancel booking
 router.delete("/cancelBooking/:id", async (req, res) => {
   try {
@@ -194,7 +215,6 @@ router.delete("/cancelBooking/:id", async (req, res) => {
     res.status(400).json(error);
   }
 });
-
 
 //get all bookings with hotel id
 router.get("/getBookings/:id", async (req, res) => {
