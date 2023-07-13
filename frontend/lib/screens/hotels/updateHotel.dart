@@ -2,6 +2,9 @@ import 'package:csc_picker/csc_picker.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:hotel_booking/config.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import '../auth/login/login.dart';
 
 class UpdateHotel extends StatefulWidget {
   const UpdateHotel({Key? key});
@@ -239,8 +242,18 @@ class _UpdateHotelState extends State<UpdateHotel> {
           actions: [
             Center(
               child: TextButton(
-                onPressed: () {
-                  Navigator.pushNamed(context, 'user');
+                onPressed: () async {
+                  SharedPreferences prefs =
+                      await SharedPreferences.getInstance();
+                  prefs.remove('jwtToken');
+                  prefs.remove('role');
+                  setState(() {
+                    // isLoggedIn = false;
+                    //
+                    selectedRole = 'User';
+                  });
+
+                  Navigator.pushNamed(context, 'login');
                 },
                 child: Text(
                   'OK',
@@ -363,7 +376,7 @@ class _UpdateHotelState extends State<UpdateHotel> {
                       ),
                       backgroundColor: Color.fromARGB(255, 39, 92, 216),
                       title: Text(
-                        'Update Profile',
+                        'Your profile',
                         style: TextStyle(
                           fontSize: 25,
                           fontWeight: FontWeight.w600,
@@ -439,85 +452,85 @@ class _UpdateHotelState extends State<UpdateHotel> {
                                     ),
                                   ),
                                 ),
-                                // Padding(
-                                //   padding: const EdgeInsets.only(
-                                //     left: 20,
-                                //     right: 20,
-                                //     bottom: 20,
-                                //   ),
-                                //   child: TextField(
-                                //     controller: countryController,
-                                //     decoration: InputDecoration(
-                                //       border: OutlineInputBorder(
-                                //         borderRadius: BorderRadius.circular(17),
-                                //       ),
-                                //       labelText: 'Country',
-                                //     ),
-                                //   ),
-                                // ),
-                                // Padding(
-                                //   padding: const EdgeInsets.only(
-                                //     left: 20,
-                                //     right: 20,
-                                //     bottom: 20,
-                                //   ),
-                                //   child: TextField(
-                                //     controller: cityController,
-                                //     decoration: InputDecoration(
-                                //       border: OutlineInputBorder(
-                                //         borderRadius: BorderRadius.circular(17),
-                                //       ),
-                                //       labelText: 'City',
-                                //     ),
-                                //   ),
-                                // ),
                                 Padding(
                                   padding: const EdgeInsets.only(
-                                      left: 20, right: 20, bottom: 20),
-                                  child: Padding(
-                                    padding: const EdgeInsets.only(
-                                        bottom: 20, right: 15, left: 15),
-                                    child: CSCPicker(
-                                      dropdownDecoration: BoxDecoration(
-                                        borderRadius: BorderRadius.all(
-                                          Radius.circular(13),
-                                        ),
-                                        color: Colors.white,
-                                        border: Border.all(
-                                          color: Colors.grey,
-                                          width: 1.7,
-                                        ),
+                                    left: 20,
+                                    right: 20,
+                                    bottom: 20,
+                                  ),
+                                  child: TextField(
+                                    controller: countryController,
+                                    decoration: InputDecoration(
+                                      border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(17),
                                       ),
-                                      disabledDropdownDecoration: BoxDecoration(
-                                        borderRadius: BorderRadius.all(
-                                          Radius.circular(13),
-                                        ),
-                                        color: Colors.grey.withOpacity(0.3),
-                                        border: Border.all(
-                                          color: Colors.grey,
-                                          width: 1.3,
-                                        ),
-                                      ),
-                                      layout: Layout.vertical,
-                                      flagState: CountryFlag.ENABLE,
-                                      onCountryChanged: (value) {
-                                        setState(() {
-                                          selectedCountry = value;
-                                        });
-                                      },
-                                      onStateChanged: (value) {
-                                        setState(() {
-                                          selectedState = value;
-                                        });
-                                      },
-                                      onCityChanged: (value) {
-                                        setState(() {
-                                          selectedCity = value;
-                                        });
-                                      },
+                                      labelText: 'Country',
                                     ),
                                   ),
                                 ),
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                    left: 20,
+                                    right: 20,
+                                    bottom: 20,
+                                  ),
+                                  child: TextField(
+                                    controller: cityController,
+                                    decoration: InputDecoration(
+                                      border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(17),
+                                      ),
+                                      labelText: 'City',
+                                    ),
+                                  ),
+                                ),
+                                // Padding(
+                                //   padding: const EdgeInsets.only(
+                                //       left: 20, right: 20, bottom: 20),
+                                //   child: Padding(
+                                //     padding: const EdgeInsets.only(
+                                //         bottom: 20, right: 15, left: 15),
+                                //     child: CSCPicker(
+                                //       dropdownDecoration: BoxDecoration(
+                                //         borderRadius: BorderRadius.all(
+                                //           Radius.circular(13),
+                                //         ),
+                                //         color: Colors.white,
+                                //         border: Border.all(
+                                //           color: Colors.grey,
+                                //           width: 1.7,
+                                //         ),
+                                //       ),
+                                //       disabledDropdownDecoration: BoxDecoration(
+                                //         borderRadius: BorderRadius.all(
+                                //           Radius.circular(13),
+                                //         ),
+                                //         color: Colors.grey.withOpacity(0.3),
+                                //         border: Border.all(
+                                //           color: Colors.grey,
+                                //           width: 1.3,
+                                //         ),
+                                //       ),
+                                //       layout: Layout.vertical,
+                                //       flagState: CountryFlag.ENABLE,
+                                //       onCountryChanged: (value) {
+                                //         setState(() {
+                                //           selectedCountry = value;
+                                //         });
+                                //       },
+                                //       onStateChanged: (value) {
+                                //         setState(() {
+                                //           selectedState = value;
+                                //         });
+                                //       },
+                                //       onCityChanged: (value) {
+                                //         setState(() {
+                                //           selectedCity = value;
+                                //         });
+                                //       },
+                                //     ),
+                                //   ),
+                                // ),
                                 Padding(
                                   padding: const EdgeInsets.only(
                                     left: 20,
@@ -622,92 +635,66 @@ class _UpdateHotelState extends State<UpdateHotel> {
                                             print(ownerNameController.text);
 
                                             showDialog(
-                                              context: context,
-                                              builder: (BuildContext context) =>
-                                                  AlertDialog(
-                                                shape: RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(20),
-                                                ),
-                                                title: Text(
-                                                  'Update profile?',
-                                                  textAlign: TextAlign.center,
-                                                  style: TextStyle(
-                                                    fontSize: 23,
-                                                    fontWeight: FontWeight.bold,
-                                                  ),
-                                                ),
-                                                content: Text(
-                                                  ' Are you sure you want to update your profile?',
-                                                  textAlign: TextAlign.center,
-                                                  style:
-                                                      TextStyle(fontSize: 17),
-                                                ),
-                                                actions: [
-                                                  Center(
-                                                    child: Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .spaceEvenly,
-                                                      children: [
-                                                        TextButton(
-                                                          onPressed: () {
-                                                            updateHotel(
-                                                              hotelId,
-                                                              ownerNameController
-                                                                  .text,
-                                                              emailController
-                                                                  .text,
-                                                              descriptionController
-                                                                  .text,
-                                                              propertyNameController
-                                                                  .text,
-                                                              countryController
-                                                                  .text,
-                                                              cityController
-                                                                  .text,
-                                                              streetNameController
-                                                                  .text,
-                                                              passwordController
-                                                                  .text,
-                                                            );
-                                                            // update_hotel();
-
-                                                            // Navigator.pushNamed(
-                                                            //     context,
-                                                            //     'user');
-                                                          },
-                                                          child: Text(
-                                                            'Yes',
-                                                          ),
-                                                        ),
-                                                        TextButton(
-                                                          onPressed: () {
-                                                            Navigator.pop(
-                                                                context);
-                                                          },
-                                                          child: Text(
-                                                            'No',
-                                                          ),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                            );
-
-                                            // updateHotel(
-                                            //   hotelId,
-                                            //   ownerNameController.text,
-                                            //   emailController.text,
-                                            //   descriptionController.text,
-                                            //   propertyNameController.text,
-                                            //   countryController.text,
-                                            //   cityController.text,
-                                            //   streetNameController.text,
-                                            //   passwordController.text,
-                                            // );
+                                                context: context,
+                                                builder:
+                                                    (BuildContext context) =>
+                                                        AlertDialog(
+                                                            shape: RoundedRectangleBorder(
+                                                                borderRadius:
+                                                                    BorderRadius.circular(
+                                                                        20)),
+                                                            title: Text(
+                                                                'Update profile?',
+                                                                textAlign:
+                                                                    TextAlign
+                                                                        .center,
+                                                                style: TextStyle(
+                                                                    fontSize:
+                                                                        23,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .bold)),
+                                                            content: Text(
+                                                                ' Are you sure you want to update your profile?',
+                                                                textAlign:
+                                                                    TextAlign
+                                                                        .center,
+                                                                style: TextStyle(
+                                                                    fontSize: 17)),
+                                                            actions: [
+                                                              Center(
+                                                                  child: Row(
+                                                                      mainAxisAlignment:
+                                                                          MainAxisAlignment
+                                                                              .spaceEvenly,
+                                                                      children: [
+                                                                    TextButton(
+                                                                        onPressed:
+                                                                            () {
+                                                                          updateHotel(
+                                                                            hotelId,
+                                                                            ownerNameController.text,
+                                                                            emailController.text,
+                                                                            descriptionController.text,
+                                                                            propertyNameController.text,
+                                                                            countryController.text,
+                                                                            cityController.text,
+                                                                            streetNameController.text,
+                                                                            passwordController.text,
+                                                                          );
+                                                                        },
+                                                                        child: Text(
+                                                                            'Yes')),
+                                                                    TextButton(
+                                                                        onPressed:
+                                                                            () {
+                                                                          Navigator.pop(
+                                                                              context);
+                                                                        },
+                                                                        child: Text(
+                                                                            'No'))
+                                                                  ]))
+                                                            ]));
                                           },
                                           child: Text(
                                             'Update',
@@ -766,10 +753,6 @@ class _UpdateHotelState extends State<UpdateHotel> {
                                       height: 20,
                                     ),
                                     ElevatedButton(
-                                      onPressed: () {
-                                        Navigator.pushNamed(
-                                            context, 'changeHotelPassword');
-                                      },
                                       child: Text(
                                         'Change password',
                                         style: TextStyle(
@@ -777,6 +760,10 @@ class _UpdateHotelState extends State<UpdateHotel> {
                                           fontWeight: FontWeight.bold,
                                         ),
                                       ),
+                                      onPressed: () {
+                                        Navigator.pushNamed(
+                                            context, 'changeHotelPassword');
+                                      },
                                       style: ElevatedButton.styleFrom(
                                         backgroundColor:
                                             Color.fromARGB(255, 39, 92, 216),

@@ -1,4 +1,7 @@
-var apiUrl = 'http://10.0.2.2:3000';
+// var apiUrl = 'http://10.0.2.2:3000';
+var apiUrl = 'http://10.24.1.29:3000';
+
+
 // var apiUrl = 'http://192.168.18.10:3000';
 
 // var apiUrl = 'http://192.168.101.11:3000';

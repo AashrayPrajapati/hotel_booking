@@ -29,6 +29,7 @@ import 'screens/hotels/updateRoom.dart';
 import 'screens/hotels/viewBooking.dart';
 import 'screens/admin/roomCrud/createRoom.dart';
 
+import 'screens/hotels/viewComments.dart';
 import 'screens/user/bookingHistory.dart';
 import 'screens/user/editUser.dart';
 import 'screens/user/user.dart';
@@ -96,6 +97,7 @@ class Main extends StatelessWidget {
               'updateRoom': (context) => UpdateRoom(),
               'getRooms': (context) => GetRooms(),
               'viewBooking': (context) => ViewBooking(),
+              'viewComments': (context) => ViewComment(),
               'getImage': (context) => ImageReceiver(),
               'postGetComment': (context) => PostGetComment(),
               //

@@ -2,9 +2,11 @@ const express = require("express");
 const router = express.Router();
 const Admin = require("../models/Admin");
 const multer = require("multer");
+const Comment = require("../models/Comment");
 const HotelRoom = require("../models/HotelRoom");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+
 
 router.post("/register", async (req, res) => {
   // const {error} = listValidation(req.body);
@@ -142,6 +144,7 @@ router.post("/search", async (req, res) => {
   }
 });
 
+//
 // search hotel by city
 router.get("/search/city/:city", async (req, res) => {
   try {
@@ -164,6 +167,17 @@ router.get("/search/name/:propertyName", async (req, res) => {
     res.json(admin);
   } catch (error) {
     res.json(error);
+  }
+});
+
+//retrieve comments by hotel id
+router.get("/getComments/:id", async (req, res) => {
+  try {
+    console.log(req.params.id)
+    const hotelReviews = await Comment.find({ hotelId: req.params.id });
+    res.json(hotelReviews);
+  } catch (err) {
+    res.json(err);
   }
 });
 

@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
 import 'package:hotel_booking/config.dart';
 import 'package:hotel_booking/utils.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import '../auth/login/login.dart';
 
 class EditUser extends StatefulWidget {
   const EditUser({Key? key}) : super(key: key);
@@ -181,8 +184,17 @@ class _EditUserState extends State<EditUser> {
           actions: [
             Center(
               child: TextButton(
-                onPressed: () {
-                  Navigator.pushNamed(context, 'user');
+                onPressed: () async {
+                  SharedPreferences prefs =
+                      await SharedPreferences.getInstance();
+                  prefs.remove('jwtToken');
+                  prefs.remove('role');
+                  setState(() {
+                    // isLoggedIn = false;
+                    //
+                    selectedRole = 'User';
+                  });
+                  Navigator.pushNamed(context, 'login');
                 },
                 child: Text(
                   'OK',

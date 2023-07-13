@@ -5,6 +5,29 @@ import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:intl/intl.dart';
 
+final Dio _dio = Dio();
+
+const List<String> list = <String>['Pending', 'Paid'];
+String dropdownValue = list.first;
+// TextEditingController paymentController = TextEditingController();
+var bookingId;
+
+// use dio.patch for updating payment status
+Future<void> updatePaymentStatus(String bookingId) async {
+  try {
+    print(dropdownValue);
+    final response = await _dio.patch(
+      '$apiUrl/bookRoom/updatePaymentStatus/$bookingId',
+      data: {
+        'paymentStatus': dropdownValue,
+      },
+    );
+    print(response.data);
+  } on DioError catch (e) {
+    throw Exception("Error updating payment status: ${e.message}");
+  }
+}
+
 class ViewBooking extends StatefulWidget {
   const ViewBooking({Key? key}) : super(key: key);
 
@@ -33,8 +56,6 @@ class Bookings {
 }
 
 class _ViewBookingState extends State<ViewBooking> {
-  final Dio _dio = Dio();
-
   String ownerId = '';
 
   Future<void> jwtDecode() async {
@@ -151,6 +172,10 @@ class _ViewBookingState extends State<ViewBooking> {
                     ),
                     child: GestureDetector(
                       onTap: () {
+                        print(booking.id);
+                        bookingId = booking.id;
+                        print('objectobjectobjectobjectobjectobject');
+                        print(bookingId);
                         showDialog(
                           context: context,
                           builder: (BuildContext context) {
@@ -183,13 +208,123 @@ class _ViewBookingState extends State<ViewBooking> {
                                 ),
                               ),
                               actions: <Widget>[
-                                Center(
-                                  child: TextButton(
-                                    child: Text('Close'),
-                                    onPressed: () {
-                                      Navigator.of(context).pop();
-                                    },
-                                  ),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    TextButton(
+                                      child: Text('Edit payment status'),
+                                      onPressed: () {
+                                        // Navigator.pushNamed(
+                                        //   context,
+                                        //   'editPaymentStatus',
+                                        //   arguments: {
+                                        //     'id': booking.id,
+                                        //   },
+                                        // );
+                                        Navigator.pop(context);
+                                        showDialog(
+                                          context: context,
+                                          builder: (BuildContext context) {
+                                            return AlertDialog(
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(20),
+                                              ),
+                                              title: Center(
+                                                  child: Text(
+                                                      'Update payment status',
+                                                      style: TextStyle(
+                                                          color: Colors.red))),
+                                              content: DropdownButton<String>(
+                                                value: dropdownValue,
+                                                icon: const Icon(
+                                                    Icons.arrow_downward),
+                                                elevation: 16,
+                                                style: const TextStyle(
+                                                    color: Colors.deepPurple),
+                                                underline: Container(
+                                                  height: 2,
+                                                  color:
+                                                      Colors.deepPurpleAccent,
+                                                ),
+                                                onChanged: (String? value) {
+                                                  // This is called when the user selects an item.
+                                                  setState(() {
+                                                    dropdownValue = value!;
+                                                    print(dropdownValue);
+                                                  });
+                                                },
+                                                items: list.map<
+                                                        DropdownMenuItem<
+                                                            String>>(
+                                                    (String value) {
+                                                  return DropdownMenuItem<
+                                                      String>(
+                                                    value: value,
+                                                    child: Text(value),
+                                                  );
+                                                }).toList(),
+                                              ),
+                                              actions: [
+                                                TextButton(
+                                                  onPressed: () {
+                                                    updatePaymentStatus(
+                                                        booking.id);
+                                                    Navigator.pop(context);
+
+                                                    showDialog(
+                                                      context: context,
+                                                      builder: (BuildContext
+                                                          context) {
+                                                        return AlertDialog(
+                                                          shape:
+                                                              RoundedRectangleBorder(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        20),
+                                                          ),
+                                                          title: Center(
+                                                              child: Text(
+                                                                  'Payment status updated')),
+                                                          actions: [
+                                                            TextButton(
+                                                              onPressed: () {
+                                                                Navigator.pushNamed(
+                                                                    context,
+                                                                    'mainPage');
+                                                              },
+                                                              child:
+                                                                  Text('Close'),
+                                                            ),
+                                                          ],
+                                                        );
+                                                      },
+                                                    );
+                                                  },
+                                                  child: Column(
+                                                    children: [
+                                                      SizedBox(height: 20),
+                                                      Center(
+                                                          child:
+                                                              Text('Update')),
+                                                    ],
+                                                  ),
+                                                )
+                                              ],
+                                            );
+                                          },
+                                        );
+                                      },
+                                    ),
+                                    TextButton(
+                                      child: Text('Close'),
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                    ),
+                                  ],
                                 ),
                               ],
                             );

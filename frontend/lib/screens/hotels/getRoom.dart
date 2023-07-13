@@ -265,10 +265,31 @@ class _GetRoomsState extends State<GetRooms> {
                 child: Icon(Icons.edit_calendar_outlined, size: 27),
                 backgroundColor: Color.fromARGB(255, 39, 92, 216),
               ),
+              Text('Bookings',
+                  style: TextStyle(
+                    fontSize: 17,
+                    fontWeight: FontWeight.w600,
+                  )),
+              SizedBox(height: 20),
+              FloatingActionButton(
+                onPressed: () {
+                  print('view comment button pressed');
+                  print('objectobjectobjectobjectobjectobject');
+                  print(ownerId);
+                  Navigator.of(context, rootNavigator: true).pushNamed(
+                    'viewComments',
+                    arguments: {
+                      'id': ownerId,
+                    },
+                  );
+                },
+                child: Icon(Icons.edit_calendar_outlined, size: 27),
+                backgroundColor: Color.fromARGB(255, 39, 92, 216),
+              ),
               SizedBox(
                 height: 10,
               ),
-              Text('View Bookings',
+              Text('Comments',
                   style: TextStyle(
                     fontSize: 17,
                     fontWeight: FontWeight.w600,

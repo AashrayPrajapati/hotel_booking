@@ -250,156 +250,156 @@ class _HomePageState extends State<HomePage> {
                             child: Text("Error: ${snapshot.error}"),
                           );
                         } else {
-                          return ListView.builder(
-                              itemCount: snapshot.data.length,
-                              itemBuilder: (context, index) {
-                                return Padding(
-                                    padding: const EdgeInsets.only(
-                                        left: 10, right: 10, bottom: 7),
-                                    child: Column(children: [
-                                      GestureDetector(
-                                          onTap: () {
-                                            var ID = snapshot.data[index].id;
-                                            if (formattedStartDate.isEmpty ||
-                                                formattedEndDate.isEmpty) {
-                                              print("Dates are not selected");
-                                              Fluttertoast.showToast(
-                                                  msg:
-                                                      "Please select check-in and check-out dates",
-                                                  toastLength:
-                                                      Toast.LENGTH_SHORT,
-                                                  gravity: ToastGravity.CENTER,
-                                                  timeInSecForIosWeb: 2,
-                                                  backgroundColor:
-                                                      Colors.red[400],
-                                                  textColor: Colors.white,
-                                                  fontSize: 17);
-                                            } else {
-                                              Navigator.of(context,
-                                                      rootNavigator: true)
-                                                  .pushNamed('hotelInfo',
-                                                      arguments: {
-                                                    'userId': userId, // 'userId
-                                                    'id': ID,
-                                                    'numberOfNights':
-                                                        numberOfNights
-                                                            .toString(),
-                                                    'startDate':
-                                                        formattedStartDate
-                                                            .toString(),
-                                                    'endDate': formattedEndDate
-                                                        .toString()
-                                                  });
+                          return Card(
+                            color: Color.fromARGB(255, 238, 238, 238),
+                            child: ListView.builder(
+                                itemCount: snapshot.data.length,
+                                itemBuilder: (context, index) {
+                                  return Padding(
+                                      padding: const EdgeInsets.only(
+                                          left: 10, right: 10, bottom: 7),
+                                      child: Column(children: [
+                                        GestureDetector(
+                                            onTap: () {
+                                              var ID = snapshot.data[index].id;
+                                              if (formattedStartDate.isEmpty ||
+                                                  formattedEndDate.isEmpty) {
+                                                print("Dates are not selected");
+                                                Fluttertoast.showToast(
+                                                    msg:
+                                                        "Please select check-in and check-out dates",
+                                                    toastLength:
+                                                        Toast.LENGTH_SHORT,
+                                                    gravity:
+                                                        ToastGravity.CENTER,
+                                                    timeInSecForIosWeb: 2,
+                                                    backgroundColor:
+                                                        Colors.red[400],
+                                                    textColor: Colors.white,
+                                                    fontSize: 17);
+                                              } else {
+                                                Navigator.of(context,
+                                                        rootNavigator: true)
+                                                    .pushNamed('hotelInfo',
+                                                        arguments: {
+                                                      'userId':
+                                                          userId, // 'userId
+                                                      'id': ID,
+                                                      'numberOfNights':
+                                                          numberOfNights
+                                                              .toString(),
+                                                      'startDate':
+                                                          formattedStartDate
+                                                              .toString(),
+                                                      'endDate':
+                                                          formattedEndDate
+                                                              .toString()
+                                                    });
 
-                                              print("Specific hotel id: $ID");
-                                              print(
-                                                  "Check-in date: $formattedStartDate"); // Print the start date
-                                              print(
-                                                  "Check-out date: $formattedEndDate"); // Print the end date
-                                              print(
-                                                  "Number of nights: $numberOfNights"); // Print the number of nights
-                                              print('homePage');
-                                            }
-                                            // Print the user ID
-                                          },
-                                          child: Column(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.start,
-                                              children: [
-                                                Row(children: [
-                                                  FutureBuilder(
-                                                    future: fetchImage(
-                                                        snapshot.data[index]
-                                                            .firstRoomId,
-                                                        snapshot
-                                                            .data[index].id),
-                                                    builder: (BuildContext
-                                                            context,
-                                                        AsyncSnapshot<
-                                                                ParseObject?>
-                                                            snapshot) {
-                                                      var varFile = snapshot
-                                                          .data
-                                                          ?.get<ParseFileBase>(
-                                                              'file');
-                                                      print(
-                                                          '.....${varFile?.url ?? 'hell'}');
-                                                      if (varFile
-                                                              ?.url?.isEmpty ??
-                                                          true) {
-                                                        return Placeholder(
-                                                          fallbackWidth: 134,
-                                                          fallbackHeight: 100,
-                                                        );
-                                                      }
-                                                      return Image.network(
-                                                        varFile?.url ?? "",
-                                                        width: 134,
-                                                        height: 100,
-                                                        fit: BoxFit.cover,
-                                                      );
-                                                    },
-                                                  ),
-                                                  Expanded(
-                                                      flex: 6,
-                                                      child: Container(
-                                                          height: 100,
-                                                          child: Card(
-                                                              color: Color.fromARGB(
-                                                                  255, 245, 245, 245),
-                                                              elevation: 7,
-                                                              shape: RoundedRectangleBorder(
-                                                                  borderRadius: BorderRadius.only(
-                                                                      bottomLeft:
-                                                                          Radius.circular(
-                                                                              3),
-                                                                      topLeft: Radius.circular(
-                                                                          3),
-                                                                      topRight:
-                                                                          Radius.circular(
-                                                                              7),
-                                                                      bottomRight: Radius.circular(
-                                                                          7))),
-                                                              child: Padding(
-                                                                  padding:
-                                                                      const EdgeInsets.all(
-                                                                          13),
-                                                                  child: Column(
-                                                                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                                                      children: [
-                                                                        Expanded(
-                                                                            child:
-                                                                                Text(snapshot.data[index].propertyName, style: TextStyle(color: Color.fromARGB(255, 17, 17, 17), fontSize: 15, fontWeight: FontWeight.w800))),
-                                                                        SizedBox(
-                                                                            height:
-                                                                                6),
-                                                                        Expanded(
-                                                                            child:
-                                                                                Text(
-                                                                          '${snapshot.data[index].streetName}, ${snapshot.data[index].city}',
-                                                                          style:
-                                                                              TextStyle(
-                                                                            color: Color.fromARGB(
-                                                                                255,
-                                                                                17,
-                                                                                17,
-                                                                                17),
-                                                                            fontSize:
-                                                                                13,
-                                                                            fontWeight:
-                                                                                FontWeight.w500,
-                                                                          ),
-                                                                        ))
-                                                                      ]))))),
+                                                print("Specific hotel id: $ID");
+                                                print(
+                                                    "Check-in date: $formattedStartDate"); // Print the start date
+                                                print(
+                                                    "Check-out date: $formattedEndDate"); // Print the end date
+                                                print(
+                                                    "Number of nights: $numberOfNights"); // Print the number of nights
+                                                print('homePage');
+                                              }
+                                              // Print the user ID
+                                            },
+                                            child: Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.start,
+                                                children: [
+                                                  Row(children: [
+                                                    FutureBuilder(
+                                                      future: fetchImage(
+                                                          snapshot.data[index]
+                                                              .firstRoomId,
+                                                          snapshot
+                                                              .data[index].id),
+                                                      builder: (BuildContext
+                                                              context,
+                                                          AsyncSnapshot<
+                                                                  ParseObject?>
+                                                              snapshot) {
+                                                        var varFile = snapshot
+                                                            .data
+                                                            ?.get<ParseFileBase>(
+                                                                'file');
+                                                        print(
+                                                            '.....${varFile?.url ?? 'hell'}');
+                                                        if (varFile?.url
+                                                                ?.isEmpty ??
+                                                            true) {
+                                                          return Placeholder(
+                                                            fallbackWidth: 134,
+                                                            fallbackHeight: 100,
+                                                          );
+                                                        }
+                                                        return Image.network(
+                                                            varFile?.url ?? "",
+                                                            width: 134,
+                                                            height: 100,
+                                                            fit: BoxFit.cover);
+                                                      },
+                                                    ),
+                                                    Expanded(
+                                                        flex: 6,
+                                                        child: Container(
+                                                            height: 100,
+                                                            child: Card(
+                                                                color: Color.fromARGB(
+                                                                    255,
+                                                                    255,
+                                                                    255,
+                                                                    255),
+                                                                elevation: 7,
+                                                                shape: RoundedRectangleBorder(
+                                                                    borderRadius: BorderRadius.only(
+                                                                        bottomLeft: Radius.circular(
+                                                                            3),
+                                                                        topLeft: Radius.circular(
+                                                                            3),
+                                                                        topRight: Radius.circular(
+                                                                            7),
+                                                                        bottomRight: Radius.circular(
+                                                                            7))),
+                                                                child: Padding(
+                                                                    padding:
+                                                                        const EdgeInsets.all(
+                                                                            13),
+                                                                    child: Column(
+                                                                        mainAxisAlignment:
+                                                                            MainAxisAlignment
+                                                                                .spaceAround,
+                                                                        crossAxisAlignment:
+                                                                            CrossAxisAlignment.start,
+                                                                        children: [
+                                                                          Expanded(
+                                                                              child: Text(snapshot.data[index].propertyName, style: TextStyle(color: Color.fromARGB(255, 17, 17, 17), fontSize: 15, fontWeight: FontWeight.w800))),
+                                                                          SizedBox(
+                                                                              height: 6),
+                                                                          Expanded(
+                                                                              child: Text(
+                                                                            '${snapshot.data[index].streetName}, ${snapshot.data[index].city}',
+                                                                            style:
+                                                                                TextStyle(
+                                                                              color: Color.fromARGB(255, 17, 17, 17),
+                                                                              fontSize: 13,
+                                                                              fontWeight: FontWeight.w500,
+                                                                            ),
+                                                                          ))
+                                                                        ]))))),
 
-                                                  // fetchImageBuilder(),
-                                                  // hotelDetails(snapshot, index)
-                                                ]),
-                                                SizedBox(height: 5)
-                                              ]))
-                                    ]));
-                              });
+                                                    // fetchImageBuilder(),
+                                                    // hotelDetails(snapshot, index)
+                                                  ]),
+                                                  SizedBox(height: 5)
+                                                ]))
+                                      ]));
+                                }),
+                          );
                         }
                       })),
             ]))));

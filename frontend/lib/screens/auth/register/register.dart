@@ -55,8 +55,32 @@ class _MyRegisterState extends State<MyRegister> {
   void registerUser() async {
     if (nameController.text.isNotEmpty &&
         emailController.text.isNotEmpty &&
-        passwordController.text.isNotEmpty &&
-        passwordController.text.length > 6) {
+        passwordController.text.isNotEmpty) {
+      // validate password
+      if (passwordController.text.length < 7) {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text('Password'),
+              content: Text('Password must be at least 7 characters long'),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: Text('OK'),
+                ),
+              ],
+            );
+          },
+        );
+        setState(() {
+          _isNotValidate = true;
+        });
+        return;
+      }
+
       var regBody = {
         "name": nameController.text,
         "email": emailController.text,

@@ -102,6 +102,23 @@ async function mail(t_price, checkInDate, checkOutDate) {
   // Preview URL: https://ethereal.email/message/WaQKMgKddxQDoou...
 }
 
+// update payment status
+router.patch("/updatePaymentStatus/:id", async (req, res) => {
+  try {
+    const booking = await Booking.findById(req.params.id);
+    if (!booking) return res.status(404).send("Booking not found");
+
+    const updatedBooking = await Booking.findByIdAndUpdate(req.params.id, {
+      paymentStatus: req.body.paymentStatus,
+    });
+    res.status(200).send("Payment status updated successfully");
+    
+
+  } catch (error) {
+    res.status(400).json(error);
+  }
+});
+
 // POST a new user
 router.post("/book", async (req, res) => {
   try {
@@ -179,7 +196,7 @@ router.post("/book", async (req, res) => {
 });
 
 router.post("/existingbooking", async (req, res) => {
-    console.log("req.body", req.body);
+  console.log("req.body", req.body);
   try {
     const bookingExists = await Booking.findOne({
       room: req.body.room,
@@ -191,7 +208,7 @@ router.post("/existingbooking", async (req, res) => {
       return res
         .status(409)
         .send("The room is already booked during the selected dates");
-    }else{
+    } else {
       return res.status(200).send("No booking exists");
     }
   } catch (err) {

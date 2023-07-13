@@ -126,7 +126,7 @@ class _ProfileState extends State<Profile> {
           ),
           backgroundColor: Color.fromARGB(255, 39, 92, 216),
           title: Text(
-            'yoHotel',
+            'Profile',
             style: TextStyle(
               fontSize: 25,
               fontWeight: FontWeight.w600,
@@ -253,7 +253,7 @@ class _ProfileState extends State<Profile> {
                             color: Color.fromARGB(255, 39, 92, 216),
                           ),
                           onTap: () async {
-                            Navigator.pushNamed(context, 'mainPage');
+                            // Navigator.pushNamed(context, 'mainPage');
                             SharedPreferences prefs =
                                 await SharedPreferences.getInstance();
                             prefs.remove('jwtToken');
@@ -263,6 +263,7 @@ class _ProfileState extends State<Profile> {
                               //
                               selectedRole = 'User';
                             });
+                            Navigator.pushNamed(context, 'login');
                             // const token = 'jwtToken';
                             // print(token);
                           },

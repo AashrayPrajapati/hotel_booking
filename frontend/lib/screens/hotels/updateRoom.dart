@@ -211,16 +211,16 @@ class UpdateRoomState extends State<UpdateRoom> {
                                 borderRadius: BorderRadius.circular(25)),
                             elevation: 7,
                             child: Column(children: [
+                              // Padding(
+                              //     padding: const EdgeInsets.only(
+                              //         top: 20, bottom: 10),
+                              //     child: Text('Update Room',
+                              //         style: TextStyle(
+                              //             fontSize: 20,
+                              //             fontWeight: FontWeight.bold))),
                               Padding(
                                   padding: const EdgeInsets.only(
-                                      top: 20, bottom: 10),
-                                  child: Text('Update Room',
-                                      style: TextStyle(
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.bold))),
-                              Padding(
-                                  padding: const EdgeInsets.only(
-                                      top: 10, bottom: 10, left: 20, right: 20),
+                                      top: 30, bottom: 10, left: 20, right: 20),
                                   child: TextField(
                                       controller: roomTypeController,
                                       decoration: InputDecoration(
@@ -281,7 +281,7 @@ class UpdateRoomState extends State<UpdateRoom> {
 
                                               // Navigator.pushNamed(context, 'mainPage');
                                             },
-                                            child: Text('Save',
+                                            child: Text('Update',
                                                 style: TextStyle(
                                                     fontSize: 20,
                                                     fontWeight:

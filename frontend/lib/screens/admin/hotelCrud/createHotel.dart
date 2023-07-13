@@ -83,8 +83,8 @@ class HotelCrudState extends State<HotelCrud> {
         emailController.text.isNotEmpty &&
         passwordController.text.isNotEmpty &&
         propertyNameController.text.isNotEmpty &&
-        selectedCountry != null &&
-        selectedCity != null &&
+        countryController.text.isNotEmpty &&
+        cityController.text.isNotEmpty &&
         streetNameController.text.isNotEmpty &&
         // postalCodeController.text.isNotEmpty &&
         descriptionController.text.isNotEmpty) {
@@ -97,14 +97,18 @@ class HotelCrudState extends State<HotelCrud> {
           context: context,
           builder: (BuildContext context) {
             return AlertDialog(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20),
+              ),
               title: Center(child: Text("Invalid email!")),
-              content: Text("Please enter valid email."),
+              content: Text("Please enter valid email.",
+                  textAlign: TextAlign.center),
               actions: [
                 TextButton(
                   onPressed: () {
                     Navigator.pop(context);
                   },
-                  child: Text("Ok"),
+                  child: Center(child: Text("Ok")),
                 ),
               ],
             );
@@ -138,8 +142,8 @@ class HotelCrudState extends State<HotelCrud> {
         "email": emailController.text,
         "password": passwordController.text,
         "propertyName": propertyNameController.text,
-        "country": selectedCountry,
-        "city": selectedCity,
+        "country": countryController.text,
+        "city": cityController.text,
         "postalCode": "1000",
         "streetName": streetNameController.text,
         "description": descriptionController.text,
@@ -158,17 +162,29 @@ class HotelCrudState extends State<HotelCrud> {
         if (response.statusCode == 200) {
           showDialog(
             // barrierDismissible: false, // user must tap button!
+
             context: context,
             builder: (BuildContext context) {
               return AlertDialog(
-                title: Center(child: Text("Hotel registered successfully!")),
-                content: Text("Please login to continue."),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                title: Center(
+                    child: Text(
+                  "Hotel registered successfully!",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                )),
+                content: Text(
+                  "Please login to continue.",
+                  textAlign: TextAlign.center,
+                ),
                 actions: [
                   TextButton(
                     onPressed: () {
                       Navigator.pushNamed(context, 'login');
                     },
-                    child: Text("Ok"),
+                    child: Center(child: Text("Ok")),
                   ),
                 ],
               );
@@ -289,9 +305,9 @@ class HotelCrudState extends State<HotelCrud> {
                         password(),
                         // Divider(color: Colors.black38),
                         propertyName(),
-                        // country(),
-                        // city(),
-                        _buildCSCPicker(),
+                        country(),
+                        city(),
+                        // _buildCSCPicker(),
                         streetName(),
 
                         // postalCode(),
@@ -306,33 +322,6 @@ class HotelCrudState extends State<HotelCrud> {
                             ),
                           ),
                           onPressed: () {
-                            // showDialog(
-                            //   // barrierDismissible: false, // user must tap button!
-
-                            //   context: context,
-                            //   builder: (BuildContext context) {
-                            //     return AlertDialog(
-                            //       title: Center(child: Text("Confirm")),
-                            //       content: Text(
-                            //           "Are you sure you want to register with this data?"),
-                            //       actions: [
-                            //         TextButton(
-                            //           onPressed: () {
-                            //             Navigator.pop(context);
-                            //           },
-                            //           child: Text("No"),
-                            //         ),
-                            //         TextButton(
-                            //           onPressed: () {
-                            //             registerHotel();
-                            //           },
-                            //           child: Text("Yes"),
-                            //         ),
-                            //       ],
-                            //     );
-                            //   },
-                            // );
-
                             print('Selected country: $selectedCountry');
                             print('Selected state: $selectedState');
                             print('Selected city: $selectedCity');
@@ -406,8 +395,8 @@ class HotelCrudState extends State<HotelCrud> {
         decoration: InputDecoration(
           filled: true,
           fillColor: Colors.white,
-          errorStyle: TextStyle(color: Colors.red),
-          errorText: _isNotValidate ? "Enter full name" : null,
+          // errorStyle: TextStyle(color: Colors.red),
+          // errorText: _isNotValidate ? "Enter full name" : null,
           border: OutlineInputBorder(
             borderRadius: BorderRadius.all(Radius.circular(13)),
           ),
@@ -429,8 +418,8 @@ class HotelCrudState extends State<HotelCrud> {
               //
               filled: true,
               fillColor: Colors.white,
-              errorStyle: TextStyle(color: Colors.red),
-              errorText: _isNotValidate ? "Enter full name" : null,
+              // errorStyle: TextStyle(color: Colors.red),
+              // errorText: _isNotValidate ? "Enter correct city" : null,
               //
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.all(Radius.circular(13)),
@@ -496,8 +485,6 @@ class HotelCrudState extends State<HotelCrud> {
                 //
                 filled: true,
                 fillColor: Colors.white,
-                errorStyle: TextStyle(color: Colors.red),
-                errorText: _isNotValidate ? "Enter password" : null,
                 //
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.all(Radius.circular(13)),
@@ -553,8 +540,8 @@ class HotelCrudState extends State<HotelCrud> {
               //
               filled: true,
               fillColor: Colors.white,
-              errorStyle: TextStyle(color: Colors.red),
-              errorText: _isNotValidate ? "Enter full name" : null,
+              // errorStyle: TextStyle(color: Colors.red),
+              // errorText: _isNotValidate ? "Enter full name" : null,
               //
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.all(Radius.circular(13)),

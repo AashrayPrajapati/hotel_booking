@@ -199,7 +199,7 @@ class _RoomCreatePageState extends State<RoomCreatePage> {
             //replace with our own icon data.
           ),
           title: Text(
-            'yoHotel',
+            'Create Room',
             style: TextStyle(
               fontSize: 25,
               fontWeight: FontWeight.w600,
@@ -210,16 +210,16 @@ class _RoomCreatePageState extends State<RoomCreatePage> {
         body: SingleChildScrollView(
           child: Padding(
             padding:
-                const EdgeInsets.only(top: 10, bottom: 17, left: 17, right: 17),
+                const EdgeInsets.only(top: 17, bottom: 13, left: 17, right: 17),
             child: Container(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    'Add new room',
-                    style: TextStyle(fontSize: 23, fontWeight: FontWeight.bold),
-                  ),
-                  SizedBox(height: 10),
+                  // Text(
+                  //   'Add new room',
+                  //   style: TextStyle(fontSize: 23, fontWeight: FontWeight.bold),
+                  // ),
+                  // SizedBox(height: 10),
                   Container(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(20),
@@ -245,6 +245,7 @@ class _RoomCreatePageState extends State<RoomCreatePage> {
                                 width: 150,
                                 height: 50,
                                 child: TextFormField(
+                                  textAlign: TextAlign.center,
                                   controller: roomTypeController,
                                   decoration: InputDecoration(
                                     hintText: 'Twin Room',
@@ -308,6 +309,7 @@ class _RoomCreatePageState extends State<RoomCreatePage> {
                               width: 150,
                               height: 50,
                               child: TextField(
+                                textAlign: TextAlign.center,
                                 controller: priceController,
                                 keyboardType: TextInputType.numberWithOptions(
                                     decimal: true),
@@ -338,6 +340,7 @@ class _RoomCreatePageState extends State<RoomCreatePage> {
                               width: 150,
                               height: 50,
                               child: TextField(
+                                textAlign: TextAlign.center,
                                 controller: maxGuestCapacityController,
                                 keyboardType: TextInputType.number,
                                 inputFormatters: [
@@ -356,7 +359,7 @@ class _RoomCreatePageState extends State<RoomCreatePage> {
                               ),
                             ),
                           ),
-                          SizedBox(height: 20),
+                          SizedBox(height: 10),
                           // for image
                           Text(
                             'Upload a photo of the room:',
@@ -365,7 +368,7 @@ class _RoomCreatePageState extends State<RoomCreatePage> {
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                          SizedBox(height: 11),
+                          SizedBox(height: 5),
                           _selectedImage != null
                               ? Image.file(
                                   _selectedImage!,
@@ -374,24 +377,45 @@ class _RoomCreatePageState extends State<RoomCreatePage> {
                               : Placeholder(
                                   fallbackHeight: 170,
                                 ),
-                          SizedBox(height: 20),
-                          Center(
-                            child: ElevatedButton(
-                              onPressed: _pickImage,
-                              child: Text('Pick an desired image'),
-                              style: ElevatedButton.styleFrom(
-                                minimumSize: Size(123, 37),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(13),
-                                ),
+                          SizedBox(height: 7),
+                          ElevatedButton(
+                            onPressed: _pickImage,
+                            child: Text('Pick an desired image'),
+                            style: ElevatedButton.styleFrom(
+                              minimumSize: Size(123, 37),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(13),
                               ),
                             ),
                           ),
-                          SizedBox(height: 23),
+                          SizedBox(height: 7),
                           Center(
                             child: ElevatedButton(
                               onPressed: () {
-                                room();
+                                showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return AlertDialog(
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(20),
+                                      ),
+                                      title: Text('Room Added',
+                                          textAlign: TextAlign.center),
+                                      content: Text(
+                                          'Your room has been added successfully',
+                                          textAlign: TextAlign.center),
+                                      actions: [
+                                        TextButton(
+                                          onPressed: () {
+                                            room();
+                                          },
+                                          child: Center(child: Text('OK')),
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                );
+                                // room();
                                 // _uploadImage();
                                 // if (_isNotValidate == true) {
                                 //   Navigator.pushNamed(context, 'mainPage');
@@ -403,7 +427,7 @@ class _RoomCreatePageState extends State<RoomCreatePage> {
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(20),
                                 ),
-                                minimumSize: Size(100, 50),
+                                minimumSize: Size(100, 45),
                               ),
                               child: Text('Submit',
                                   style: TextStyle(
